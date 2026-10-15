@@ -1,0 +1,35 @@
+import * as React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+/**
+ * Display-only contract. Data comes from WooCommerce, never from brand tokens.
+ * Give full product details and actual variation prices to the storefront PDP.
+ */
+export type CommerceProductSummary = {
+  name: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  description?: string;
+  priceLabel: string;
+  regularPriceLabel?: string;
+  badge?: string;
+  soldOut?: boolean;
+};
+export function ProductCard({product,children,className}: {product:CommerceProductSummary;children?:React.ReactNode;className?:string}){
+ return <Card className={cn("gap-0 overflow-hidden py-0",className)}>
+   <div className="relative flex aspect-[4/3] items-center justify-center bg-[var(--brand-surface)]">
+    {product.imageUrl ? <img alt={product.imageAlt||product.name} src={product.imageUrl} loading="lazy" className="size-full object-cover" /> : <div aria-label="Product image pending" role="img" className="text-center typo-body-sm text-muted-foreground">產品圖片</div>}
+    {product.badge&&<Badge className="absolute left-4 top-4">{product.badge}</Badge>}
+   </div>
+   <CardContent className="space-y-2 p-5">
+    <h3 className="typo-h4 break-words">{product.name}</h3>
+    {product.description&&<p className="typo-body-sm text-muted-foreground">{product.description}</p>}
+    <p className="typo-price-md text-primary">{product.priceLabel}</p>
+    {product.regularPriceLabel&&<p className="typo-caption text-muted-foreground line-through">{product.regularPriceLabel}</p>}
+    {product.soldOut&&<Badge variant="destructive">已售完</Badge>}
+    {children}
+   </CardContent>
+ </Card>;
+}
