@@ -51,7 +51,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
           <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[28px] w-auto object-contain" />
           <span className="text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
         </Link>
-        <Badge variant="outline" className="hidden sm:inline-flex">v1.3 · shadcn/ui</Badge>
+        <Badge variant="outline" className="hidden sm:inline-flex">v1.4 · shadcn/ui</Badge>
       </div>
       <div className="flex items-center gap-2 sm:gap-3">
         <Button variant="outline" size="sm" onClick={() => setSearchOpen(true)} className="hidden min-w-[155px] items-center justify-between gap-5 text-muted-foreground sm:flex"><span className="flex items-center gap-2"><Search size={14}/> Quick search</span><kbd className="rounded border px-1 text-[10px]">⌘K</kbd></Button>
@@ -61,7 +61,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
       </div>
     </header>
     <div className="docs-layout">
-      <aside className="docs-sidebar"><div className="mb-6 px-3"><div className="eyebrow text-primary">DOCUMENTATION</div><p className="mt-2 text-[12px] leading-5 text-muted-foreground">The design-to-code source for Lunio and its sub-brands.</p></div><NavList/><Separator className="my-6"/><div className="px-3"><div className="flex items-center gap-2 text-[11px] font-semibold text-muted-foreground"><BookOpen size={15}/> SOURCE OF TRUTH</div><div className="mt-2 text-[12px] text-muted-foreground">DESIGN.md v1.2 · shadcn/ui</div><a href="https://www.figma.com/design/46bJYM9raivd3wEwTxaaJI/Lunio-TW-Mattress?node-id=1036-636" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-primary">Open Figma <ArrowUpRight size={14}/></a></div></aside>
+      <aside className="docs-sidebar"><div className="mb-6 px-3"><div className="eyebrow text-primary">DOCUMENTATION</div><p className="mt-2 text-[12px] leading-5 text-muted-foreground">The design-to-code source for Lunio and its sub-brands.</p></div><NavList/><Separator className="my-6"/><div className="px-3"><div className="flex items-center gap-2 text-[11px] font-semibold text-muted-foreground"><BookOpen size={15}/> SOURCE OF TRUTH</div><div className="mt-2 text-[12px] text-muted-foreground">DESIGN.md v1.4 · shadcn/ui</div><a href="https://www.figma.com/design/46bJYM9raivd3wEwTxaaJI/Lunio-TW-Mattress?node-id=1036-636" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-primary">Open Figma <ArrowUpRight size={14}/></a></div></aside>
       <main className="min-w-0">{children}</main>
     </div>
     <Dialog open={searchOpen} onOpenChange={setSearchOpen}>

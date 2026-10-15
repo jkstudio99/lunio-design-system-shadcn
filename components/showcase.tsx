@@ -12,9 +12,11 @@ import {Sheet,SheetContent,SheetTrigger,SheetHeader,SheetTitle,SheetDescription}
 const sections=[{label:"Colors",href:"/docs/colors"},{label:"Typography",href:"/docs/typography"},{label:"Components",href:"/docs/components"},{label:"Commerce",href:"/docs/commerce"}];
 export function Showcase(){
  const {brand}=useBrand();const current=tokens.brands[brand];
- const [tab,setTab]=useState<"preview"|"design">("preview");const [device,setDevice]=useState<"desktop"|"mobile">("desktop");const [copied,setCopied]=useState(false);const [mobileOpen,setMobileOpen]=useState(false);
+ const [tab,setTab]=useState<"preview"|"design">("preview");const [device,setDevice]=useState<"desktop"|"mobile">("desktop");const [copied,setCopied]=useState(false);const [copiedDesign,setCopiedDesign]=useState(false);const [mobileOpen,setMobileOpen]=useState(false);
  const code="npm install\nnpm run tokens:build\nnpm run tokens:check\nnpm run dev";
  const copy=async()=>{try{await navigator.clipboard.writeText(code);setCopied(true);setTimeout(()=>setCopied(false),1800)}catch{setCopied(false)}};
+ const designMdSummary=`# Lunio Multi-Brand Design System · v1.4\n\n> MiSansTC · WCAG 2.2 AA target\n\nBrand colors\n  Lunio    →  #1C46B4\n  Helix    →  #7347AE\n  Sunset   →  #F28131\n  Bedding  →  #1C46B4\n\nTypography  →  12 semantic roles\nFont weights → 400 / 500 / 600 / 700 / 800\nRadius → Control 8px · Container 16px\nSpacing → 4px rhythm\n\nComponents (20+ primitives & patterns)\n  Button / Input / Card / Tabs / Badge / Label\n  Separator / Skeleton / Textarea / Select / Dialog\n  Sheet / Command / Checkbox / DropdownMenu\n  Popover / ScrollArea / Accordion / RadioGroup\n  Tooltip / Breadcrumb / Carousel / ProductRating\n  SizeSelector / QuantityStepper / PDPStickyBar`;
+ const copyDesign=async()=>{try{await navigator.clipboard.writeText(designMdSummary);setCopiedDesign(true);setTimeout(()=>setCopiedDesign(false),1800)}catch{setCopiedDesign(false)}};
  return <div className="showcase-shell">
   <header className="shell-border border-x-0 border-t-0"><div className="shell-container flex min-h-[76px] items-center justify-between gap-4">
    <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-85" aria-label="Lunio Design System Home">
@@ -23,7 +25,7 @@ export function Showcase(){
      {/* eslint-disable-next-line @next/next/no-img-element */}
      <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[28px] w-auto object-contain" />
      <span className="text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
-     <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.3</span>
+     <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4</span>
    </Link>
    <nav className="hidden items-center gap-7 text-[13px] lg:flex">
      <Link href="/docs/getting-started" className="shell-link">Documentation</Link>
@@ -87,13 +89,22 @@ export function Showcase(){
         <div className="eyebrow text-muted-foreground">Usage</div>
         <span className="text-[11px] text-muted-foreground">Next.js 16 · Tailwind v4 · shadcn/ui</span>
       </div>
-      <div className="relative rounded-lg border border-border/80 bg-slate-50/90 dark:bg-[#161C28] dark:border-[#2A344A] px-5 py-5 font-mono text-[12px] leading-6 text-foreground shadow-xs">
+      <div className="relative rounded-lg border border-border/80 bg-slate-50/90 dark:bg-[#161C28] dark:border-[#2A344A] px-5 py-5 pr-16 font-mono text-[12px] leading-6 text-foreground shadow-xs">
         <span className="text-primary font-bold">$ </span>npm run tokens:build<br/>
         <span className="text-primary font-bold">$ </span>npm run tokens:check<br/>
         <span className="text-primary font-bold">$ </span>npm run dev
-        <Button variant="ghost" size="icon-sm" onClick={copy} aria-label="Copy installation commands" className="absolute right-4 top-4 text-muted-foreground hover:bg-accent hover:text-foreground">
-          {copied ? <Check size={16}/> : <Copy size={16}/>}
-        </Button>
+        <div className="absolute right-3.5 top-3.5 z-10">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={copy}
+            aria-label={copied ? "Copied installation commands to clipboard" : "Copy installation commands"}
+            className="h-8 px-2.5 text-xs font-medium border-border/80 bg-background/95 text-foreground hover:bg-accent hover:text-foreground shadow-xs gap-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
+            <span>{copied ? "Copied!" : "Copy"}</span>
+          </Button>
+        </div>
       </div>
       <p className="mt-4 text-[12px] text-muted-foreground">
         Start the platform locally, then connect the approved typography and color tokens to Lunio&apos;s existing Next.js frontend.
@@ -217,12 +228,26 @@ export function Showcase(){
        </div>
      ) : (
        <div className="preview-browser min-h-[560px] p-6 sm:p-10">
-         <div className="eyebrow mb-4 text-primary">DESIGN.md · v1.3</div>
+         <div className="eyebrow mb-4 text-primary">DESIGN.md · v1.4</div>
          <h3 className="text-[30px] font-bold">The design language behind the UI</h3>
          <p className="mt-2 text-[14px] leading-7 text-muted-foreground">
            The same documented design tokens drive the Figma specs and generated CSS.
          </p>
-         <div className="code-panel mt-8">{`# Lunio Multi-Brand Design System\n\n> MiSansTC · WCAG 2.2 AA target\n\nBrand colors\n  Lunio    →  #1C46B4\n  Helix    →  #7347AE\n  Sunset   →  #F28131\n  Bedding  →  #1C46B4\n\nTypography  →  12 semantic roles\nFont weights → 400 / 500 / 600 / 700 / 800\nRadius → Control 8px · Container 16px\nSpacing → 4px rhythm\n\nComponents → Button / Card / Input / Select /\n              Size Selector / PDP Sticky Bar`}</div>
+          <div className="relative mt-8">
+            <div className="code-panel pr-16">{designMdSummary}</div>
+            <div className="absolute right-3.5 top-3.5 z-10">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={copyDesign}
+                aria-label={copiedDesign ? "Copied specification summary to clipboard" : "Copy DESIGN.md specification summary"}
+                className="h-8 px-2.5 text-xs font-medium border-slate-700/80 bg-slate-900/90 text-slate-200 hover:bg-slate-800 hover:text-white shadow-xs gap-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {copiedDesign ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                <span>{copiedDesign ? "Copied!" : "Copy"}</span>
+              </Button>
+            </div>
+          </div>
          <Link className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold text-primary hover:underline" href="/docs/source">
            Read complete DESIGN.md <ArrowUpRight size={16}/>
          </Link>

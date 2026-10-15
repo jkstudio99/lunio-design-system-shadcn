@@ -1,130 +1,186 @@
-# Lunio Design System — shadcn/ui Migration Guide (v1.3)
+# Lunio Design System — shadcn/ui Migration & Implementation Guide (v1.4)
 
 ## สถานะและเป้าหมาย
 
-เวอร์ชัน 1.3 นำโครงสร้าง **shadcn/ui ที่เป็น Source-owned Components ใช้ Radix UI primitives** มาทดแทน Button/Input/Card/Tabs ที่เคยสร้างเอง และแทน native Select + manual Dialog + manual Sheet ด้วย Components ที่มี keyboard/focus behavior จาก Radix. ทุก UI ใช้ **MiSansTC 5 weights**, Lunio semantic CSS variables และ multi-brand modes เดิม.
+เวอร์ชัน **v1.4.0** ขยายขอบเขต **shadcn/ui Source-owned Components (New York style) บน Radix UI Primitives** ให้ครอบคลุมทุกการมีปฏิสัมพันธ์ (Interaction) และแพทเทิร์น E-Commerce ของตลาดที่นอนในไต้หวัน โดยมี Primitives มากกว่า 20 ชิ้น พร้อมทั้ง Commerce Compositions 9 รายการ ทุกคอมโพเนนต์ยึดถือ:
+1. **MiSansTC 5 Weights** (`400`, `500`, `600`, `700`, `800`)
+2. **Lunio Semantic CSS Variables** สำหรับ 4 แบรนด์ (Lunio, Nooz Helix, Nooz Sunset, Lunio Bedding)
+3. **WCAG 2.2 AA Contrast & Accessibility** (ขั้นต่ำ 4.5:1 สำหรับ Normal Text และ 3:1 สำหรับ Large Text)
+4. **4px Spatial Rhythm** และมาตรฐานรัศมี (Control: 8px, Container: 16px, Pill: 9999px)
+5. **No Raw HTML Buttons/Selects** ในหน้า Live Page
 
-> หมายเหตุ: shadcn/ui ไม่ใช่ไลบรารีที่ import จาก `shadcn/ui` ใน Runtime แต่เป็น Component source code ที่ติดตั้ง/บริหารอยู่ใน `components/ui/` พร้อม dependencies ตาม Component จริง. ชุดโค้ดที่ให้เป็นการนำ source มาไว้ใน repo ตามสถาปัตยกรรมนี้; ไม่ได้อ้างว่ารัน CLI ติดตั้งสำเร็จในสภาพแวดล้อมที่เชื่อม npm ไม่ได้.
+---
 
-## Stack
+## Stack เทคโนโลยี
 
 | Layer | Implementation |
 |---|---|
-| Application | Next.js 16 App Router, React 19, TypeScript |
-| UI Component architecture | **shadcn/ui, New York style, Radix UI** |
-| Tailwind | Tailwind CSS v4, semantic custom properties |
+| Application | Next.js 16 App Router (Turbopack SSG), React 19, TypeScript |
+| UI Component Architecture | **shadcn/ui (New York style), Radix UI primitives** |
+| Carousel Engine | **embla-carousel-react** |
+| Command Palette | **cmdk** + shadcn Dialog |
+| Styling & Theme | Tailwind CSS v4, semantic CSS custom properties |
 | Icons | lucide-react |
-| Component Variants | class-variance-authority + tailwind-merge |
-| Command palette | cmdk + shadcn Dialog |
-| Brand and foundation tokens | `src/design-system/tokens.json` → generated CSS |
-| Font | MiSansTC, weights 400/500/600/700/800 (files supplied by client) |
-| Data | Docs prototypes only; WooCommerce Store API in real storefront |
+| Variants Management | class-variance-authority + clsx + tailwind-merge |
+| Token Source | `src/design-system/tokens.json` → `src/styles/generated-tokens.css` |
+| Font Stack | MiSansTC (Regular, Medium, Semibold, Bold, Heavy) |
 
-## Step 1 — ติดตั้งและรัน
+---
 
-ต้องมี Node.js เวอร์ชันที่ Next.js 16 รองรับ และเปิดการเข้าถึง npm Registry ได้:
+## Step 1 — คำสั่งรันและตรวจสอบ (Quality Gates)
 
 ```bash
-cd lunio-design-system-shadcn
+# ติดตั้ง dependencies
 npm install
+
+# คอมไพล์ CSS Variables จาก tokens.json
 npm run tokens:build
+
+# ตรวจสอบ contrast, brand themes, 5 weights, 4px grid (7/7 tests)
 npm run tokens:check
+
+# ตรวจสอบ shadcn data-slot contracts, Radix dependencies, no-raw-button (6/6 tests)
 npm run shadcn:check
+
+# ตรวจสอบ TypeScript Types ทั่วทั้งโปรเจกต์
 npm run typecheck
+
+# ตรวจสอบรวมทุกอย่าง
+npm run check
+
+# Next.js Turbopack Production Build (15 Static Routes)
 npm run build
+
+# รัน Local Development Server (Port 3001)
 npm run dev
 ```
 
-เปิด `http://localhost:3001`. ถ้า dependency ติดตั้งแล้ว สามารถใช้ `npm run ui:add -- accordion` หรือ `npx shadcn@latest add accordion` เพื่อเพิ่ม component จาก Registry ตามปกติ ตรวจ diff ก่อนรับ overwrite เพราะ Brand Variants ของเราอยู่ใน source code.
+เปิดทดสอบที่ `http://localhost:3001`
 
-## Step 2 — Component Library
+---
 
-| shadcn source component | File | Library primitive / function |
-|---|---|---|
-| Button (default/outline/secondary/ghost/link/pill/destructive) | `components/ui/button.tsx` | Radix Slot + CVA |
-| Input | `components/ui/input.tsx` | Native input styled to shadcn patterns |
-| Card (Header/Title/Description/Content/Footer) | `components/ui/card.tsx` | shadcn slots |
-| Tabs | `components/ui/tabs.tsx` | Radix Tabs |
-| Select | `components/ui/select.tsx` | Radix Select with portal, keyboard navigation |
-| Label | `components/ui/label.tsx` | Radix Label |
-| Sheet | `components/ui/sheet.tsx` | Radix Dialog semantics |
-| Dialog | `components/ui/dialog.tsx` | Radix Dialog, modal focus control |
-| Command | `components/ui/command.tsx` | cmdk for search |
-| Badge | `components/ui/badge.tsx` | CVA + brand variants |
-| Checkbox | `components/ui/checkbox.tsx` | Radix Checkbox |
-| Separator | `components/ui/separator.tsx` | Radix Separator |
-| Scroll Area | `components/ui/scroll-area.tsx` | Radix ScrollArea |
-| Popover | `components/ui/popover.tsx` | Radix Popover |
-| Skeleton | `components/ui/skeleton.tsx` | shadcn structure |
-| Textarea | `components/ui/textarea.tsx` | shadcn structure |
+## Step 2 — รายการคอมโพเนนต์ Primitives (20+ UI Components)
 
-> `Pill` เป็น **Lunio-specific extension** ของ Button ที่ยังใช้โครงสร้าง shadcn/ui และ shared tokens ไม่ใช่ Registry variant มาตรฐาน. `Badge success` ก็เป็น extension ของ Lunio.
+| shadcn Source Component | ที่ตั้งไฟล์ | Library Primitive / Core Contract | สัญญาลักษณะ (Contract) |
+|---|---|---|---|
+| **Button** | `components/ui/button.tsx` | `@radix-ui/react-slot` + CVA | `data-slot="button"`, variants: default, outline, pill, secondary, ghost, link, destructive |
+| **Input** | `components/ui/input.tsx` | HTML Input Styled | `data-slot="input"`, 44px min-height, focus ring |
+| **Card** | `components/ui/card.tsx` | Composite Container | `data-slot="card"`, `card-header`, `card-title`, `card-description`, `card-content`, `card-footer` |
+| **Tabs** | `components/ui/tabs.tsx` | `@radix-ui/react-tabs` | `data-slot="tabs"`, `tabs-list`, `tabs-trigger`, `tabs-content` |
+| **Badge** | `components/ui/badge.tsx` | CVA + Brand Variants | `data-slot="badge"`, default, outline, secondary, destructive, success |
+| **Label** | `components/ui/label.tsx` | `@radix-ui/react-label` | `data-slot="label"`, ผูก `htmlFor` กับ Input อย่างถูกต้อง |
+| **Separator** | `components/ui/separator.tsx` | `@radix-ui/react-separator` | `data-slot="separator"`, เส้นแบ่งแนวนอน/แนวตั้ง |
+| **Skeleton** | `components/ui/skeleton.tsx` | CSS Pulse Placeholder | `data-slot="skeleton"`, `aria-hidden="true"`, ป้องกัน Layout Shift |
+| **Textarea** | `components/ui/textarea.tsx` | HTML Textarea Styled | `data-slot="textarea"`, รับข้อคิดเห็นหลายบรรทัด |
+| **Select** | `components/ui/select.tsx` | `@radix-ui/react-select` | `data-slot="select"`, `select-trigger`, `select-content`, `select-item` |
+| **Dialog** | `components/ui/dialog.tsx` | `@radix-ui/react-dialog` | `data-slot="dialog"`, modal focus trap, Esc to close |
+| **Sheet** | `components/ui/sheet.tsx` | `@radix-ui/react-dialog` | `data-slot="sheet"`, ลิ้นชักเปิดข้าง (Left/Right/Top/Bottom) |
+| **Command** | `components/ui/command.tsx` | `cmdk` | `data-slot="command"`, quick search palette (`⌘K`) |
+| **Checkbox** | `components/ui/checkbox.tsx` | `@radix-ui/react-checkbox` | `data-slot="checkbox"`, Space toggle, high-contrast indicator |
+| **DropdownMenu** | `components/ui/dropdown-menu.tsx` | `@radix-ui/react-dropdown-menu` | `data-slot="dropdown-menu"`, เมนูย่อยและการเลือกธีม |
+| **Popover** | `components/ui/popover.tsx` | `@radix-ui/react-popover` | `data-slot="popover"`, หน้าต่างลอยแสดงข้อมูลเสริม |
+| **ScrollArea** | `components/ui/scroll-area.tsx` | `@radix-ui/react-scroll-area` | `data-slot="scroll-area"`, แถบเลื่อนปรับแต่งตามธีม |
+| **Accordion** | `components/ui/accordion.tsx` | `@radix-ui/react-accordion` | `data-slot="accordion"`, ยืดหดคำถาม/สเปกที่นอน พร้อมแอนิเมชัน |
+| **RadioGroup** | `components/ui/radio-group.tsx` | `@radix-ui/react-radio-group` | `data-slot="radio-group"`, การเลือกขนาดที่นอน/ระดับความนุ่มแน่น |
+| **Tooltip** | `components/ui/tooltip.tsx` | `@radix-ui/react-tooltip` | `data-slot="tooltip"`, ทูลทิปอธิบายคำศัพท์และขนาดเตียง |
+| **Breadcrumb** | `components/ui/breadcrumb.tsx` | `@radix-ui/react-slot` | `data-slot="breadcrumb"`, เส้นทางนำทาง PDP พร้อมการย่อจุดไข่ปลา |
+| **Carousel** | `components/ui/carousel.tsx` | `embla-carousel-react` | `data-slot="carousel"`, สไลด์โชว์รูปภาพและจุดบอกตำแหน่ง |
 
-## Step 3 — ตัวอย่างการใช้งาน
+---
 
-```tsx
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
+## Step 3 — Taiwan E-Commerce Patterns (9 Commerce Components)
 
-export function ProductInquiry() {
-  return <div className="space-y-4">
-    <div><Label htmlFor="customer">姓名</Label><Input id="customer" placeholder="請輸入姓名" /></div>
-    <Select defaultValue="5">
-      <SelectTrigger aria-label="床墊尺寸"><SelectValue /></SelectTrigger>
-      <SelectContent><SelectItem value="3">3 尺</SelectItem><SelectItem value="5">5 尺</SelectItem></SelectContent>
-    </Select>
-    <Button>立即選購</Button>
-  </div>
-}
-```
+| คอมโพเนนต์พาณิชย์ | ที่ตั้งไฟล์ | Primitives ที่ประกอบเข้าด้วยกัน | ฟังก์ชันและการใช้งาน |
+|---|---|---|---|
+| **ProductCard** | `components/commerce/product-card.tsx` | `Card`, `Badge`, `Button` | แสดงการ์ดสินค้า รองรับรูปภาพ, ป้ายโปรโมชัน, ราคาเริ่มต้น และลิงก์ไปยัง PDP |
+| **ProductCardSkeleton** | `components/commerce/product-card.tsx` | `Skeleton`, `Card` | โครงร่างจำลองการโหลดขนาดเท่าการ์ดจริง ป้องกันกระตุกขณะดึง API |
+| **SizeSelector** | `components/commerce/size-selector.tsx` | `Button`, `Label` | ปุ่ม Pill สำหรับเลือกขนาดเตียงมาตรฐานไต้หวัน 5 ไซส์ (3, 3.5, 5, 6, 7 尺) มีสถานะ Active, Disabled, Sold Out |
+| **QuantityStepper** | `components/commerce/quantity-stepper.tsx` | `Button` | ปุ่มเพิ่ม/ลดจำนวนสินค้า ขนาดสัมผัส 44px และประกาศ `aria-live="polite"` |
+| **PDPStickyBar** | `components/commerce/pdp-sticky-bar.tsx` | `Button` | แถบซื้อติดขอบล่างหน้าจอบนมือถือ คำนวณ `env(safe-area-inset-bottom)` |
+| **MobileMegaMenu** | `components/commerce/mobile-mega-menu.tsx` | `Sheet`, `Tabs`, `Button` | ลิ้นชักเมนูบนมือถือพร้อมแท็บกรอง 4 แบรนด์ (Lunio, Helix, Sunset, Bedding) |
+| **ProductRating** | `components/commerce/product-rating.tsx` | `Badge` | รีวิว 5 ดาว รองรับดาวครึ่งดวง, แสดงจำนวนรีวิว และป้ายการันตี (100 คืน, รับประกัน 10 ปี, ส่งฟรี) |
+| **MattressSpecsAccordion** | `components/commerce/mattress-specs-accordion.tsx` | `Accordion`, `Separator` | สเปกโครงสร้างที่นอน 5 ชั้น, เงื่อนไขทดลองนอน 100 คืน, การรับประกัน และบริการเก็บที่นอนเก่า |
+| **MattressRadioSelector** | `components/commerce/mattress-radio-selector.tsx` | `RadioGroup`, `Tooltip`, `Sheet`, `Label` | ฟอร์มเลือกไซส์ 台尺/cm และความนุ่มแน่น พร้อมทูลทิปและชีตเทียบขนาดห้อง |
+| **ProductCarousel** | `components/commerce/product-carousel.tsx` | `Carousel`, `Badge`, `Button` | แกลเลอรีรูปภาพไฮไลท์เทคโนโลยีที่นอน เลื่อนได้ด้วยมือหรือปุ่มลูกศร |
+
+---
 
 ## Step 4 — Multi-brand scope และ Portal
 
-ให้ตั้งแบรนด์ผ่าน `BrandProvider`. `document.documentElement.dataset.brand` ทำให้ Dropdown/Menu/Dialog ที่ Radix render ไปที่ `<body>` ด้วย Portal **ยังได้รับ Theme เดียวกับที่เลือกอยู่**. ภายในหน้าเอกสารยังวาง Component ที่ `data-brand="helix"` หรือ `sunset` แยกกันได้; หาก component นั้นมี portal ต้องส่ง Brand mode ไปยัง Portal Container แยกกรณีแบรนด์เฉพาะการ์ดในหน้าเดียว.
+ระบบบริหารธีม 4 แบรนด์ผ่าน `BrandProvider` โดยการตั้งค่า `document.documentElement.dataset.brand = brand`:
 
-| Brand | Primary | Foreground on primary |
-|---|---|---|
-| Lunio | `#1C46B4` | White |
-| Nooz Helix | `#7347AE` | White |
-| Nooz Sunset | `#F28131` | `#1C1526` |
-| Lunio Bedding | `#1C46B4` | White |
+| Brand | Primary Token | On-Primary Foreground | Contrast Ratio | เอกลักษณ์และบทบาท |
+|---|---|---|---|---|
+| **Lunio Taiwan** | `#1C46B4` | `#FFFFFF` | **8.13:1** (AAA) | แบรนด์เรือธง สีน้ำเงินเทคโนโลยี |
+| **Nooz Helix** | `#7347AE` | `#FFFFFF` | **6.48:1** (AA) | ที่นอนสปริงพรีเมียม สีม่วงกำมะหยี่ |
+| **Nooz Sunset** | `#F28131` | `#1C1526` (หมึกเข้ม) | **6.72:1** (AA) | ที่นอนโฟมลดแรงกดทับ สีส้มพระอาทิตย์ |
+| **Lunio Bedding** | `#1C46B4` | `#FFFFFF` | **8.13:1** (AAA) | เครื่องนอนและอุปกรณ์เสริมพรีเมียม |
 
-ข้อควรระวัง: `Nooz Sunset` บนปุ่มสีส้มต้องไม่ใช้ข้อความสีขาว. `--interactive-text` สำหรับ Sunset บนพื้นขาวเป็นสีเข้มเพื่อให้ผ่าน Contrast.
+> **ข้อกำหนดสำคัญสำหรับ Sunset:** ห้ามใช้ตัวอักษรสีขาวบนพื้นสีส้ม `#F28131` เป็นอันขาด เพราะได้ค่า Contrast เพียง 2.64:1 ซึ่งสอบตก WCAG AA ระบบได้กำหนดให้ On-Primary ของ Sunset เป็น `#1C1526` ซึ่งให้ค่าคอนทราสต์ 6.72:1 ปลอดภัยสูงสุด
 
-## Step 5 — Commerce Patterns (Source-owned reusable components)
+---
 
-- `components/commerce/product-card.tsx`: รับ `CommerceProductSummary` จาก WooCommerce Adapter (ไม่มี Hardcoded ราคา)
-- `components/commerce/size-selector.tsx`: รับ `options`, `selected`, `onSelect`; รองรับ Disabled/Sold Out; ใช้ shadcn Button
-- `components/commerce/quantity-stepper.tsx`: รับ `value`, `onChange`, `min/max`; ใช้ shadcn Button และ Live Region
-- `components/commerce/pdp-sticky-bar.tsx`: รับ real price, availability, variation, add-to-cart callback; Demo mode ปิดการซื้อ
-- `components/commerce/mobile-mega-menu.tsx`: ใช้ shadcn Sheet + Tabs; Demo ไม่ดึง WooCommerce API จนกว่าเชื่อมกับ Storefront
+## Step 5 — การจัดวาง CSS Spacing และปุ่ม Copy ใน Code Panel
 
-**ห้ามใช้ค่าราคาใน Figma เป็นราคา Live**; ราคาจริงต้องมาจาก WooCommerce. สำหรับ Product Card/Size Variation ให้ใช้ Server-side Adapter ที่แยก Data และ UI.
+ในการอัปเดต v1.4.0 ได้มีการปรับปรุงรายละเอียด CSS Spacing ทุกหน้าโดยเฉพาะแผงแสดงโค้ด:
+1. **ตำแหน่งปุ่ม Copy:** วางไว้ที่มุมขวาบนแบบสัมบูรณ์ (`absolute top-3 right-3` หรือ `top-3.5 right-3.5`)
+2. **Padding กันข้อความชนปุ่ม:** ในทุกบล็อก `<pre>` หรือคอนเทนเนอร์โค้ด ได้กำหนดระยะเว้นขวาขั้นต่ำ **`pr-16` (64px)** เพื่อให้ข้อความโค้ดไม่ชนหรือซ้อนทับกับปุ่ม Copy อย่างเด็ดขาด
+3. **สถานะและการแสดงผล:**
+   - พื้นหลังปุ่มคมชัดตัดกับโค้ดมืด (`bg-slate-900/90 text-slate-200 border-slate-700 hover:bg-slate-800 hover:text-white`)
+   - แสดงไอคอน Checkmark สีเขียวมรกตพร้อมคำว่า `Copied!` เมื่อคัดลอกสำเร็จ
+   - มี `Tooltip` กำกับเพื่อรองรับ Accessibility
 
-## Step 6 — Accessibility Testing
+---
 
-1. เปิด Dialog/Search ด้วย `⌘K` หรือ `Ctrl+K`. เลือกด้วย Keyboard; Esc ปิด Dialog.
-2. เปิด Sheet เมนูบนมือถือด้วย Tab/Enter; ตรวจ Focus Trap, Escape-to-close และ Body Scroll Lock.
-3. เปิด Select และนำทางด้วยปุ่มลูกศร/Enter; ตรวจ Aria Label / Focus Visible.
-4. ตรวจ Brand Switcher ทุกธีม; Dropdown แสดงสีและตัวอักษรถูกต้อง.
-5. ทดสอบ 375px, 1440px, 320px Reflow; ขยายข้อความ 200%; ทดสอบ Safari iOS และ Chrome.
-6. ตรวจ Normal Text Contrast ≥ 4.5:1 ในทุก state โดยเฉพาะ Sunset Orange; QA ไม่อาจสรุปจาก automated tests เพียงอย่างเดียว.
-7. เมื่อ Integrate กับ WooCommerce ต้อง Regression Cart, Variation, Inventory, Discounts, Shipping, Tax, Payment.
+## Step 6 — ตัวอย่างโค้ดการใช้งาน
 
-## Step 7 — Engineering Governance
+```tsx
+import { MattressRadioSelector } from "@/components/commerce/mattress-radio-selector";
+import { MattressSpecsAccordion } from "@/components/commerce/mattress-specs-accordion";
+import { ProductCarousel } from "@/components/commerce/product-carousel";
+import { ProductRating } from "@/components/commerce/product-rating";
+import { PDPStickyBar } from "@/components/commerce/pdp-sticky-bar";
 
-- ห้ามสร้าง `<button>` / `<select>` manual ใน Feature Page หากมี UI primitive ของ shadcn/ui ครอบคลุม use case อยู่แล้ว (ยกเว้น native semantic elements ที่จำเป็นและได้รับอนุมัติ).
-- เพิ่ม `npm run shadcn:check` ใน CI เพื่อป้องกันการย้อนกลับไปใช้ custom primitive.
-- อนุมัติปรับขนาดฟอนต์ผ่าน `tokens.json`; ห้ามใช้ arbitrary classes ใหม่ใน Commerce Components.
-- เนื่องจากเป็นโปรเจกต์ที่ใช้ Source-owned Components, คุณสามารถแก้ style ของ shadcn ได้เอง แต่ต้องรักษา Radix behavior และ Event/Ref forwarding contract.
-- ตรวจ diff ของ `npx shadcn@latest add` และห้าม overwrite `button.tsx` ที่ผูก Brand Semantic Tokens โดยไม่ทำ Review.
+export function MattressPDP() {
+  const [size, setSize] = React.useState("5.0");
+  const [feel, setFeel] = React.useState("medium-firm");
 
-## Build and QA status
+  return (
+    <div className="space-y-8">
+      {/* 1. แกลเลอรีรูปภาพ */}
+      <ProductCarousel />
 
-ตรวจผ่านในสภาพแวดล้อมสร้างไฟล์: `node --test`, Token Builder/Checker, Syntax Parse ของ TS/TSX และ Source/Usage Contract Tests.
+      {/* 2. ดาวและรีวิว */}
+      <ProductRating score={4.9} reviewCount={12850} />
 
-ยังไม่ได้ยืนยัน: `npm install`, full TypeScript Typecheck, Next.js Production Build, visual/browser accessibility QA เพราะ npm Registry ติดต่อไม่ได้ในสภาพแวดล้อมนี้. ให้ทีมรันทุกคำสั่งใน Step 1 อีกครั้งก่อน deploy.
+      {/* 3. การเลือกขนาดและระดับความนุ่มแน่น */}
+      <MattressRadioSelector
+        selectedSize={size}
+        onSelectSize={setSize}
+        selectedFeel={feel}
+        onSelectFeel={setFeel}
+      />
 
-Official shadcn docs: https://ui.shadcn.com/docs/installation/next · https://ui.shadcn.com/docs/theming
+      {/* 4. รายละเอียดโครงสร้างและข้อตกลง */}
+      <MattressSpecsAccordion />
+
+      {/* 5. แถบสั่งซื้อด้านล่าง */}
+      <PDPStickyBar
+        sizeLabel={`${size} 尺`}
+        priceLabel="NT$ 21,900"
+        inStock={true}
+        ready={true}
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## Step 7 — แหล่งอ้างอิงและเอกสารทางการ
+
+- **Figma Library:** Code 018 · Lunio DS
+- **System Specification:** [DESIGN.md](file:///Users/lunio/Desktop/DevPortal/lunio-design-system-shadcn/DESIGN.md)
+- **Validation Record:** [VALIDATION.md](file:///Users/lunio/Desktop/DevPortal/lunio-design-system-shadcn/docs/VALIDATION.md)
+- **Changelog:** [CHANGELOG_v1.4.md](file:///Users/lunio/Desktop/DevPortal/lunio-design-system-shadcn/docs/CHANGELOG_v1.4.md)

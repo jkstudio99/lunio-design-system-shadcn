@@ -172,7 +172,7 @@
 .token-table th{font-weight:700;letter-spacing:.03em;background:#f8f9fc;color:#52637f;}
 .token-table td,.token-table th{padding:14px 16px;border-bottom:1px solid #e8ebf2;vertical-align:middle;}
 .token-table tr:last-child td{border-bottom:0;}
-.code-panel{position:relative;background:#10151e;color:#dae1f0;border:1px solid #2b3342;border-radius:12px;padding:22px 56px 22px 22px;overflow:auto;font:12px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;}
+.code-panel{position:relative;background:#10151e;color:#dae1f0;border:1px solid #2b3342;border-radius:12px;padding:22px 64px 22px 22px;overflow:auto;font:12px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;}
 .doc-notice{padding:14px 17px;border:1px solid #cedbf8;border-radius:9px;background:#f3f7ff;color:#20458d;font-size:13px;line-height:1.7;}
 .do-bad{padding:17px;border:1px solid #ffdcd9;background:#fff8f7;border-radius:10px;}
 .do-good{padding:17px;border:1px solid #cee8da;background:#f4fbf7;border-radius:10px;}
