@@ -37,7 +37,7 @@ export function LanguageToggle({
           size="sm"
           aria-label="Switch language / 切換顯示語言"
           className={cn(
-            "h-9 px-2.5 gap-1.5 text-xs font-semibold transition-colors shadow-xs",
+            "h-9 px-2 sm:px-2.5 gap-1.5 text-xs font-semibold transition-colors shadow-xs select-none",
             dark
               ? "border-[#363b45] bg-[#15191f] text-white hover:bg-[#212630] hover:text-white focus-visible:ring-white/60"
               : "border-border bg-background text-foreground hover:bg-accent/40",
@@ -95,5 +95,50 @@ export function LanguageToggle({
         })}
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+/**
+ * Mobile Language Selector for Drawer Navigation
+ * Two responsive touch tabs for seamless language switching on mobile
+ */
+export function MobileLanguageSelector({ onSelect }: { onSelect?: () => void }) {
+  const { locale, setLocale } = useLanguage();
+
+  return (
+    <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Select language">
+      {supportedLocales.map((item) => {
+        const isActive = locale === item.code;
+        return (
+          <Button
+            key={item.code}
+            variant="outline"
+            size="sm"
+            role="radio"
+            aria-checked={isActive}
+            onClick={() => {
+              setLocale(item.code);
+              onSelect?.();
+            }}
+            className={cn(
+              "h-10 justify-start gap-2 px-3 border rounded-lg transition-all",
+              isActive
+                ? "border-primary bg-primary/10 shadow-xs ring-1 ring-primary/40 text-primary font-bold dark:bg-primary/20"
+                : "border-border/80 bg-background hover:bg-accent/50 text-foreground"
+            )}
+          >
+            <span
+              className={cn(
+                "fi",
+                item.flagClass,
+                "shrink-0 text-base rounded-[2px] ring-1 ring-black/10 dark:ring-white/20 overflow-hidden shadow-2xs"
+              )}
+              aria-hidden="true"
+            />
+            <span className="text-xs truncate">{item.shortLabel} · {item.nativeName}</span>
+          </Button>
+        );
+      })}
+    </div>
   );
 }

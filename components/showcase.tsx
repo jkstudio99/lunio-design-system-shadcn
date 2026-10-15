@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import {useState} from "react";
-import {ArrowLeft,ArrowUpRight,BookOpen,Check,CheckCircle2,ChevronDown,Copy,Download,ExternalLink,Layers3,Menu,Monitor,PanelTop,Smartphone,Sparkles, X} from "lucide-react";
-import {BrandSwitcher} from "@/components/brand-switcher";
-import {ThemeToggle} from "@/components/theme-toggle";
-import {LanguageToggle} from "@/components/language-toggle";
+import {ArrowLeft,ArrowUpRight,BookOpen,Check,CheckCircle2,ChevronDown,ChevronRight,Copy,Download,ExternalLink,Layers3,Menu,Monitor,PanelTop,Smartphone,Sparkles, X} from "lucide-react";
+import {BrandSwitcher, MobileBrandGrid} from "@/components/brand-switcher";
+import {ThemeToggle, MobileThemeSelector} from "@/components/theme-toggle";
+import {LanguageToggle, MobileLanguageSelector} from "@/components/language-toggle";
 import {useBrand} from "@/components/brand-provider";
 import {useLanguage} from "@/components/language-provider";
 import {brands,tokens} from "@/lib/design-system";
@@ -21,48 +21,117 @@ export function Showcase(){
  const designMdSummary=`# Lunio Multi-Brand Design System · v1.4\n\n> MiSansTC · WCAG 2.2 AA target\n\nBrand colors\n  Lunio    →  #1C46B4\n  Helix    →  #7347AE\n  Sunset   →  #F28131\n  Bedding  →  #1C46B4\n\nTypography  →  12 semantic roles\nFont weights → 400 / 500 / 600 / 700 / 800\nRadius → Control 8px · Container 16px\nSpacing → 4px rhythm\n\nComponents (20+ primitives & patterns)\n  Button / Input / Card / Tabs / Badge / Label\n  Separator / Skeleton / Textarea / Select / Dialog\n  Sheet / Command / Checkbox / DropdownMenu\n  Popover / ScrollArea / Accordion / RadioGroup\n  Tooltip / Breadcrumb / Carousel / ProductRating\n  SizeSelector / QuantityStepper / PDPStickyBar`;
  const copyDesign=async()=>{try{await navigator.clipboard.writeText(designMdSummary);setCopiedDesign(true);setTimeout(()=>setCopiedDesign(false),1800)}catch{setCopiedDesign(false)}};
  return <div className="showcase-shell">
-  <header className="shell-border border-x-0 border-t-0"><div className="shell-container flex min-h-[76px] items-center justify-between gap-4">
-   <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-85" aria-label="Lunio Design System Home">
-     {/* eslint-disable-next-line @next/next/no-img-element */}
-     <img src="/images/lunio/lunio-primary.svg" alt="Lunio" className="logo-theme-light h-[28px] w-auto object-contain" />
-     {/* eslint-disable-next-line @next/next/no-img-element */}
-     <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[28px] w-auto object-contain" />
-     <span className="text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
-     <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4</span>
-   </Link>
-   <nav className="hidden items-center gap-7 text-[13px] lg:flex">
-     <Link href="/docs/getting-started" className="shell-link">{isZh ? "快速入門" : "Documentation"}</Link>
-     <Link href="/docs/components" className="shell-link">{isZh ? "元件庫" : "Components"}</Link>
-     <Link href="/docs/typography" className="shell-link">{isZh ? "設計 Token" : "Tokens"}</Link>
-     <Link href="/docs/changelog" className="shell-link">{isZh ? "更新日誌" : "Changelog"}</Link>
-     <Link href="/docs/source" className="shell-link">DESIGN.md</Link>
-   </nav>
-   <div className="flex items-center gap-2">
-     <BrandSwitcher/>
-     <ThemeToggle/>
-     <LanguageToggle/>
-     <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-       <SheetTrigger asChild>
-         <Button variant="outline" size="icon" className="border-border bg-background text-foreground lg:hidden" aria-label="Open mobile navigation">
-           <Menu size={18}/>
-         </Button>
-       </SheetTrigger>
-       <SheetContent side="right" className="w-[min(90vw,340px)]">
-         <SheetHeader>
-           <SheetTitle>Lunio Design System</SheetTitle>
-           <SheetDescription>Navigate to the foundations and components</SheetDescription>
-         </SheetHeader>
-         <nav className="flex flex-col gap-2 px-4">
-           {sections.map(item => (
-             <Button key={item.label} asChild variant="ghost" className="justify-start" onClick={()=>setMobileOpen(false)}>
-               <Link href={item.href}>{item.label}</Link>
-             </Button>
-           ))}
-         </nav>
-       </SheetContent>
-     </Sheet>
-   </div>
-  </div></header>
+  <header className="shell-border border-x-0 border-t-0">
+    <div className="shell-container flex min-h-[58px] sm:min-h-[76px] items-center justify-between gap-2 sm:gap-4">
+      <Link href="/" className="flex items-center gap-1.5 sm:gap-2.5 transition-opacity hover:opacity-85 shrink-0" aria-label="Lunio Design System Home">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/lunio/lunio-primary.svg" alt="Lunio" className="logo-theme-light h-[22px] sm:h-[28px] w-auto object-contain" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[22px] sm:h-[28px] w-auto object-contain" />
+        <span className="hidden sm:inline text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
+        <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4</span>
+      </Link>
+      <nav className="hidden items-center gap-7 text-[13px] lg:flex">
+        <Link href="/docs/getting-started" className="shell-link">{isZh ? "快速入門" : "Documentation"}</Link>
+        <Link href="/docs/components" className="shell-link">{isZh ? "元件庫" : "Components"}</Link>
+        <Link href="/docs/typography" className="shell-link">{isZh ? "設計 Token" : "Tokens"}</Link>
+        <Link href="/docs/changelog" className="shell-link">{isZh ? "更新日誌" : "Changelog"}</Link>
+        <Link href="/docs/source" className="shell-link">DESIGN.md</Link>
+      </nav>
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        <BrandSwitcher/>
+        <ThemeToggle/>
+        <LanguageToggle/>
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="size-9 border-border bg-background text-foreground lg:hidden" aria-label="Open mobile navigation">
+              <Menu size={18}/>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[min(90vw,350px)] p-0 flex flex-col border-l border-border">
+            <SheetHeader className="p-3.5 border-b border-border/80 flex flex-row items-center justify-between gap-3 space-y-0">
+              <div className="flex items-center gap-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/lunio/lunio-primary.svg" alt="Lunio" className="logo-theme-light h-[22px] w-auto object-contain" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[22px] w-auto object-contain" />
+                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">v1.4</Badge>
+              </div>
+              <SheetTitle className="sr-only">Lunio Design System</SheetTitle>
+              <SheetDescription className="sr-only">Mobile navigation</SheetDescription>
+            </SheetHeader>
+
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {/* 4-Brand Grid */}
+              <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
+                <div className="flex items-center justify-between mb-2 px-0.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    {isZh ? "切換品牌體驗" : "Brand Theme"}
+                  </span>
+                  <span className="text-[10px] font-mono font-semibold text-primary">
+                    4 BRANDS
+                  </span>
+                </div>
+                <MobileBrandGrid onSelect={() => {}} />
+              </div>
+
+              {/* Navigation Links */}
+              <div className="space-y-1">
+                <div className="mb-2 px-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {isZh ? "主要章節導覽" : "Documentation"}
+                </div>
+                {[
+                  { label: isZh ? "快速入門指南" : "Getting started", href: "/docs/getting-started", num: "00" },
+                  { label: isZh ? "品牌基礎與規範" : "Brand foundations", href: "/docs/brands", num: "01" },
+                  { label: isZh ? "字體排印系統" : "MiSansTC Typography", href: "/docs/typography", num: "02" },
+                  { label: isZh ? "色彩與語意 Token" : "Colors & WCAG Target", href: "/docs/colors", num: "04" },
+                  { label: isZh ? "空間與佈局律動" : "Spacing 4px Rhythm", href: "/docs/spacing", num: "05" },
+                  { label: isZh ? "核心 UI 元件庫" : "Core UI components", href: "/docs/components", num: "06" },
+                  { label: isZh ? "台灣電商元件" : "Commerce patterns", href: "/docs/commerce", num: "07" },
+                  { label: isZh ? "無障礙檢驗標準" : "Accessibility (WCAG AA)", href: "/docs/accessibility", num: "08" },
+                  { label: isZh ? "生產環境發布" : "Production checklist", href: "/docs/release", num: "09" },
+                  { label: isZh ? "更新日誌與版本" : "Changelog & versions", href: "/docs/changelog", num: "10" },
+                  { label: isZh ? "完整規範手冊" : "Full DESIGN.md", href: "/docs/source", num: "MD" },
+                ].map((item) => (
+                  <Button
+                    key={item.href}
+                    asChild
+                    variant="ghost"
+                    className="w-full justify-between h-10 px-3 text-xs font-medium hover:bg-accent/60"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <Link href={item.href}>
+                      <span className="flex items-center gap-2.5">
+                        <span className="font-mono text-[10px] text-muted-foreground">{item.num}</span>
+                        <span>{item.label}</span>
+                      </span>
+                      <ChevronRight size={14} className="text-muted-foreground" />
+                    </Link>
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer with Language and Theme */}
+            <div className="border-t border-border/80 p-3.5 bg-muted/20 space-y-3">
+              <div>
+                <div className="mb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {isZh ? "顯示語言" : "Language"}
+                </div>
+                <MobileLanguageSelector />
+              </div>
+              <div>
+                <div className="mb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {isZh ? "色彩主題" : "Theme Mode"}
+                </div>
+                <MobileThemeSelector />
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </div>
+  </header>
   <main className="shell-container pb-32">
    <div className="showcase-hero">
     <Link href="/docs/getting-started" className="mb-6 inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">

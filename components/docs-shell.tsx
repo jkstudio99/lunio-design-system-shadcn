@@ -3,9 +3,9 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { ArrowUpRight, BookOpen, ChevronRight, FileCode2, Menu, Search } from "lucide-react";
-import { BrandSwitcher } from "@/components/brand-switcher";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { LanguageToggle } from "@/components/language-toggle";
+import { BrandSwitcher, MobileBrandGrid } from "@/components/brand-switcher";
+import { ThemeToggle, MobileThemeSelector } from "@/components/theme-toggle";
+import { LanguageToggle, MobileLanguageSelector } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
 import { docsNav, allDocs } from "@/lib/design-system";
 import { Button } from "@/components/ui/button";
@@ -87,33 +87,171 @@ export function DocsShell({ children }: { children: ReactNode }) {
   }, []);
   return <div className="min-h-screen bg-background text-foreground transition-colors">
     <header className="docs-topbar">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
         <Sheet open={navigationOpen} onOpenChange={setNavigationOpen}>
-          <SheetTrigger asChild><Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open documentation navigation"><Menu className="size-5"/></Button></SheetTrigger>
-          <SheetContent side="left" className="w-[min(88vw,330px)] overflow-y-auto" aria-describedby="docs-mobile-nav-description">
-            <SheetHeader><SheetTitle>{isZh ? "文檔導覽" : "Documentation"}</SheetTitle><SheetDescription id="docs-mobile-nav-description">Lunio Design System navigation</SheetDescription></SheetHeader>
-            <div className="px-4 pb-7"><NavList onChoose={() => setNavigationOpen(false)}/></div>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden size-9 shrink-0 text-foreground hover:bg-accent/50"
+              aria-label="Open documentation navigation / 開啟導覽選單"
+            >
+              <Menu className="size-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent
+            side="left"
+            className="w-[min(90vw,350px)] p-0 flex flex-col border-r border-border"
+            aria-describedby="docs-mobile-nav-description"
+          >
+            <SheetHeader className="p-3.5 border-b border-border/80 flex flex-row items-center justify-between gap-3 space-y-0">
+              <div className="flex items-center gap-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/lunio/lunio-primary.svg"
+                  alt="Lunio"
+                  className="logo-theme-light h-[22px] w-auto object-contain"
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/lunio/lunio-white.svg"
+                  alt="Lunio"
+                  className="logo-theme-dark h-[22px] w-auto object-contain"
+                />
+                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">v1.4</Badge>
+              </div>
+              <SheetTitle className="sr-only">{isZh ? "文檔導覽" : "Documentation"}</SheetTitle>
+              <SheetDescription id="docs-mobile-nav-description" className="sr-only">
+                Lunio Design System mobile navigation
+              </SheetDescription>
+            </SheetHeader>
+
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {/* Drawer Search trigger */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setNavigationOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="w-full justify-between text-muted-foreground h-9 px-3 border-border/80 bg-muted/20"
+              >
+                <span className="flex items-center gap-2 text-xs font-normal">
+                  <Search size={14} className="text-primary" />
+                  {isZh ? "快速搜尋元件與規範..." : "Quick search docs..."}
+                </span>
+                <kbd className="rounded border px-1.5 py-0.5 text-[10px] font-mono bg-background">⌘K</kbd>
+              </Button>
+
+              {/* Visual 4-Brand Grid for Mobile */}
+              <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
+                <div className="flex items-center justify-between mb-2 px-0.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    {isZh ? "切換品牌體驗" : "Brand Theme"}
+                  </span>
+                  <span className="text-[10px] font-mono font-semibold text-primary">
+                    4 BRANDS
+                  </span>
+                </div>
+                <MobileBrandGrid onSelect={() => {}} />
+              </div>
+
+              {/* Navigation list */}
+              <div>
+                <div className="mb-2 px-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {isZh ? "文檔章節導覽" : "Documentation Sections"}
+                </div>
+                <NavList onChoose={() => setNavigationOpen(false)} />
+              </div>
+            </div>
+
+            {/* Drawer footer with Language, Theme and Figma links */}
+            <div className="border-t border-border/80 p-3.5 bg-muted/20 space-y-3">
+              <div>
+                <div className="mb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {isZh ? "顯示語言" : "Language"}
+                </div>
+                <MobileLanguageSelector />
+              </div>
+              <div>
+                <div className="mb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {isZh ? "色彩主題" : "Theme Mode"}
+                </div>
+                <MobileThemeSelector />
+              </div>
+              <div className="pt-2 flex items-center justify-between text-[11px] text-muted-foreground border-t border-border/60">
+                <a
+                  href="https://www.figma.com/design/46bJYM9raivd3wEwTxaaJI/Lunio-TW-Mattress?node-id=1036-636"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
+                >
+                  {isZh ? "開啟 Figma 設計庫" : "Open Figma Library"} <ArrowUpRight size={13} />
+                </a>
+                <Link
+                  href="/docs/source"
+                  onClick={() => setNavigationOpen(false)}
+                  className="hover:underline"
+                >
+                  DESIGN.md v1.4
+                </Link>
+              </div>
+            </div>
           </SheetContent>
         </Sheet>
-        <Link href="/" className="inline-flex items-center gap-2 transition-opacity hover:opacity-85" aria-label="Lunio Design System Home">
+
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-85 shrink-0"
+          aria-label="Lunio Design System Home"
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/lunio/lunio-primary.svg" alt="Lunio" className="logo-theme-light h-[28px] w-auto object-contain" />
+          <img
+            src="/images/lunio/lunio-primary.svg"
+            alt="Lunio"
+            className="logo-theme-light h-[22px] sm:h-[26px] w-auto object-contain"
+          />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[28px] w-auto object-contain" />
-          <span className="text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
+          <img
+            src="/images/lunio/lunio-white.svg"
+            alt="Lunio"
+            className="logo-theme-dark h-[22px] sm:h-[26px] w-auto object-contain"
+          />
+          <span className="hidden sm:inline text-[14px] font-semibold tracking-tight text-muted-foreground">/design</span>
         </Link>
-        <Badge variant="outline" className="hidden sm:inline-flex">v1.4 · shadcn/ui</Badge>
+        <Badge variant="outline" className="hidden md:inline-flex text-[10px] font-mono">v1.4 · shadcn/ui</Badge>
       </div>
-      <div className="flex items-center gap-2 sm:gap-2.5">
-        <Button variant="outline" size="sm" onClick={() => setSearchOpen(true)} className="hidden min-w-[155px] items-center justify-between gap-5 text-muted-foreground sm:flex">
-          <span className="flex items-center gap-2"><Search size={14}/> {isZh ? "快速搜尋" : "Quick search"}</span>
+
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Mobile Search Icon Button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setSearchOpen(true)}
+          className="sm:hidden size-9 shrink-0 text-muted-foreground hover:text-foreground hover:bg-accent/50"
+          aria-label="Quick search / 快速搜尋"
+        >
+          <Search size={16} />
+        </Button>
+
+        {/* Desktop Search Button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setSearchOpen(true)}
+          className="hidden min-w-[155px] items-center justify-between gap-5 text-muted-foreground sm:flex"
+        >
+          <span className="flex items-center gap-2"><Search size={14} /> {isZh ? "快速搜尋" : "Quick search"}</span>
           <kbd className="rounded border px-1 text-[10px]">⌘K</kbd>
         </Button>
-        <BrandSwitcher/>
-        <ThemeToggle/>
-        <LanguageToggle/>
-        <Button variant="link" size="sm" asChild className="hidden lg:inline-flex">
-          <Link href="/">{isZh ? "首頁展示" : "Showcase"} <ArrowUpRight size={14}/></Link>
+
+        <BrandSwitcher />
+        <ThemeToggle />
+        <LanguageToggle />
+
+        <Button variant="link" size="sm" asChild className="hidden xl:inline-flex text-xs">
+          <Link href="/">{isZh ? "首頁展示" : "Showcase"} <ArrowUpRight size={14} /></Link>
         </Button>
       </div>
     </header>

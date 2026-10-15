@@ -92,3 +92,53 @@ export function ThemeToggle({
     </DropdownMenu>
   );
 }
+
+/**
+ * Mobile Theme Selector for Drawer Navigation
+ * Three touch buttons for Light / Dark / System modes
+ */
+export function MobileThemeSelector({ onSelect }: { onSelect?: () => void }) {
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const items = [
+    { value: "light", labelZh: "淺色", labelEn: "Light", icon: Sun, color: "text-amber-500" },
+    { value: "dark", labelZh: "深色", labelEn: "Dark", icon: Moon, color: "text-blue-400" },
+    { value: "system", labelZh: "系統", labelEn: "System", icon: Monitor, color: "text-muted-foreground" },
+  ];
+
+  return (
+    <div className="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="Select theme mode">
+      {items.map((item) => {
+        const isActive = mounted && theme === item.value;
+        const Icon = item.icon;
+        return (
+          <Button
+            key={item.value}
+            variant="outline"
+            size="sm"
+            role="radio"
+            aria-checked={isActive}
+            onClick={() => {
+              setTheme(item.value);
+              onSelect?.();
+            }}
+            className={cn(
+              "h-9 px-2 gap-1.5 border rounded-lg text-xs font-medium transition-all",
+              isActive
+                ? "border-primary bg-primary/10 shadow-xs ring-1 ring-primary/40 text-primary font-bold dark:bg-primary/20"
+                : "border-border/80 bg-background hover:bg-accent/50 text-foreground"
+            )}
+          >
+            <Icon className={cn("size-3.5 shrink-0", item.color)} />
+            <span className="text-[11px] font-semibold">{item.labelZh}</span>
+          </Button>
+        );
+      })}
+    </div>
+  );
+}
