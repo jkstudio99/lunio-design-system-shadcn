@@ -218,21 +218,25 @@ export function DocsShell({ children }: { children: ReactNode }) {
             alt="Lunio"
             className="logo-theme-dark h-[22px] sm:h-[26px] w-auto object-contain"
           />
-          <span className="hidden sm:inline text-[14px] font-semibold tracking-tight text-muted-foreground">/design</span>
+          <span className="text-[13px] sm:text-[14px] font-semibold tracking-tight text-muted-foreground">/design</span>
         </Link>
         <Badge variant="outline" className="hidden md:inline-flex text-[10px] font-mono">v1.4 · shadcn/ui</Badge>
       </div>
 
       <div className="flex items-center gap-1.5 sm:gap-2">
-        {/* Mobile Search Icon Button */}
+        {/* Mobile Full Search Bar */}
         <Button
-          variant="ghost"
-          size="icon"
+          variant="outline"
+          size="sm"
           onClick={() => setSearchOpen(true)}
-          className="sm:hidden size-9 shrink-0 text-muted-foreground hover:text-foreground hover:bg-accent/50"
-          aria-label="Quick search / 快速搜尋"
+          className="flex sm:hidden h-8 px-2.5 items-center justify-between gap-1.5 rounded-lg border-border/80 bg-muted/40 text-muted-foreground hover:text-foreground hover:bg-muted/70 shadow-2xs text-xs font-normal max-w-[150px] min-w-[110px]"
+          aria-label={isZh ? "快速搜尋文檔與元件" : "Quick search documentation"}
         >
-          <Search size={16} />
+          <span className="flex items-center gap-1.5 truncate">
+            <Search size={13} className="text-primary shrink-0" />
+            <span className="truncate">{isZh ? "搜尋規範..." : "Search..."}</span>
+          </span>
+          <kbd className="rounded border border-border/70 bg-background px-1 py-0 text-[9px] font-mono text-muted-foreground shrink-0">⌘K</kbd>
         </Button>
 
         {/* Desktop Search Button */}
@@ -242,13 +246,13 @@ export function DocsShell({ children }: { children: ReactNode }) {
           onClick={() => setSearchOpen(true)}
           className="hidden min-w-[155px] items-center justify-between gap-5 text-muted-foreground sm:flex"
         >
-          <span className="flex items-center gap-2"><Search size={14} /> {isZh ? "快速搜尋" : "Quick search"}</span>
+          <span className="flex items-center gap-2"><Search size={14} className="text-primary" /> {isZh ? "快速搜尋" : "Quick search"}</span>
           <kbd className="rounded border px-1 text-[10px]">⌘K</kbd>
         </Button>
 
-        <BrandSwitcher />
-        <ThemeToggle />
-        <LanguageToggle />
+        <BrandSwitcher className="hidden sm:inline-flex" />
+        <ThemeToggle className="hidden sm:inline-flex" />
+        <LanguageToggle className="hidden sm:inline-flex" />
 
         <Button variant="link" size="sm" asChild className="hidden xl:inline-flex text-xs">
           <Link href="/">{isZh ? "首頁展示" : "Showcase"} <ArrowUpRight size={14} /></Link>

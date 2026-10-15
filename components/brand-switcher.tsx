@@ -23,25 +23,25 @@ export function BrandSwitcher({
         <SelectTrigger
           aria-label="Select brand theme"
           className={cn(
-            "h-9 w-auto min-w-[72px] sm:min-w-[145px] max-w-[170px] gap-1.5 px-2 sm:px-3 text-xs font-semibold transition-colors shadow-xs select-none",
+            "h-9 w-auto min-w-[135px] max-w-[180px] gap-2 px-3 text-xs font-semibold transition-colors shadow-xs select-none shrink-0",
             dark
               ? "border-[#363b45] bg-[#15191f] text-white hover:bg-[#212630] focus-visible:ring-white/60"
               : "border-border bg-background text-foreground hover:bg-accent/40"
           )}
         >
-          <div className="flex items-center gap-1.5 min-w-0">
+          <div className="flex items-center gap-2 min-w-0">
             <span
-              className="size-2 shrink-0 rounded-full bg-primary"
+              className="size-2.5 shrink-0 rounded-full shadow-xs"
+              style={{ backgroundColor: currentBrand.primary }}
               aria-hidden="true"
             />
-            {/* Mobile short brand label */}
-            <span className="sm:hidden text-xs font-semibold truncate max-w-[56px]">
-              {currentBrand.short || currentBrand.name}
+            {/* Clean single-line brand name */}
+            <span className="text-xs font-semibold text-foreground truncate">
+              {currentBrand.name}
             </span>
-            {/* Desktop full brand label */}
-            <span className="hidden sm:inline text-xs font-semibold truncate">
-              <SelectValue placeholder="Choose brand" />
-            </span>
+            <SelectValue className="sr-only" aria-label={currentBrand.name}>
+              {currentBrand.name}
+            </SelectValue>
           </div>
         </SelectTrigger>
         <SelectContent position="popper" align="end" className="min-w-[200px] p-1.5 shadow-md">

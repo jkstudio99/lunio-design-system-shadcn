@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import {useState} from "react";
-import {ArrowLeft,ArrowUpRight,BookOpen,Check,CheckCircle2,ChevronDown,ChevronRight,Copy,Download,ExternalLink,Layers3,Menu,Monitor,PanelTop,Smartphone,Sparkles, X} from "lucide-react";
+import {ArrowLeft,ArrowUpRight,BookOpen,Check,CheckCircle2,ChevronDown,ChevronRight,Copy,Download,ExternalLink,Layers3,Menu,Monitor,PanelTop,Search,Smartphone,Sparkles, X} from "lucide-react";
 import {BrandSwitcher, MobileBrandGrid} from "@/components/brand-switcher";
 import {ThemeToggle, MobileThemeSelector} from "@/components/theme-toggle";
 import {LanguageToggle, MobileLanguageSelector} from "@/components/language-toggle";
@@ -28,7 +28,7 @@ export function Showcase(){
         <img src="/images/lunio/lunio-primary.svg" alt="Lunio" className="logo-theme-light h-[22px] sm:h-[28px] w-auto object-contain" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[22px] sm:h-[28px] w-auto object-contain" />
-        <span className="hidden sm:inline text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
+        <span className="text-[13px] sm:text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
         <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4</span>
       </Link>
       <nav className="hidden items-center gap-7 text-[13px] lg:flex">
@@ -39,9 +39,16 @@ export function Showcase(){
         <Link href="/docs/source" className="shell-link">DESIGN.md</Link>
       </nav>
       <div className="flex items-center gap-1.5 sm:gap-2">
-        <BrandSwitcher/>
-        <ThemeToggle/>
-        <LanguageToggle/>
+        {/* Mobile quick search link */}
+        <Button asChild variant="outline" size="sm" className="flex sm:hidden h-8 px-2.5 items-center gap-1.5 rounded-lg border-border/80 bg-muted/40 text-muted-foreground hover:text-foreground text-xs font-normal">
+          <Link href="/docs/getting-started">
+            <Search size={13} className="text-primary" />
+            <span>{isZh ? "搜尋規範..." : "Search..."}</span>
+          </Link>
+        </Button>
+        <BrandSwitcher className="hidden sm:inline-flex" />
+        <ThemeToggle className="hidden sm:inline-flex" />
+        <LanguageToggle className="hidden sm:inline-flex" />
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="size-9 border-border bg-background text-foreground lg:hidden" aria-label="Open mobile navigation">
