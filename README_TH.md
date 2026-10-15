@@ -2,12 +2,12 @@
 
 ## 1. โปรเจกต์นี้คืออะไร
 
-สร้าง Next.js Project ใหม่โดยดูโครงสร้างหน้าจาก getdesign.md/hp/design-md: หน้า Showcase ภายนอกสีเข้ม, การ์ด Usage, ส่วน Preview พื้นขาว, และหน้า Documentation แยกเป็นหมวดหมู่ที่ค้นหาได้ แทนสี ฟอนต์ และ UI ด้วย Lunio DESIGN.md v1.3 โดยไม่ใช้แบรนด์ HP
+สร้าง Next.js Project ใหม่โดยดูโครงสร้างหน้าจาก getdesign.md/hp/design-md: หน้า Showcase ภายนอกสีเข้ม, การ์ด Usage, ส่วน Preview พื้นขาว, และหน้า Documentation แยกเป็นหมวดหมู่ที่ค้นหาได้ แทนสี ฟอนต์ และ UI ด้วย Lunio DESIGN.md v1.4 โดยไม่ใช้แบรนด์ HP
 
 ## 2. เริ่มต้นบน Mac
 
 ```bash
-cd lunio-design-system-nextjs
+cd lunio-design-system-shadcn
 npm install
 npm run tokens:build
 npm run tokens:check
@@ -32,11 +32,11 @@ npm run dev
 
 ## 5. สลับแบรนด์
 
-ใช้ Brand Switcher: Lunio / Nooz Helix / Nooz Sunset / Hypercool Bedding (Hypercool เป็น draft pending CI) ทุกแบรนด์ใช้ MiSansTC 5 น้ำหนักชุดเดียว ไม่มีการสร้างฟอนต์คนละชุด
+ใช้ Brand Switcher: Lunio / Nooz Helix / Nooz Sunset / Lunio Bedding ทุกแบรนด์ใช้ MiSansTC 5 น้ำหนักชุดเดียว ไม่มีการสร้างฟอนต์คนละชุด
 
 ## 6. อะไรใช้งานได้จริง / อะไรเป็นตัวอย่าง
 
-ใช้งานได้ภายในเว็บ Docs หลัง npm install: Brand Switcher, ค้นหา Section ผ่าน ⌘K, Toggle mobile/desktop, Typography Playground, Copy Token/Class, Quantity Stepper Demo, Size Selector Demo, Mega Menu Demo และหน้าเอกสาร Markdown
+ใช้งานได้ภายในเว็บ Docs หลัง npm install: Brand Switcher, Theme Toggle, ค้นหา Section ผ่าน ⌘K, Toggle mobile/desktop, Typography Playground, Copy Token/Class, Quantity Stepper Demo, Size Selector Demo, Mega Menu Demo, Accordion, RadioGroup, Tooltip, Breadcrumb, Carousel, ProductRating, Skeleton, Separator และหน้าเอกสาร Markdown
 
 เป็นตัวอย่าง UI ยังไม่เชื่อมจริง: Cart/Checkout/Prices, WordPress/WooCommerce API, Figma Code Connect. ไม่มีข้อมูลราคาสมมติใน Production ProductCard
 
@@ -48,6 +48,7 @@ npm run dev
 
 ```bash
 npm run tokens:check
+npm run shadcn:check
 npm run typecheck
 npm run build
 ```
@@ -55,7 +56,7 @@ npm run build
 ให้ QA ตรวจผ่านจริงแล้ว Deploy Next.js Docs ไป Hosting/Vercel แยกจาก WordPress API อย่าเปิด Internal Design Docs ให้สาธารณะโดยไม่มี Authentication หากบริษัทต้องการเก็บเอกสารภายใน
 
 
-## shadcn/ui v1.3 Implementation
+## shadcn/ui v1.4 Implementation
 
 The component library is now **source-owned shadcn/ui on Radix UI** (not just stylistically compatible). Core primitives live in `components/ui/`, compose commerce components in `components/commerce/`, and use the Lunio multi-brand tokens. See [`docs/SHADCN_IMPLEMENTATION_TH.md`](docs/SHADCN_IMPLEMENTATION_TH.md) for complete migration, source inventory, keyboard testing and install instructions.
 

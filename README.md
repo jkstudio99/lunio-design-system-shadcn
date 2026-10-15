@@ -47,7 +47,7 @@ src/design-system/tokens.json  Machine-readable implementation source
 src/styles/generated-tokens.css Auto-generated CSS
 scripts/build-tokens.mjs       Deterministic token CSS generator
 tests/tokens.test.mjs          Contrast and integrity tests
-DESIGN.md                     Reviewed source design specification v1.3
+DESIGN.md                     Reviewed source design specification v1.4
 AGENTS.md                     Codex/pstack style rules
 ```
 
@@ -69,7 +69,7 @@ npm run typecheck
 npm run build
 ```
 
-Colors are set with `[data-brand="lunio|helix|sunset|hypercool"]`, including nested scopes on the same page. The source DESIGN.md explicitly warns that **Nooz Sunset primary needs dark text** and **Helix Accent needs black text** to pass 4.5:1.
+Colors are set with `[data-brand="lunio|helix|sunset|bedding"]`, including nested scopes on the same page. The source DESIGN.md explicitly warns that **Nooz Sunset primary needs dark text** and **Helix Accent needs black text** to pass 4.5:1.
 
 ## shadcn/ui
 
@@ -79,7 +79,7 @@ This codebase includes **shadcn/ui (Radix UI source components) local components
 npx shadcn@latest add sheet dialog select badge skeleton
 ```
 
-Before accepting CLI overwrites, compare the generated component tokens and dimensions to DESIGN.md v1.3. The existing code is hand-authored using shadcn conventions; **do not assume the complete shadcn component registry was installed or built here**.
+Before accepting CLI overwrites, compare the generated component tokens and dimensions to DESIGN.md v1.4. The existing code is hand-authored using shadcn conventions; **do not assume the complete shadcn component registry was installed or built here**.
 
 ## Deploy
 
@@ -88,13 +88,13 @@ Deploy separately from WordPress/WooCommerce (e.g., Vercel). The docs app does n
 ## Accuracy, reference and caveats
 
 - The linked HP analysis has a dark analysis shell, installation/usage area, preview navigation and a white component sample gallery. The Lunio app recreates that **information architecture and contrast of surfaces**, not proprietary HP artwork, fonts, trademarked visual identity or byte-identical layout.
-- Actual Nooz color Hexes come from reviewed Lunio DESIGN.md. Hypercool palette is provisional.
+- Actual Nooz color Hexes come from reviewed Lunio DESIGN.md. Lunio Bedding uses approved CI tokens.
 - Color ratios tests are calculated only for specified solid pairs; they do **not** constitute a complete WCAG 2.2 AA accessibility certification.
 - Demo product UI displays placeholder `NT$ —` rather than invented live product prices. Real prices and physical dimensions depend on WooCommerce SKU/variation.
 - Figma file: https://www.figma.com/design/46bJYM9raivd3wEwTxaaJI/Lunio-TW-Mattress?node-id=1036-636
 
 
-## shadcn/ui v1.3 Implementation
+## shadcn/ui v1.4 Implementation
 
 The component library is now **source-owned shadcn/ui on Radix UI** (not just stylistically compatible). Core primitives live in `components/ui/`, compose commerce components in `components/commerce/`, and use the Lunio multi-brand tokens. See [`docs/SHADCN_IMPLEMENTATION_TH.md`](docs/SHADCN_IMPLEMENTATION_TH.md) for complete migration, source inventory, keyboard testing and install instructions.
 

@@ -4,7 +4,7 @@ This Next.js project is a living documentation platform for the Lunio multi-bran
 
 ## Source hierarchy
 1. `DESIGN.md` is the authored design specification; preserve its brand language and provenance.
-2. `src/design-system/tokens.json` is the machine-readable implementation mapping reviewed from DESIGN.md v1.3.
+2. `src/design-system/tokens.json` is the machine-readable implementation mapping reviewed from DESIGN.md v1.4.
 3. `npm run tokens:build` generates `src/styles/generated-tokens.css`.
 4. The components in `components/ui` and the docs must only consume semantic role variables.
 
@@ -19,10 +19,10 @@ This Next.js project is a living documentation platform for the Lunio multi-bran
 - Do not deploy docs or storefront without confirming font licensing, npm build and accessibility / commerce regression.
 
 ## Before committing
-Run `npm run tokens:build`, `npm run tokens:check`, `npm run typecheck`, and `npm run build` (network-enabled environment for npm install).
+Run `npm run tokens:build`, `npm run tokens:check`, `npm run shadcn:check`, `npm run typecheck`, and `npm run build`.
 
 
-## shadcn/ui v1.3 Implementation
+## shadcn/ui v1.4 Implementation
 
 The component library is now **source-owned shadcn/ui on Radix UI** (not just stylistically compatible). Core primitives live in `components/ui/`, compose commerce components in `components/commerce/`, and use the Lunio multi-brand tokens. See [`docs/SHADCN_IMPLEMENTATION_TH.md`](docs/SHADCN_IMPLEMENTATION_TH.md) for complete migration, source inventory, keyboard testing and install instructions.
 
