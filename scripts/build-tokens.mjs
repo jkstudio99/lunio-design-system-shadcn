@@ -43,6 +43,82 @@ for(const [key,b] of Object.entries(tokens.brands)){
   `  --status-success-surface: #EEF8F3;`,
   '}', '');
 }
-out.push(':root {','  --background: var(--ds-canvas);','  --foreground: var(--ds-ink, #1A1829);','  --card: var(--ds-card);','  --card-foreground: #1A1829;','  --border: var(--ds-border);','  --input: var(--ds-border);','  --muted: #F1F3F7;','  --muted-foreground: #647086;','}', '',':root:not([data-brand]) {','  --primary: #1C46B4;','  --primary-foreground: #FFFFFF;','  --accent: #2E62ED;','  --accent-foreground: #FFFFFF;','  --brand-surface: #F5F7FD;','  --brand-ink: #1A1829;','  --ring: #1C46B4;', '  --interactive-text: #1C46B4;', '  --secondary: #F5F7FD;', '  --secondary-foreground: #1A1829;', '  --popover: #FFFFFF;', '  --popover-foreground: #1A1829;', '  --destructive: #B42318;', '  --radius: 8px;', '  --status-success-ink: #167347;', '  --status-success-surface: #EEF8F3;', '}');
+out.push(
+  ':root {',
+  '  --background: var(--ds-canvas);',
+  '  --foreground: var(--ds-ink, #1A1829);',
+  '  --card: var(--ds-card);',
+  '  --card-foreground: #1A1829;',
+  '  --border: var(--ds-border);',
+  '  --input: var(--ds-border);',
+  '  --muted: #F1F3F7;',
+  '  --muted-foreground: #647086;',
+  '}',
+  '',
+  '.dark, html.dark {',
+  '  --ds-canvas: #090B0F;',
+  '  --ds-card: #121620;',
+  '  --ds-border: #232A3B;',
+  '  --background: #090B0F;',
+  '  --foreground: #F1F5F9;',
+  '  --card: #121620;',
+  '  --card-foreground: #F1F5F9;',
+  '  --border: #232A3B;',
+  '  --input: #232A3B;',
+  '  --muted: #1A2130;',
+  '  --muted-foreground: #94A3B8;',
+  '  --popover: #121620;',
+  '  --popover-foreground: #F1F5F9;',
+  '  --interactive-text: #5D8EF7;',
+  '  --brand-surface: #121A2C;',
+  '  --brand-ink: #F1F5F9;',
+  '  --secondary: #1A233A;',
+  '  --secondary-foreground: #F1F5F9;',
+  '  --ring: #5D8EF7;',
+  '  --status-success-ink: #4ADE80;',
+  '  --status-success-surface: #0E2A1D;',
+  '}',
+  '',
+  ':root:not([data-brand]) {',
+  '  --primary: #1C46B4;',
+  '  --primary-foreground: #FFFFFF;',
+  '  --accent: #2E62ED;',
+  '  --accent-foreground: #FFFFFF;',
+  '  --brand-surface: #F5F7FD;',
+  '  --brand-ink: #1A1829;',
+  '  --ring: #1C46B4;',
+  '  --interactive-text: #1C46B4;',
+  '  --secondary: #F5F7FD;',
+  '  --secondary-foreground: #1A1829;',
+  '  --popover: #FFFFFF;',
+  '  --popover-foreground: #1A1829;',
+  '  --destructive: #B42318;',
+  '  --radius: 8px;',
+  '  --status-success-ink: #167347;',
+  '  --status-success-surface: #EEF8F3;',
+  '}',
+  ''
+);
+
+for(const [key, b] of Object.entries(tokens.brands)){
+  const sel = key === 'bedding' ? '.dark [data-brand="bedding"], .dark [data-brand="hypercool"], html.dark[data-brand="bedding"], html.dark[data-brand="hypercool"]' : `.dark [data-brand="${key}"], html.dark[data-brand="${key}"]`;
+  const darkSurface = key === 'helix' ? '#1D172A' : key === 'sunset' ? '#261710' : '#121A2C';
+  const darkSecondary = key === 'helix' ? '#261F38' : key === 'sunset' ? '#382218' : '#1A233A';
+  const darkText = key === 'sunset' ? '#FFA566' : key === 'helix' ? '#A78BFA' : '#5D8EF7';
+  out.push(
+    `${sel} {`,
+    `  --brand-surface: ${darkSurface};`,
+    `  --brand-ink: #F1F5F9;`,
+    `  --foreground: #F1F5F9;`,
+    `  --card-foreground: #F1F5F9;`,
+    `  --secondary: ${darkSecondary};`,
+    `  --secondary-foreground: #F1F5F9;`,
+    `  --popover: #121620;`,
+    `  --popover-foreground: #F1F5F9;`,
+    `  --interactive-text: ${darkText};`,
+    `}`,
+    ''
+  );
+}
 writeFileSync(path.join(root,'src/styles/generated-tokens.css'),out.join('\n')+'\n');
 console.log('Generated CSS for '+Object.keys(tokens.brands).length+' brands and '+Object.keys(tokens.typography).length+' responsive typography roles');

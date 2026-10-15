@@ -190,6 +190,30 @@
   --muted-foreground: #647086;
 }
 
+.dark, html.dark {
+  --ds-canvas: #090B0F;
+  --ds-card: #121620;
+  --ds-border: #232A3B;
+  --background: #090B0F;
+  --foreground: #F1F5F9;
+  --card: #121620;
+  --card-foreground: #F1F5F9;
+  --border: #232A3B;
+  --input: #232A3B;
+  --muted: #1A2130;
+  --muted-foreground: #94A3B8;
+  --popover: #121620;
+  --popover-foreground: #F1F5F9;
+  --interactive-text: #5D8EF7;
+  --brand-surface: #121A2C;
+  --brand-ink: #F1F5F9;
+  --secondary: #1A233A;
+  --secondary-foreground: #F1F5F9;
+  --ring: #5D8EF7;
+  --status-success-ink: #4ADE80;
+  --status-success-surface: #0E2A1D;
+}
+
 :root:not([data-brand]) {
   --primary: #1C46B4;
   --primary-foreground: #FFFFFF;
@@ -208,3 +232,52 @@
   --status-success-ink: #167347;
   --status-success-surface: #EEF8F3;
 }
+
+.dark [data-brand="lunio"], html.dark[data-brand="lunio"] {
+  --brand-surface: #121A2C;
+  --brand-ink: #F1F5F9;
+  --foreground: #F1F5F9;
+  --card-foreground: #F1F5F9;
+  --secondary: #1A233A;
+  --secondary-foreground: #F1F5F9;
+  --popover: #121620;
+  --popover-foreground: #F1F5F9;
+  --interactive-text: #5D8EF7;
+}
+
+.dark [data-brand="helix"], html.dark[data-brand="helix"] {
+  --brand-surface: #1D172A;
+  --brand-ink: #F1F5F9;
+  --foreground: #F1F5F9;
+  --card-foreground: #F1F5F9;
+  --secondary: #261F38;
+  --secondary-foreground: #F1F5F9;
+  --popover: #121620;
+  --popover-foreground: #F1F5F9;
+  --interactive-text: #A78BFA;
+}
+
+.dark [data-brand="sunset"], html.dark[data-brand="sunset"] {
+  --brand-surface: #261710;
+  --brand-ink: #F1F5F9;
+  --foreground: #F1F5F9;
+  --card-foreground: #F1F5F9;
+  --secondary: #382218;
+  --secondary-foreground: #F1F5F9;
+  --popover: #121620;
+  --popover-foreground: #F1F5F9;
+  --interactive-text: #FFA566;
+}
+
+.dark [data-brand="bedding"], .dark [data-brand="hypercool"], html.dark[data-brand="bedding"], html.dark[data-brand="hypercool"] {
+  --brand-surface: #121A2C;
+  --brand-ink: #F1F5F9;
+  --foreground: #F1F5F9;
+  --card-foreground: #F1F5F9;
+  --secondary: #1A233A;
+  --secondary-foreground: #F1F5F9;
+  --popover: #121620;
+  --popover-foreground: #F1F5F9;
+  --interactive-text: #5D8EF7;
+}
+

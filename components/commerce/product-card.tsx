@@ -19,7 +19,7 @@ export type CommerceProductSummary = {
 };
 export function ProductCard({product,children,className}: {product:CommerceProductSummary;children?:React.ReactNode;className?:string}){
  return <Card className={cn("gap-0 overflow-hidden py-0",className)}>
-   <div className="relative flex aspect-[4/3] items-center justify-center bg-[var(--brand-surface)]">
+   <div className="relative flex aspect-[4/3] items-center justify-center bg-muted/60 dark:bg-[#151D2C] border-b border-border/50">
     {product.imageUrl ? <img alt={product.imageAlt||product.name} src={product.imageUrl} loading="lazy" className="size-full object-cover" /> : <div aria-label="Product image pending" role="img" className="text-center typo-body-sm text-muted-foreground">產品圖片</div>}
     {product.badge&&<Badge className="absolute left-4 top-4">{product.badge}</Badge>}
    </div>

@@ -16,6 +16,7 @@ const primitives = {
   checkbox:"@radix-ui/react-checkbox",
   "scroll-area":"@radix-ui/react-scroll-area",
   popover:"@radix-ui/react-popover",
+  "dropdown-menu":"@radix-ui/react-dropdown-menu",
   command:"cmdk",
 };
 test("shadcn/ui registry configuration",()=>{
@@ -31,14 +32,14 @@ test("Every interaction primitive has a real upstream Radix / cmdk dependency",(
  }
 });
 test("shadcn/ui source contracts are present",()=>{
- for(const name of ["button","input","card","tabs","badge","label","separator","skeleton","textarea","select","dialog","sheet","command","checkbox"]){
+ for(const name of ["button","input","card","tabs","badge","label","separator","skeleton","textarea","select","dialog","sheet","command","checkbox","dropdown-menu"]){
   assert.ok(read(`components/ui/${name}.tsx`).includes("data-slot"),`${name} lacks shadcn data-slot convention`);
  }
  assert.match(read("components/ui/button.tsx"),/class-variance-authority/);
  assert.match(read("components/ui/button.tsx"),/asChild/);
 });
 test("Live pages use UI components instead of handmade select, modal or plain buttons",()=>{
- for(const path of ["components/docs-content.tsx","components/docs-shell.tsx","components/showcase.tsx","components/brand-switcher.tsx"]){
+ for(const path of ["components/docs-content.tsx","components/docs-shell.tsx","components/showcase.tsx","components/brand-switcher.tsx","components/theme-toggle.tsx"]){
   const src=read(path);
   assert.ok(!/<button\b/.test(src),`Raw button in ${path}`);
   assert.ok(!/<select\b/.test(src),`Raw select in ${path}`);
