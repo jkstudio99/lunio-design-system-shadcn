@@ -1,6 +1,8 @@
 # Lunio 多品牌設計系統平台規範手冊
 
-> 為 **lunio.com.tw**、**Nooz Helix** 與 **Nooz Sunset** 量身打造的完整設計規範、語意 Token 與電商元件準則。全站嚴格標準化採用 **MiSans TC**、**4px 空間格線律動**、**標準 8px 控制元件** 與 **WCAG 2.2 AA**。
+> 為 **lunio.com.tw**、**Nooz Helix**、**Nooz Sunset** 與 **Lunio Bedding** 量身打造的完整設計規範、語意 Token 與電商元件準則。全站嚴格標準化採用 **MiSans TC**、**4px 空間格線律動**、**標準 8px 控制元件 / 16px 容器** 與 **WCAG 2.2 AA**。
+
+> **文件版本:** v1.4.0 — 資深電商 UX/UI 與前端架構規範 (2026-10-15)
 
 ---
 
@@ -13,14 +15,17 @@
 | 品牌 Token | 色碼（Hex） | 前景文字色 | WCAG AA 對比度 | 角色與應用說明 |
 |---|---|---|---|---|
 | **Lunio Taiwan（主要色彩）** | `#1C46B4` | `#FFFFFF` | **8.13:1**（通過 AAA） | 旗艦款電光藍，用於主要轉換按鈕、重要標籤與核心視覺底色。 |
-| **Lunio Accent（強調色）** | `#2E62ED` | `#FFFFFF` | **4.98:1**（通過 AA） | 互動懸停狀態、次要高亮與促銷徽章背景。 |
-| **Lunio Surface（表面底色）** | `#F5F7FD` | `#1A1829` | **15.08:1**（通過 AAA） | 柔和微藍底色，用於卡片容器與膠囊標籤。 |
+| **Lunio Accent（強調色）** | `#2E62ED` | `#FFFFFF` | **5.14:1**（通過 AA） | 互動懸停狀態、次要高亮與促銷徽章背景。 |
+| **Lunio Surface（表面底色）** | `#F5F7FD` | `#1A1829` | **16.25:1**（通過 AAA） | 柔和微藍底色，用於卡片容器與膠囊標籤。 |
 | **Nooz Helix（主要色彩）** | `#7347AE` | `#FFFFFF` | **6.48:1**（通過 AA） | 飯店級袋裝獨立筒系列。奢華絲絨紫主要按鈕。 |
-| **Nooz Helix Accent（強調色）** | `#9362D9` | `#FFFFFF` | **4.52:1**（通過 AA） | 聚焦外框、徽章亮點與卡片邊框。 |
-| **Nooz Helix Surface（表面底色）** | `#F8F5FC` | `#1E172B` | **14.57:1**（通過 AAA） | 柔和淡紫卡片底色。 |
-| **Nooz Sunset（主要色彩）** | `#F28131` | `#FFFFFF` | **6.50:1**（大字通過 AA） | 人體工學護腰減壓系列。高活力晨曦橘主要按鈕。 |
-| **Nooz Sunset Accent（強調色）** | `#FF9A52` | `#1C1526` | **9.82:1**（通過 AAA） | 溫暖琥珀強調色，用於狀態與標記。 |
-| **Nooz Sunset Surface（表面底色）** | `#FEF7F2` | `#241810` | **13.37:1**（通過 AAA） | 柔和暖杏色卡片與頁首底色。 |
+| **Nooz Helix Accent（強調色）** | `#9362D9` | `#000000`（白字 4.21:1 不合格） | **4.99:1**（黑字通過 AA） | 聚焦外框、徽章亮點與卡片邊框。 |
+| **Nooz Helix Surface（表面底色）** | `#F8F5FC` | `#1E172B` | **16.05:1**（通過 AAA） | 柔和淡紫卡片底色。 |
+| **Nooz Sunset（主要色彩）** | `#F28131` | `#1C1526`（白字 2.64:1 不合格） | **6.72:1**（深色墨水通過 AA） | 人體工學護腰減壓系列。高活力晨曦橘主要按鈕，強制搭配深色文字。 |
+| **Nooz Sunset Accent（強調色）** | `#FF9A52` | `#1C1526` | **8.44:1**（通過 AAA） | 溫暖琥珀強調色，用於狀態與標記。 |
+| **Nooz Sunset Surface（表面底色）** | `#FEF7F2` | `#241810` | **16.32:1**（通過 AAA） | 柔和暖杏色卡片與頁首底色。 |
+| **Lunio Bedding（主要色彩）** | `#1C46B4` | `#FFFFFF` | **8.13:1**（通過 AAA） | 寢具與配件系列（天絲床包、保潔墊、四季被）。 |
+| **Lunio Bedding Accent（強調色）** | `#2E62ED` | `#FFFFFF` | **5.14:1**（通過 AA） | 互動懸停狀態、次要高亮與促銷徽章背景。 |
+| **Lunio Bedding Surface（表面底色）** | `#F5F7FD` | `#1A1829` | **16.25:1**（通過 AAA） | 柔和微藍寢具商品展示底色。 |
 
 ### 官方品牌標誌資產 (Official Brand Assets)
 
@@ -191,9 +196,15 @@ npm run tokens:build
 # 依據架構驗證 Token 對比度與型別
 npm run tokens:check
 
+# 驗證 shadcn/ui 元件契約、Radix 依賴與杜絕 Raw button/select 標籤
+npm run shadcn:check
+
 # 執行 TypeScript 型別檢查
 npm run typecheck
 
-# 執行生產環境編譯
+# 執行完整驗證測試
+npm run check
+
+# 執行生產環境編譯（Turbopack SSG 15 routes）
 npm run build
 ```
