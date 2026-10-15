@@ -5,12 +5,30 @@ export interface LocaleInfo {
   label: string;
   shortLabel: string;
   flag: string;
+  flagClass: string;
+  flagCode: string;
   nativeName: string;
 }
 
 export const supportedLocales: LocaleInfo[] = [
-  { code: "zh-TW", label: "繁體中文 (台灣)", shortLabel: "中文", flag: "🇹🇼", nativeName: "繁體中文" },
-  { code: "en", label: "English (US)", shortLabel: "EN", flag: "🇺🇸", nativeName: "English" },
+  {
+    code: "zh-TW",
+    label: "繁體中文 (台灣)",
+    shortLabel: "中文",
+    flag: "🇹🇼",
+    flagClass: "fi-tw",
+    flagCode: "tw",
+    nativeName: "繁體中文",
+  },
+  {
+    code: "en",
+    label: "English (US)",
+    shortLabel: "EN",
+    flag: "🇺🇸",
+    flagClass: "fi-us",
+    flagCode: "us",
+    nativeName: "English",
+  },
 ];
 
 export const translations = {

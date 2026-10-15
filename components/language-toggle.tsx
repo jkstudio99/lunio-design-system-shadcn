@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, Globe, Languages } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -44,14 +44,20 @@ export function LanguageToggle({
             className
           )}
         >
-          <Languages className="size-4 shrink-0 text-primary" />
+          <span
+            className={cn(
+              "fi shrink-0 rounded-[2px] ring-1 ring-black/10 dark:ring-white/20 text-xs overflow-hidden",
+              mounted && locale === "en" ? "fi-us" : "fi-tw"
+            )}
+            aria-hidden="true"
+          />
           <span className="font-mono text-[11px] font-bold tracking-tight">
             {mounted ? (locale === "zh-TW" ? "繁中" : "EN") : "繁中"}
           </span>
           <span className="sr-only">Toggle language: Chinese Taiwan / English</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-52 p-1.5 shadow-md">
+      <DropdownMenuContent align="end" className="w-56 p-1.5 shadow-md">
         <DropdownMenuLabel className="px-2 py-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
           {locale === "zh-TW" ? "選擇顯示語言" : "Select Language"}
         </DropdownMenuLabel>
@@ -68,13 +74,18 @@ export function LanguageToggle({
               )}
             >
               <div className="flex items-center gap-2.5">
-                <span className="text-base leading-none" role="img" aria-label={item.label}>
-                  {item.flag}
-                </span>
+                <span
+                  className={cn(
+                    "fi",
+                    item.flagClass,
+                    "shrink-0 text-base rounded-[2px] ring-1 ring-black/10 dark:ring-white/20 overflow-hidden shadow-2xs"
+                  )}
+                  aria-hidden="true"
+                />
                 <div className="flex flex-col">
                   <span className="text-foreground">{item.label}</span>
                   <span className="text-[10px] text-muted-foreground font-normal">
-                    {item.code === "zh-TW" ? "Traditional Chinese" : "United States"}
+                    {item.code === "zh-TW" ? "Traditional Chinese (Taiwan)" : "English (United States)"}
                   </span>
                 </div>
               </div>
