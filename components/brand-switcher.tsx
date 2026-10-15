@@ -2,7 +2,7 @@
 
 import { useBrand } from "@/components/brand-provider";
 import { brands, type BrandId } from "@/lib/design-system";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -35,13 +35,9 @@ export function BrandSwitcher({
               style={{ backgroundColor: currentBrand.primary }}
               aria-hidden="true"
             />
-            {/* Clean single-line brand name */}
             <span className="text-xs font-semibold text-foreground truncate">
               {currentBrand.name}
             </span>
-            <SelectValue className="sr-only" aria-label={currentBrand.name}>
-              {currentBrand.name}
-            </SelectValue>
           </div>
         </SelectTrigger>
         <SelectContent position="popper" align="end" className="min-w-[200px] p-1.5 shadow-md">
