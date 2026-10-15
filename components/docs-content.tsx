@@ -30,6 +30,7 @@ import {MattressSpecsAccordion} from "@/components/commerce/mattress-specs-accor
 import {MattressRadioSelector} from "@/components/commerce/mattress-radio-selector";
 import {ProductCarousel} from "@/components/commerce/product-carousel";
 import {IconsGallery} from "@/components/docs-icons";
+import {CustomIconsStudio} from "@/components/docs-custom-icons";
 import {useBrand} from "@/components/brand-provider";
 import {useLanguage} from "@/components/language-provider";
 import {allDocs,brands,contrastRatio,roleNames,tokens,type TypeRole} from "@/lib/design-system";
@@ -41,11 +42,12 @@ const sections:Record<string,{number:string;kicker:string;title:string;intro:str
  colors:{number:"04",kicker:"COLORS",title:"Color & semantic tokens",intro:"Brand values stay distinct; UI components consume accessible foreground/background pairs, not hard-coded hex."},
  spacing:{number:"05",kicker:"SPATIAL FOUNDATION",title:"Spacing, grid & elevation",intro:"A deliberate 4px rhythm with consistent 8px control radius and 16px container radius."},
  icons:{number:"06",kicker:"ICONOGRAPHY",title:"Icons & iconography",intro:"Curated Lucide icons purpose-built for lunio.com.tw e-commerce storefronts, bedding specifications, trust guarantees, and mobile navigation."},
- components:{number:"07",kicker:"INTERFACE COMPONENTS",title:"Core UI components",intro:"Buttons, status badges, forms, selectors, and interactive states powered by the same semantic values."},
- commerce:{number:"08",kicker:"COMMERCE PATTERNS",title:"E-commerce components",intro:"Product cards, Taiwan mattress sizes, variation selection, mobile navigation and sticky purchase patterns."},
- accessibility:{number:"09",kicker:"ACCESSIBILITY",title:"Accessibility & UI quality",intro:"WCAG 2.2 AA as a measurable release goal. Check actual interactions, not tokens alone."},
- release:{number:"10",kicker:"OPERATIONS",title:"Production release",intro:"A shared contract between design, engineering, QA and brand ownership; a staged path to a maintainable storefront."},
- changelog:{number:"11",kicker:"VERSION HISTORY",title:"Changelog & versions",intro:"Complete release notes, milestones, component additions, and migration history across every version of Lunio Design System."}
+ "custom-icons":{number:"07",kicker:"CUSTOM ICONS STUDIO",title:"Custom icons studio & upload",intro:"Interactive SVG upload, real-time sanitization, token color preview, JSX component code generation, and official Lunio brand custom marks."},
+ components:{number:"08",kicker:"INTERFACE COMPONENTS",title:"Core UI components",intro:"Buttons, status badges, forms, selectors, and interactive states powered by the same semantic values."},
+ commerce:{number:"09",kicker:"COMMERCE PATTERNS",title:"E-commerce components",intro:"Product cards, Taiwan mattress sizes, variation selection, mobile navigation and sticky purchase patterns."},
+ accessibility:{number:"10",kicker:"ACCESSIBILITY",title:"Accessibility & UI quality",intro:"WCAG 2.2 AA as a measurable release goal. Check actual interactions, not tokens alone."},
+ release:{number:"11",kicker:"OPERATIONS",title:"Production release",intro:"A shared contract between design, engineering, QA and brand ownership; a staged path to a maintainable storefront."},
+ changelog:{number:"12",kicker:"VERSION HISTORY",title:"Changelog & versions",intro:"Complete release notes, milestones, component additions, and migration history across every version of Lunio Design System."}
 };
 
 function Subheading({title,desc}:{title:string;desc?:string}){
@@ -1846,7 +1848,11 @@ function IconsPage() {
   );
 }
 
-const pages:Record<string,()=>ReactNode>={"getting-started":Overview,brands:BrandPage,typography:TypographyPage,colors:ColorsPage,spacing:SpacingPage,icons:IconsPage,components:ComponentsPage,commerce:CommercePage,accessibility:AccessibilityPage,release:ReleasePage,changelog:ChangelogPage};
+function CustomIconsPage() {
+  return <CustomIconsStudio />;
+}
+
+const pages:Record<string,()=>ReactNode>={"getting-started":Overview,brands:BrandPage,typography:TypographyPage,colors:ColorsPage,spacing:SpacingPage,icons:IconsPage,"custom-icons":CustomIconsPage,components:ComponentsPage,commerce:CommercePage,accessibility:AccessibilityPage,release:ReleasePage,changelog:ChangelogPage};
 
 const titlesZh: Record<string, string> = {
   "getting-started": "快速入門指南",
@@ -1855,6 +1861,7 @@ const titlesZh: Record<string, string> = {
   colors: "色彩與語意 Token",
   spacing: "空間與佈局律動",
   icons: "圖示系統與規範",
+  "custom-icons": "自訂圖示上傳與規範",
   components: "核心 UI 元件庫",
   commerce: "台灣電商元件",
   accessibility: "無障礙檢驗標準",

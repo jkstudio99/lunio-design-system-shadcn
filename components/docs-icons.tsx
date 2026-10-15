@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, type ElementType } from "react";
+import Link from "next/link";
 import {
   Menu, Search, X, ChevronRight, ChevronDown, ChevronLeft, ChevronUp,
   ArrowRight, ArrowLeft, ArrowUpRight, Check, CheckCircle2, Copy,
@@ -21,6 +22,20 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/components/language-provider";
+
+/**
+ * Generate official Lucide React documentation URL for an icon.
+ * Format: https://lucide.dev/icons/${kebab-case-name}
+ */
+export function getLucideOfficialUrl(iconName: string): string {
+  const slug = iconName
+    .replace(/([a-z])([A-Z])/g, "$1-$2")
+    .replace(/([A-Z])([A-Z][a-z])/g, "$1-$2")
+    .replace(/([a-zA-Z])([0-9])/g, "$1-$2")
+    .replace(/([0-9])([a-zA-Z])/g, "$1-$2")
+    .toLowerCase();
+  return `https://lucide.dev/icons/${slug}`;
+}
 
 export type IconCategory = "all" | "nav" | "sleep" | "commerce" | "support";
 
@@ -762,6 +777,31 @@ export function IconsGallery() {
 
   return (
     <div className="space-y-8">
+      {/* Banner linking to Custom Icons Studio */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl border border-primary/20 bg-primary/5">
+        <div className="space-y-0.5">
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-[10px] uppercase font-semibold text-primary border-primary/30 bg-primary/10">
+              {isZh ? "Lunio 品牌專屬" : "Lunio Brand Exclusive"}
+            </Badge>
+            <span className="text-sm font-semibold text-foreground">
+              {isZh ? "需要自訂品牌圖示或標準庫以外的標章？" : "Need custom brand icons not in standard Lucide?"}
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {isZh
+              ? "前往「自訂圖示工作室」：支援 SVG 拖曳上傳清理、Token 著色即時預覽與 React JSX 元件匯出。"
+              : "Visit the Custom Icons Studio: upload raw SVGs, auto-sanitize to currentColor, preview across tokens, and export JSX."}
+          </p>
+        </div>
+        <Button asChild size="sm" className="h-8 shrink-0 gap-1.5 shadow-xs">
+          <Link href="/docs/custom-icons">
+            <span>{isZh ? "自訂圖示工作室" : "Custom Icons Studio"}</span>
+            <ArrowRight className="size-3.5" />
+          </Link>
+        </Button>
+      </div>
+
       {/* Search & Customization Control Bar */}
       <div className="rounded-2xl border border-border bg-card p-5 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -873,12 +913,40 @@ export function IconsGallery() {
             const IconComponent = item.icon;
             const isCopied = copiedName === item.name;
             const snippet = `<${item.name} className="size-${size === 16 ? "4" : size === 20 ? "5" : size === 24 ? "6" : "8"}" />`;
+            const lucideUrl = getLucideOfficialUrl(item.name);
 
             return (
               <div
                 key={item.name}
                 className="group relative flex flex-col items-center justify-between rounded-xl border border-border/80 bg-card p-4 transition-all hover:border-primary/60 hover:shadow-md hover:bg-card/90"
               >
+                {/* Official Lucide Documentation Link (top-right quick access button) */}
+                <div className="absolute top-2.5 right-2.5 z-10">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        asChild
+                        variant="ghost"
+                        size="icon"
+                        className="size-7 text-muted-foreground/60 hover:text-foreground hover:bg-muted/80 rounded-md transition-colors"
+                      >
+                        <a
+                          href={lucideUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={isZh ? `在新分頁開啟 ${item.name} Lucide 官方文檔` : `Open official Lucide docs for ${item.name} in a new tab`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <ExternalLink className="size-3.5" />
+                        </a>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="text-xs">
+                      {isZh ? "Lucide 官方文檔" : "Lucide Docs"}
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+
                 {/* Clickable Card Body to View Details */}
                 <div
                   role="button"
@@ -906,7 +974,7 @@ export function IconsGallery() {
                   </span>
                 </div>
 
-                {/* Bottom Quick Copy JSX Button */}
+                {/* Bottom Quick Actions: Details & Copy JSX */}
                 <div className="w-full mt-2 pt-2 border-t border-border/50 flex items-center justify-between">
                   <Button
                     variant="ghost"
@@ -949,18 +1017,37 @@ export function IconsGallery() {
         <Dialog open={!!activeIcon} onOpenChange={(open) => { if (!open) setActiveIcon(null); }}>
           <DialogContent className="max-w-lg p-6">
             <DialogHeader>
-              <div className="flex items-center gap-3">
-                <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                  <activeIcon.icon size={28} strokeWidth={strokeWidth} aria-hidden="true" />
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                    <activeIcon.icon size={28} strokeWidth={strokeWidth} aria-hidden="true" />
+                  </div>
+                  <div>
+                    <DialogTitle className="text-xl font-bold font-mono">
+                      {activeIcon.name}
+                    </DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground mt-0.5">
+                      {isZh ? activeIcon.labelZh : activeIcon.labelEn}
+                    </DialogDescription>
+                  </div>
                 </div>
-                <div>
-                  <DialogTitle className="text-xl font-bold font-mono">
-                    {activeIcon.name}
-                  </DialogTitle>
-                  <DialogDescription className="text-sm text-muted-foreground mt-0.5">
-                    {isZh ? activeIcon.labelZh : activeIcon.labelEn}
-                  </DialogDescription>
-                </div>
+
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="h-8 gap-1.5 text-xs text-muted-foreground hover:text-foreground shrink-0"
+                >
+                  <a
+                    href={getLucideOfficialUrl(activeIcon.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={isZh ? `在新分頁開啟 ${activeIcon.name} Lucide 官方文檔` : `Open ${activeIcon.name} official Lucide documentation in new tab`}
+                  >
+                    <ExternalLink className="size-3.5" />
+                    <span>{isZh ? "Lucide 官方文檔" : "Official Docs"}</span>
+                  </a>
+                </Button>
               </div>
             </DialogHeader>
 
@@ -973,6 +1060,39 @@ export function IconsGallery() {
                 <p className="text-xs leading-relaxed text-foreground">
                   {isZh ? activeIcon.contextZh : activeIcon.contextEn}
                 </p>
+              </div>
+
+              {/* Official Lucide Documentation Link */}
+              <div className="flex items-center justify-between rounded-xl border border-border/80 bg-muted/20 p-3">
+                <div className="space-y-0.5 min-w-0 pr-2">
+                  <span className="text-[11px] font-semibold text-muted-foreground block">
+                    {isZh ? "Lucide 官方圖示頁面" : "Official Lucide Icon Page"}
+                  </span>
+                  <a
+                    href={getLucideOfficialUrl(activeIcon.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-mono text-primary hover:underline truncate block"
+                  >
+                    {getLucideOfficialUrl(activeIcon.name)}
+                  </a>
+                </div>
+                <Button
+                  asChild
+                  variant="secondary"
+                  size="sm"
+                  className="h-7 text-xs gap-1.5 shrink-0"
+                >
+                  <a
+                    href={getLucideOfficialUrl(activeIcon.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={isZh ? `前往 Lucide 官方文檔頁面 (${activeIcon.name})` : `Visit official Lucide documentation for ${activeIcon.name}`}
+                  >
+                    <ExternalLink className="size-3" />
+                    <span>{isZh ? "前往" : "Visit"}</span>
+                  </a>
+                </Button>
               </div>
 
               {/* Import Statement */}
@@ -1028,7 +1148,24 @@ export function IconsGallery() {
               </div>
             </div>
 
-            <div className="flex justify-end pt-2">
+            <div className="flex items-center justify-between pt-2 border-t border-border/60">
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <a
+                  href={getLucideOfficialUrl(activeIcon.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={isZh ? `在新分頁開啟 ${activeIcon.name} Lucide 官方文檔` : `Open ${activeIcon.name} official Lucide documentation in new tab`}
+                >
+                  <ExternalLink className="size-3.5" />
+                  <span>lucide.dev/icons/{getLucideOfficialUrl(activeIcon.name).split("/").pop()}</span>
+                </a>
+              </Button>
+
               <Button variant="outline" size="sm" onClick={() => setActiveIcon(null)}>
                 {isZh ? "關閉" : "Close"}
               </Button>

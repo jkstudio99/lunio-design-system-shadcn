@@ -72,6 +72,8 @@ export const translations = {
       colors: "色彩與語意",
       spacing: "空間與佈局",
       icons: "圖示系統",
+      customIcons: "自訂圖示上傳與規範",
+      "custom-icons": "自訂圖示上傳與規範",
       coreComponents: "核心 UI 元件",
       commercePatterns: "電商元件",
       accessibility: "無障礙標準",
@@ -139,6 +141,11 @@ export const translations = {
         kicker: "圖示系統",
         title: "圖示系統與 Lucide React 規範",
         intro: "精選專屬 lunio.com.tw 台灣電商前台所需之 60+ 組 Lucide React 向量圖示，包含床墊睡眠、購物信任、實體門市與導覽控制，支援多種尺寸與一鍵複製語法。",
+      },
+      "custom-icons": {
+        kicker: "自訂圖示工作室",
+        title: "自訂圖示上傳與規範",
+        intro: "專為 Lunio 品牌設計之自訂向量圖示工作室。支援 SVG 檔案拖曳上傳與貼上、即時語意清理、React JSX 元件轉換、多尺寸與主題色彩預覽，及 5 組官方床墊睡眠標章。",
       },
       components: {
         kicker: "介面元件",
@@ -223,6 +230,8 @@ export const translations = {
       colors: "Colors & semantics",
       spacing: "Spacing & layout",
       icons: "Icons & iconography",
+      customIcons: "Custom Icons Studio & Upload",
+      "custom-icons": "Custom Icons Studio & Upload",
       coreComponents: "Core UI components",
       commercePatterns: "Commerce patterns",
       accessibility: "Accessibility",
@@ -290,6 +299,11 @@ export const translations = {
         kicker: "ICONOGRAPHY",
         title: "Iconography & Lucide React system",
         intro: "Curated 60+ Lucide React icons purpose-built for lunio.com.tw e-commerce storefronts, bedding specifications, trust guarantees, and mobile navigation.",
+      },
+      "custom-icons": {
+        kicker: "CUSTOM ICONS STUDIO",
+        title: "Custom Icons Studio & Upload",
+        intro: "Dedicated studio to upload, sanitize, preview, and generate production-ready React JSX components for custom Lunio brand vector icons alongside standard Lucide iconography.",
       },
       components: {
         kicker: "INTERFACE COMPONENTS",

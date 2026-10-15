@@ -22,6 +22,7 @@ const titlesZh: Record<string, string> = {
   colors: "色彩與語意 Token",
   spacing: "空間與佈局律動",
   icons: "圖示系統 (Icons)",
+  "custom-icons": "自訂圖示上傳與規範",
   components: "核心 UI 元件庫",
   commerce: "台灣電商元件",
   accessibility: "無障礙檢驗標準",
