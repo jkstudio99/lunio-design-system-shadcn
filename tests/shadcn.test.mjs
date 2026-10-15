@@ -18,6 +18,12 @@ const primitives = {
   popover:"@radix-ui/react-popover",
   "dropdown-menu":"@radix-ui/react-dropdown-menu",
   command:"cmdk",
+  accordion:"@radix-ui/react-accordion",
+  "radio-group":"@radix-ui/react-radio-group",
+  tooltip:"@radix-ui/react-tooltip",
+  breadcrumb:"@radix-ui/react-slot",
+  carousel:"embla-carousel-react",
+  separator:"@radix-ui/react-separator",
 };
 test("shadcn/ui registry configuration",()=>{
  assert.equal(config.style,"new-york");assert.equal(config.tailwind.css,"app/globals.css");assert.equal(config.tailwind.cssVariables,true);
@@ -32,7 +38,7 @@ test("Every interaction primitive has a real upstream Radix / cmdk dependency",(
  }
 });
 test("shadcn/ui source contracts are present",()=>{
- for(const name of ["button","input","card","tabs","badge","label","separator","skeleton","textarea","select","dialog","sheet","command","checkbox","dropdown-menu"]){
+ for(const name of ["button","input","card","tabs","badge","label","separator","skeleton","textarea","select","dialog","sheet","command","checkbox","dropdown-menu","accordion","radio-group","tooltip","breadcrumb","carousel"]){
   assert.ok(read(`components/ui/${name}.tsx`).includes("data-slot"),`${name} lacks shadcn data-slot convention`);
  }
  assert.match(read("components/ui/button.tsx"),/class-variance-authority/);
@@ -58,9 +64,9 @@ test("Brand portal styling and 5 weights remain in the token system",()=>{
  assert.ok(brand.includes("document.documentElement.dataset.brand=brand"),"Radix portals must inherit the active brand theme");
 });
 test("Real shadcn components are composed by the commerce patterns",()=>{
- for(const name of ["product-card","size-selector","pdp-sticky-bar","quantity-stepper","mobile-mega-menu"])
+ for(const name of ["product-card","size-selector","pdp-sticky-bar","quantity-stepper","mobile-mega-menu","product-rating","mattress-specs-accordion","mattress-radio-selector","product-carousel"])
  assert.ok(existsSync(join(root,`components/commerce/${name}.tsx`)),`${name} missing`);
  const demo=read("components/docs-content.tsx");
- for(const item of ["<ProductCard","<SizeSelector","<PDPStickyBar","<QuantityStepper","<MobileMegaMenu"])
+ for(const item of ["<ProductCard","<SizeSelector","<PDPStickyBar","<QuantityStepper","<MobileMegaMenu","<ProductRating","<MattressSpecsAccordion","<MattressRadioSelector","<ProductCarousel"])
  assert.ok(demo.includes(item),`${item} not used in Documentation`);
 });

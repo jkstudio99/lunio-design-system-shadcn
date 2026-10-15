@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import {useState,type ReactNode} from "react";
-import {ArrowRight,ArrowUpRight,Check,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,Copy,Eye,FileCode2,Info,Layers3,Minus,Monitor,Plus,ShieldCheck,ShoppingBag,Smartphone,TriangleAlert,X} from "lucide-react";
+import {ArrowRight,ArrowUpRight,Check,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,Copy,Eye,FileCode2,HelpCircle,Info,Layers,Layers3,Minus,Monitor,Plus,RefreshCw,RotateCcw,ShieldCheck,ShoppingBag,Smartphone,Star,TriangleAlert,Truck,X} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card,CardContent} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
@@ -13,11 +13,21 @@ import {Textarea} from "@/components/ui/textarea";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Sheet,SheetTrigger,SheetContent,SheetHeader,SheetTitle,SheetDescription} from "@/components/ui/sheet";
 import {Separator} from "@/components/ui/separator";
+import {Accordion,AccordionItem,AccordionTrigger,AccordionContent} from "@/components/ui/accordion";
+import {RadioGroup,RadioGroupItem} from "@/components/ui/radio-group";
+import {Tooltip,TooltipTrigger,TooltipContent,TooltipProvider} from "@/components/ui/tooltip";
+import {Breadcrumb,BreadcrumbList,BreadcrumbItem,BreadcrumbLink,BreadcrumbPage,BreadcrumbSeparator,BreadcrumbEllipsis} from "@/components/ui/breadcrumb";
+import {Skeleton} from "@/components/ui/skeleton";
+import {Carousel,CarouselContent,CarouselItem,CarouselNext,CarouselPrevious} from "@/components/ui/carousel";
 import {QuantityStepper} from "@/components/commerce/quantity-stepper";
 import {SizeSelector} from "@/components/commerce/size-selector";
-import {ProductCard} from "@/components/commerce/product-card";
+import {ProductCard,ProductCardSkeleton} from "@/components/commerce/product-card";
 import {PDPStickyBar} from "@/components/commerce/pdp-sticky-bar";
 import {MobileMegaMenu} from "@/components/commerce/mobile-mega-menu";
+import {ProductRating} from "@/components/commerce/product-rating";
+import {MattressSpecsAccordion} from "@/components/commerce/mattress-specs-accordion";
+import {MattressRadioSelector} from "@/components/commerce/mattress-radio-selector";
+import {ProductCarousel} from "@/components/commerce/product-carousel";
 import {useBrand} from "@/components/brand-provider";
 import {allDocs,brands,contrastRatio,roleNames,tokens,type TypeRole} from "@/lib/design-system";
 const sections:Record<string,{number:string;kicker:string;title:string;intro:string}>={
@@ -106,6 +116,10 @@ function ComponentsPage(){
  const [error,setError]=useState(false);
  const [mattressSize,setMattressSize]=useState('5');
  const [terms,setTerms]=useState(false);
+ const [radioSize,setRadioSize]=useState('5.0');
+ const [radioFeel,setRadioFeel]=useState('medium-firm');
+ const [skeletonDemo,setSkeletonDemo]=useState(false);
+
  return <div className="space-y-9">
   <div className="docs-block"><Subheading title="shadcn/ui — Button variants" desc="Official source-owned shadcn/ui Button on Radix Slot + CVA. States and appearance consume Lunio semantic variables."/>
    <Tabs value={state} onValueChange={(v)=>setState(v as typeof state)}>
@@ -121,6 +135,7 @@ function ComponentsPage(){
    </Tabs>
    <CodePanel code={'import { Button } from "@/components/ui/button";\n\n<Button variant="default">立即選購</Button>\n<Button variant="outline">了解更多</Button>\n<Button variant="pill">官網限定</Button>'}/>
   </div>
+
   <div className="docs-grille">
    <Card className="gap-0 py-0"><CardContent className="p-6"><Subheading title="Input + Label + validation"/>
     <Label htmlFor="full-name">收件人姓名</Label>
@@ -140,38 +155,329 @@ function ComponentsPage(){
     <QuantityStepper value={qty} onChange={setQty}/>
    </CardContent></Card>
   </div>
+
+  <div className="docs-block"><Subheading title="Accordion — FAQs & specifications" desc="Official shadcn/ui Accordion powered by @radix-ui/react-accordion with smooth animations and keyboard control."/>
+   <Accordion type="single" collapsible defaultValue="faq-1" className="w-full">
+    <AccordionItem value="faq-1">
+     <AccordionTrigger>Lunio Gen 4 石墨烯天然乳膠床墊適合哪些睡姿？</AccordionTrigger>
+     <AccordionContent>
+      適合仰睡、側睡與趴睡。泰國天然乳膠的高彈力特性，搭配 Wave-Zone 分區減壓平衡棉，能依據肩膀與臀部重量自然下沉，維持脊椎健康生理曲線。
+     </AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="faq-2">
+     <AccordionTrigger>100 晚安心試睡體驗如何申請退換？</AccordionTrigger>
+     <AccordionContent>
+      自簽收次日起享有 100 晚臥室安心試睡。建議試睡滿 30 晚使骨骼肌肉充分適應。試睡期間搭配保潔墊保持清潔，若仍不滿意，專人免費到府收回並全額退款。
+     </AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="faq-3">
+     <AccordionTrigger>全台免運配送與舊床回收服務範圍？</AccordionTrigger>
+     <AccordionContent>
+      全台灣本島皆享免運費專人配送到府定位，並免費協助將同尺寸舊床墊搬運至一樓交由環保局大型廢棄物回收。
+     </AccordionContent>
+    </AccordionItem>
+   </Accordion>
+   <CodePanel code={'import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";\n\n<Accordion type="single" collapsible>\n  <AccordionItem value="specs">\n    <AccordionTrigger>床墊規格說明</AccordionTrigger>\n    <AccordionContent>泰國原產天然乳膠 + 航太石墨烯調溫棉...</AccordionContent>\n  </AccordionItem>\n</Accordion>'}/>
+  </div>
+
+  <div className="docs-block"><Subheading title="RadioGroup & Tooltip — Taiwan size & firmness" desc="Accessible @radix-ui/react-radio-group with high-contrast indicator states and contextual @radix-ui/react-tooltip."/>
+   <div className="grid gap-6 md:grid-cols-2">
+    <div className="rounded-xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-5">
+     <div className="flex items-center justify-between mb-3">
+      <Label className="font-bold">台灣標準床墊尺寸</Label>
+      <Tooltip>
+       <TooltipTrigger asChild>
+        <Button variant="ghost" size="sm" className="h-auto p-0 typo-caption font-normal text-primary hover:bg-transparent hover:underline outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="查看台灣床墊尺與公分換算尺寸指南">
+         <HelpCircle size={14} className="mr-1"/> 尺寸指南
+        </Button>
+       </TooltipTrigger>
+       <TooltipContent>
+        台灣規格：1 尺約 30.3 cm。請務必丈量床架內徑。
+       </TooltipContent>
+      </Tooltip>
+     </div>
+     <RadioGroup value={radioSize} onValueChange={setRadioSize} className="gap-2.5">
+      {[['3.0','標準單人 3 尺 (90×188 cm)'],['3.5','單人加大 3.5 尺 (105×188 cm)'],['5.0','標準雙人 5 尺 (150×188 cm)'],['6.0','雙人加大 6 尺 (180×188 cm)'],['7.0','雙人特大 7 尺 (180×210 cm)']].map(([v,label])=>(
+       <Label key={v} htmlFor={`comp-size-${v}`} className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition ${radioSize===v?'border-primary ring-1 ring-primary bg-primary/5 dark:bg-primary/10 shadow-xs':'border-border/80 bg-card hover:border-primary/40'}`}>
+        <RadioGroupItem value={v} id={`comp-size-${v}`}/>
+        <span className="typo-label font-medium">{label}</span>
+       </Label>
+      ))}
+     </RadioGroup>
+    </div>
+
+    <div className="rounded-xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-5">
+     <div className="flex items-center justify-between mb-3">
+      <Label className="font-bold">床墊睡感軟硬度</Label>
+      <Tooltip>
+       <TooltipTrigger asChild>
+        <Button variant="ghost" size="sm" className="h-auto p-0 typo-caption font-normal text-muted-foreground hover:bg-transparent hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="睡感評估提示">
+         <Info size={14} className="mr-1"/> 睡感評估
+        </Button>
+       </TooltipTrigger>
+       <TooltipContent>
+        90% 台灣睡眠者首選適中微挺睡感。
+       </TooltipContent>
+      </Tooltip>
+     </div>
+     <RadioGroup value={radioFeel} onValueChange={setRadioFeel} className="gap-2.5">
+      {[
+       ['medium-firm','適中微挺 (Medium-Firm)','人體工學黃金比例，平衡包覆與支撐'],
+       ['firm-support','深度強化支撐 (Firm Support)','強化腰椎護脊，扎實挺拔不塌陷']
+      ].map(([v,title,desc])=>(
+       <Label key={v} htmlFor={`comp-feel-${v}`} className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition ${radioFeel===v?'border-primary ring-1 ring-primary bg-primary/5 dark:bg-primary/10 shadow-xs':'border-border/80 bg-card hover:border-primary/40'}`}>
+        <RadioGroupItem value={v} id={`comp-feel-${v}`} className="mt-0.5"/>
+        <div>
+         <div className="typo-label font-semibold text-foreground">{title}</div>
+         <div className="typo-caption text-muted-foreground mt-0.5">{desc}</div>
+        </div>
+       </Label>
+      ))}
+     </RadioGroup>
+    </div>
+   </div>
+   <CodePanel code={'import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";\nimport { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";\n\n<RadioGroup value={selected} onValueChange={setSelected}>\n  <RadioGroupItem value="5.0" id="size-5" />\n</RadioGroup>'}/>
+  </div>
+
+  <div className="docs-block"><Subheading title="Breadcrumb — Accessible store navigation" desc="Semantic <nav> on @radix-ui/react-slot with ARIA labels, responsive ellipsis truncation and Next.js Link routing."/>
+   <div className="space-y-4 rounded-xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-5">
+    <Breadcrumb>
+     <BreadcrumbList>
+      <BreadcrumbItem>
+       <BreadcrumbLink asChild><Link href="/">首頁</Link></BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+       <BreadcrumbLink asChild><Link href="/docs/commerce">床墊系列</Link></BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+       <BreadcrumbLink asChild><Link href="/docs/commerce">天然乳膠床墊</Link></BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+       <BreadcrumbPage>Lunio Gen 4 石墨烯乳膠床墊</BreadcrumbPage>
+      </BreadcrumbItem>
+     </BreadcrumbList>
+    </Breadcrumb>
+    <Separator className="bg-border/60" />
+    <div>
+     <span className="typo-caption text-muted-foreground mb-2 block">長路徑省略截斷展示 (BreadcrumbEllipsis)：</span>
+     <Breadcrumb>
+      <BreadcrumbList>
+       <BreadcrumbItem>
+        <BreadcrumbLink asChild><Link href="/">首頁</Link></BreadcrumbLink>
+       </BreadcrumbItem>
+       <BreadcrumbSeparator />
+       <BreadcrumbItem>
+        <BreadcrumbEllipsis />
+       </BreadcrumbItem>
+       <BreadcrumbSeparator />
+       <BreadcrumbItem>
+        <BreadcrumbPage>Lunio Gen 4 石墨烯乳膠床墊</BreadcrumbPage>
+       </BreadcrumbItem>
+      </BreadcrumbList>
+     </Breadcrumb>
+    </div>
+   </div>
+   <CodePanel code={'import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from "@/components/ui/breadcrumb";\n\n<Breadcrumb>\n  <BreadcrumbList>\n    <BreadcrumbItem><BreadcrumbLink asChild><Link href="/">首頁</Link></BreadcrumbLink></BreadcrumbItem>\n    <BreadcrumbSeparator />\n    <BreadcrumbItem><BreadcrumbEllipsis /></BreadcrumbItem>\n    <BreadcrumbSeparator />\n    <BreadcrumbItem><BreadcrumbPage>Lunio Gen 4</BreadcrumbPage></BreadcrumbItem>\n  </BreadcrumbList>\n</Breadcrumb>'}/>
+  </div>
+
+  <div className="docs-block"><Subheading title="Skeleton — Asynchronous UI loading state" desc="Zero layout shift while fetching WooCommerce product catalog, prices and customer reviews."/>
+   <div className="flex items-center gap-3 mb-4">
+    <Button variant="outline" size="sm" onClick={()=>setSkeletonDemo(!skeletonDemo)}>
+     <RefreshCw size={14} className={skeletonDemo?'animate-spin':''}/>
+     {skeletonDemo?'切換為已載入展示 (Loaded)':'切換為載入中骨架屏 (Skeleton)'}
+    </Button>
+    <span className="typo-caption text-muted-foreground">{skeletonDemo?'目前正在顯示 Skeleton 佔位骨架屏':'目前正在顯示已載入完成資料'}</span>
+   </div>
+   <div className="grid gap-5 sm:grid-cols-2">
+    {skeletonDemo ? (
+     <>
+      <ProductCardSkeleton />
+      <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-xs">
+       <div className="space-y-3">
+        <Skeleton className="h-6 w-2/3" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-4/5" />
+        <Skeleton className="h-4 w-1/2" />
+       </div>
+       <div className="pt-6">
+        <Skeleton className="h-10 w-full rounded-md" />
+       </div>
+      </div>
+     </>
+    ) : (
+     <>
+      <ProductCard product={{name:"Gen 4 石墨烯乳膠床墊",description:"泰國天然乳膠與專利石墨烯調溫舒壓棉",priceLabel:"NT$ 21,900 起",badge:"熱銷推薦"}}/>
+      <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-xs">
+       <div className="space-y-2">
+        <Badge variant="outline">評價載入完成</Badge>
+        <h4 className="typo-h4 text-foreground">10,000+ 睡眠者五星好評推薦</h4>
+        <p className="typo-body-sm text-muted-foreground">「換了 Lunio Gen 4 之後，早上醒來腰部酸痛感真的完全消失了，支撐力非常優秀！」</p>
+       </div>
+       <div className="pt-4 border-t border-border/60 flex items-center justify-between">
+        <span className="typo-caption text-muted-foreground">台北市 · 廖小姐 (已驗證買家)</span>
+        <span className="typo-caption text-amber-500 font-bold">★★★★★ 5.0</span>
+       </div>
+      </div>
+     </>
+    )}
+   </div>
+  </div>
+
+  <div className="docs-block"><Subheading title="Carousel — Product media showcase" desc="Touch & keyboard enabled carousel powered by embla-carousel-react and shadcn Button."/>
+   <ProductCarousel />
+   <CodePanel code={'import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";\n\n<Carousel opts={{ align: "start", loop: true }}>\n  <CarouselContent>\n    <CarouselItem className="md:basis-1/2">...</CarouselItem>\n  </CarouselContent>\n  <CarouselPrevious />\n  <CarouselNext />\n</Carousel>'}/>
+  </div>
+
   <div className="docs-block"><Subheading title="Badge, Checkbox and Textarea" desc="Use shared shadcn/ui primitives. All text remains MiSansTC; status tokens are shared across brand modes."/>
    <div className="flex flex-wrap gap-3"><Badge>官網限定</Badge><Badge variant="outline">網路熱銷</Badge><Badge variant="success">現貨供應</Badge><Badge variant="destructive">已售完</Badge><Badge variant="secondary">限時活動</Badge></div>
    <Separator className="my-6"/>
    <div className="grid gap-5 sm:grid-cols-2"><div><Label htmlFor="component-feedback">設計意見</Label><Textarea className="mt-2" id="component-feedback" placeholder="請填寫意見…" rows={3}/></div>
    <div className="flex items-start gap-3"><Checkbox id="component-terms" checked={terms} onCheckedChange={(v)=>setTerms(v===true)}/><Label htmlFor="component-terms" className="leading-6">我已閱讀設計系統的使用規範。</Label></div></div>
   </div>
+
   <SpecNote>shadcn/ui installs component source into <code>components/ui/</code> and uses Radix primitives for accessibility. This documentation is a UI specimen, not a live cart or checkout.</SpecNote>
- </div>
+ </div>;
 }
+
 function CommercePage(){
  const [size,setSize]=useState('5');
- const [filter,setFilter]=useState<'all'|'lunio'|'nooz'>('all');
+ const [radioSize,setRadioSize]=useState('5.0');
+ const [feel,setFeel]=useState('medium-firm');
+ const [loadingCard,setLoadingCard]=useState(false);
  const sizes=[['3','標準單人','3尺'],['3.5','單人加大','3.5尺'],['5','標準雙人','5尺'],['6','雙人加大','6尺'],['7','雙人特大','7尺']];
+
  return <div className="space-y-9">
-  <div className="docs-block"><Subheading title="Product card / shadcn Card" desc="Specimen only. WooCommerce is the single source of truth for product names, variation prices, stock and discounts."/>
-    <div className="grid gap-5 md:grid-cols-2">
-     <ProductCard product={{name:"Gen 4 石墨烯乳膠床墊",description:"舒適支撐，安心好眠。",priceLabel:"依選擇規格顯示",badge:"LUNIO"}}/>
-     <Card className="gap-0 border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] py-0 shadow-xs"><CardContent className="p-5"><p className="eyebrow text-primary">MOBILE PRODUCT ROW / 375</p><div className="mt-6 flex gap-3"><div className="flex size-[132px] shrink-0 items-center justify-center rounded-xl border border-border/60 bg-muted/70 dark:bg-[#131926]"><div className="h-[35px] w-[85px] -rotate-[5deg] rounded-lg bg-gradient-to-br from-white to-[#9ba6b7] shadow-[0_13px_0_-4px_#6b7791]"/></div><div className="flex min-w-0 flex-col gap-2"><h3 className="typo-h4 break-words text-foreground">Gen 4 石墨烯乳膠床墊</h3><p className="typo-body-sm text-muted-foreground">天然乳膠結構</p><p className="typo-price-md text-primary">NT$ —</p><p className="typo-caption text-muted-foreground">依規格與庫存顯示</p></div></div></CardContent></Card>
-    </div>
+  <div className="docs-block">
+   <Subheading title="E-commerce PDP Navigation & Breadcrumb" desc="Standard breadcrumb navigation for mattress collection pages and PDP."/>
+   <Breadcrumb>
+    <BreadcrumbList>
+     <BreadcrumbItem>
+      <BreadcrumbLink asChild><Link href="/">首頁</Link></BreadcrumbLink>
+     </BreadcrumbItem>
+     <BreadcrumbSeparator />
+     <BreadcrumbItem>
+      <BreadcrumbLink asChild><Link href="/docs/commerce">旗艦床墊系列</Link></BreadcrumbLink>
+     </BreadcrumbItem>
+     <BreadcrumbSeparator />
+     <BreadcrumbItem>
+      <BreadcrumbPage>Lunio Gen 4 科技石墨烯乳膠床墊</BreadcrumbPage>
+     </BreadcrumbItem>
+    </BreadcrumbList>
+   </Breadcrumb>
   </div>
-  <div className="docs-block"><Subheading title="Variation size selector" desc="Interactive shadcn/ui Buttons with selected states; size availability, exact dimensions and price always come from WooCommerce in production."/>
-    <SizeSelector options={sizes.map(([id,label,sublabel])=>({id,label,sublabel}))} selected={size} onSelect={setSize}/>
-    <p className="mt-4 typo-body-sm text-muted-foreground" aria-live="polite">Selected: {sizes.find(s=>s[0]===size)?.[1]} · Final dimensions, availability and price must be retrieved from WooCommerce.</p>
+
+  <div className="docs-block">
+   <Subheading title="Product media showcase — shadcn Carousel" desc="Interactive visual gallery for mattress highlights, internal layers, and bedroom scenes."/>
+   <ProductCarousel />
   </div>
-  <div className="docs-block"><Subheading title="Mobile Mega Menu — shadcn Sheet + Tabs" desc="Click to open an accessible modal sheet, then switch between brands without navigating away."/>
+
+  <div className="docs-block">
+   <Subheading title="Customer reviews & verified badges — ProductRating" desc="WCAG AA compliant rating pattern featuring star reviews, review count and assurance tags."/>
+   <ProductRating score={4.9} reviewCount={12850} featuredBadges={["100晚安心試睡", "10年原廠保固", "全台免運配送到府", "舊床免費搬運回收"]} />
+  </div>
+
+  <div className="docs-block">
+   <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+    <Subheading title="Product card & Skeleton loading state" desc="WooCommerce is the single source of truth for product names, variation prices, stock and discounts."/>
+    <Button variant="outline" size="sm" onClick={()=>setLoadingCard(!loadingCard)}>
+     <RefreshCw size={14} className={loadingCard?'animate-spin':''}/>
+     {loadingCard?'展示完成卡片':'模擬資料載入中 (Skeleton)'}
+    </Button>
+   </div>
+   <div className="grid gap-5 md:grid-cols-2">
+    {loadingCard ? (
+     <>
+      <ProductCardSkeleton />
+      <ProductCardSkeleton />
+     </>
+    ) : (
+     <>
+      <ProductCard product={{name:"Gen 4 石墨烯乳膠床墊",description:"泰國天然乳膠與專利石墨烯調溫舒壓棉",priceLabel:"NT$ 21,900 起",badge:"LUNIO 旗艦款"}}/>
+      <Card className="gap-0 border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] py-0 shadow-xs"><CardContent className="p-5"><p className="eyebrow text-primary">MOBILE PRODUCT ROW / 375</p><div className="mt-6 flex gap-3"><div className="flex size-[132px] shrink-0 items-center justify-center rounded-xl border border-border/60 bg-muted/70 dark:bg-[#131926]"><div className="h-[35px] w-[85px] -rotate-[5deg] rounded-lg bg-gradient-to-br from-white to-[#9ba6b7] shadow-[0_13px_0_-4px_#6b7791]"/></div><div className="flex min-w-0 flex-col gap-2"><h3 className="typo-h4 break-words text-foreground">Gen 4 石墨烯乳膠床墊</h3><p className="typo-body-sm text-muted-foreground">天然乳膠結構</p><p className="typo-price-md text-primary">NT$ 21,900</p><p className="typo-caption text-muted-foreground">依規格與庫存顯示</p></div></div></CardContent></Card>
+     </>
+    )}
+   </div>
+  </div>
+
+  <div className="docs-block">
+   <Subheading title="RadioGroup mattress selector with Tooltips" desc="Taiwan mattress dimensions (尺) & feel options with contextual size help tooltips."/>
+   <MattressRadioSelector selectedSize={radioSize} onSelectSize={setRadioSize} selectedFeel={feel} onSelectFeel={setFeel} />
+  </div>
+
+  <div className="docs-block">
+   <Subheading title="Variation size selector — Quick Button Pills" desc="Interactive shadcn/ui Buttons with selected states; size availability, exact dimensions and price always come from WooCommerce in production."/>
+   <SizeSelector options={sizes.map(([id,label,sublabel])=>({id,label,sublabel}))} selected={size} onSelect={setSize}/>
+   <p className="mt-4 typo-body-sm text-muted-foreground" aria-live="polite">Selected: {sizes.find(s=>s[0]===size)?.[1]} · Final dimensions, availability and price must be retrieved from WooCommerce.</p>
+  </div>
+
+  <div className="docs-block">
+   <Subheading title="Mattress Specifications & FAQs — shadcn Accordion" desc="5-layer mattress structure breakdown, 100-night trial terms, 10-year warranty, and shipping details."/>
+   <MattressSpecsAccordion />
+  </div>
+
+  <div className="docs-block">
+   <Subheading title="Mobile Mega Menu — shadcn Sheet + Tabs" desc="Click to open an accessible modal sheet, then switch between brands without navigating away."/>
    <div className="max-w-[385px] rounded-xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-5 shadow-xs"><div className="flex items-center justify-between"><span className="typo-h4">Lunio</span><MobileMegaMenu/></div><p className="mt-3 typo-body-sm text-muted-foreground">Click 選單 to test keyboard, focus trap and Escape-to-close behavior.</p></div>
   </div>
-  <div className="docs-block"><Subheading title="PDP sticky purchase summary" desc="Selected variation controls real-time price and stock status."/>
-   <PDPStickyBar sizeLabel={`${size} 尺`} priceLabel="NT$ —" inStock ready={false} demo/>
+
+  <div className="docs-block">
+   <Subheading title="Checkout order breakdown — shadcn Separator" desc="Structured breakdown of mattress purchase, bundle gifts, delivery services and final total."/>
+   <div className="max-w-lg rounded-2xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-6 shadow-xs space-y-4">
+    <div className="flex items-center justify-between">
+      <span className="typo-h4 text-foreground">訂單結帳明細 (Order Summary)</span>
+      <Badge variant="outline">購物車 1 件</Badge>
+    </div>
+    <Separator />
+    <div className="space-y-3 typo-body-sm">
+      <div className="flex items-center justify-between">
+        <div>
+          <span className="font-semibold text-foreground">Lunio Gen 4 科技石墨烯乳膠床墊</span>
+          <p className="typo-caption text-muted-foreground">標準雙人 5 尺 (150 × 188 cm) · 適中微挺</p>
+        </div>
+        <span className="font-bold text-foreground">NT$ 21,900</span>
+      </div>
+      <div className="flex items-center justify-between text-muted-foreground">
+        <div>
+          <span>專屬官網贈品：天絲防蟎保潔墊</span>
+          <p className="typo-caption text-emerald-600 dark:text-emerald-400">買床墊隨貨贈送 (價值 NT$ 2,490)</p>
+        </div>
+        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">免費</span>
+      </div>
+      <div className="flex items-center justify-between text-muted-foreground">
+        <div>
+          <span>全台本島專人配送到府定位</span>
+          <p className="typo-caption">含免運費、搬運上樓與包裝定位</p>
+        </div>
+        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">NT$ 0 (免運)</span>
+      </div>
+      <div className="flex items-center justify-between text-muted-foreground">
+        <div>
+          <span>舊床墊大型廢棄物搬運回收</span>
+          <p className="typo-caption">同尺寸床墊免費協助搬運至一樓</p>
+        </div>
+        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">免費</span>
+      </div>
+    </div>
+    <Separator />
+    <div className="flex items-center justify-between pt-1">
+      <div>
+        <span className="typo-h3 font-bold text-foreground">結帳總計</span>
+        <p className="typo-caption text-muted-foreground">含 5% 營業稅、100晚試睡與10年原廠保固</p>
+      </div>
+      <span className="typo-price-xl text-primary">NT$ 21,900</span>
+    </div>
+   </div>
+  </div>
+
+  <div className="docs-block">
+   <Subheading title="PDP sticky purchase summary" desc="Selected variation controls real-time price and stock status."/>
+   <PDPStickyBar sizeLabel={`${size} 尺`} priceLabel="NT$ 21,900" inStock ready={true} demo/>
    <p className="mt-4 typo-body-sm text-muted-foreground">Storefront: fixed bottom positioning, <code>env(safe-area-inset-bottom)</code>, sufficient content padding and real payment/stock logic.</p>
   </div>
- </div>
+ </div>;
 }
 function AccessibilityPage(){return <div className="space-y-9"><div className="docs-block overflow-x-auto"><Subheading title="WCAG 2.2 AA acceptance criteria"/><table className="token-table min-w-[640px]"><thead><tr><th>Criterion</th><th>Minimum</th><th>Test</th></tr></thead><tbody>{[["1.4.3 Contrast","4.5:1 text / 3:1 large","Every real surface including image overlays"],["1.4.4 Resize Text","200%","No truncated price, form label or CTA"],["1.4.10 Reflow","320 CSS px","No unexpected horizontal scroll"],["1.4.12 Text Spacing","Override test","Content stays visible and usable"],["2.4.7 Focus Visible","Visible focus","Keyboard journey, sheet, forms"],["2.5.8 Target Size","24×24 with exceptions","Internal preference ≥44×44 mobile"]].map(x=><tr key={x[0]}><td className="font-bold">{x[0]}</td><td>{x[1]}</td><td className="text-muted-foreground">{x[2]}</td></tr>)}</tbody></table></div><div className="docs-grille"><div className="do-good"><div className="do-good-title flex items-center gap-2 font-bold text-[#13764b] dark:text-[#4ADE80]"><CheckCircle2 size={20}/> DO</div><ul className="mt-4 list-disc space-y-3 pl-5 text-[13px] leading-6 text-[#416b57] dark:text-[#86EFAC]"><li>Use semantic typography and brand variables.</li><li>Ensure readable text on Sunset Orange.</li><li>Preserve dynamic prices and full product information.</li><li>Support 200% zoom and real keyboard navigation.</li><li>Provide error text alongside error color.</li></ul></div><div className="do-bad"><div className="do-bad-title flex items-center gap-2 font-bold text-[#ae3931] dark:text-[#F87171]"><X size={20}/> DON&apos;T</div><ul className="mt-4 list-disc space-y-3 pl-5 text-[13px] leading-6 text-[#8a5553] dark:text-[#FCA5A5]"><li>Use white text on Sunset Primary (#F28131).</li><li>Use white normal-size text on Helix Accent.</li><li>Hardcode `text-[13px]` on a commerce CTA.</li><li>Assume badges, photography or gradients always pass contrast.</li><li>Call an automated token test an AA certification.</li></ul></div></div><SpecNote>Current color pairs in tokens pass 4.5:1 for the configured UI roles, but a website-wide WCAG audit still requires keyboard, screen reader, responsive and real commerce-state testing.</SpecNote></div>}
 function ReleasePage(){const items=[['Audit','Capture current frontend computed text metrics and Figma screenshots'],['Approve','Brand owner validates real Nooz/Bedding assets and color rules'],['Integrate','Pin versioned design tokens in Next.js and refactor shared components'],['Validate','Check QA at 375/1440, 320 reflow, 200% resize and keyboard'],['Regression','Test WooCommerce variations, pricing, stock, shipping, cart and payment'],['Release','Document change log, rollback path and responsible owners']];return <div className="space-y-9"><div className="docs-block"><Subheading title="Release checklist" desc="Design System updates are not automatically deployed to lunio.com.tw."/><div className="space-y-2">{items.map(([name,desc],i)=><div key={name} className="flex gap-4 rounded-lg border border-border/80 bg-slate-50/60 dark:bg-[#182030] dark:border-[#2A344A] px-4 py-4 transition-colors hover:border-primary/40 shadow-xs"><span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 dark:bg-primary/15 text-xs font-bold text-primary">{String(i+1).padStart(2,'0')}</span><div><div className="font-bold text-[14px]">{name}</div><p className="mt-1 text-[12px] leading-6 text-muted-foreground">{desc}</p></div></div>)}</div></div><div className="docs-block"><Subheading title="Engineering commands"/><CodePanel label="CI / LOCAL" code={'npm install\nnpm run tokens:build\nnpm run tokens:check\nnpm run typecheck\nnpm run build\nnpm run dev'}/></div><div className="docs-grille"><div className="docs-block"><div className="eyebrow text-primary">APPROVED SOURCE</div><div className="mt-3 text-[19px] font-bold">DESIGN.md v1.2</div><p className="mt-3 text-[13px] leading-6 text-muted-foreground">Typography and Lumio/Nooz color source. Reviewed e-commerce annotations included.</p><Link href="/docs/source" className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold text-primary">Read complete specification <ArrowUpRight size={16}/></Link></div><div className="docs-block"><div className="eyebrow text-primary">FIGMA LIBRARY</div><div className="mt-3 text-[19px] font-bold">Code 018 · Lunio DS</div><p className="mt-3 text-[13px] leading-6 text-muted-foreground">Variables, text styles and component examples are authored in the project's existing Figma file.</p><a href="https://www.figma.com/design/46bJYM9raivd3wEwTxaaJI/Lunio-TW-Mattress?node-id=1036-636" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold text-primary">Open Figma documentation <ArrowUpRight size={16}/></a></div></div></div>}

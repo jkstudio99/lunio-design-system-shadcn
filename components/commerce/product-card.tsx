@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 /**
@@ -17,6 +18,7 @@ export type CommerceProductSummary = {
   badge?: string;
   soldOut?: boolean;
 };
+
 export function ProductCard({product,children,className}: {product:CommerceProductSummary;children?:React.ReactNode;className?:string}){
  return <Card className={cn("gap-0 overflow-hidden py-0",className)}>
    <div className="relative flex aspect-[4/3] items-center justify-center bg-muted/60 dark:bg-[#151D2C] border-b border-border/50">
@@ -33,3 +35,22 @@ export function ProductCard({product,children,className}: {product:CommerceProdu
    </CardContent>
  </Card>;
 }
+
+export function ProductCardSkeleton({className}: {className?: string}) {
+  return (
+    <Card className={cn("gap-0 overflow-hidden py-0", className)} aria-busy="true" aria-label="產品資料載入中">
+      <div className="relative flex aspect-[4/3] items-center justify-center bg-muted/50 border-b border-border/50">
+        <Skeleton className="size-full rounded-none" />
+      </div>
+      <CardContent className="space-y-3 p-5">
+        <Skeleton className="h-6 w-3/4 rounded-md" />
+        <Skeleton className="h-4 w-1/2 rounded-md" />
+        <div className="flex items-center justify-between pt-1">
+          <Skeleton className="h-5 w-24 rounded-md" />
+          <Skeleton className="h-9 w-20 rounded-md" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+

@@ -47,6 +47,23 @@
   --radius-md: var(--radius-control);
   --radius-sm: calc(var(--radius-control) - 2px);
 }
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
 @layer base {
   *,*::before,*::after {box-sizing:border-box;}
   html {scroll-behavior:smooth;}
