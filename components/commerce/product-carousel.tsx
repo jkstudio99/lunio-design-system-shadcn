@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/language-provider";
 import { cn } from "@/lib/utils";
 
 export type ProductPhotoSlide = {
@@ -20,7 +21,7 @@ export type ProductPhotoSlide = {
   gradient: string;
 };
 
-const DEFAULT_SLIDES: ProductPhotoSlide[] = [
+const SLIDES_ZH: ProductPhotoSlide[] = [
   {
     title: "Lunio Gen 4 全新第四代石墨烯乳膠床墊",
     tag: "外觀全景",
@@ -47,15 +48,45 @@ const DEFAULT_SLIDES: ProductPhotoSlide[] = [
   },
 ];
 
+const SLIDES_EN: ProductPhotoSlide[] = [
+  {
+    title: "Lunio Gen 4 Graphene Latex Mattress",
+    tag: "Overview",
+    desc: "Silky cooling Tencel cover with aerospace Graphene thermoregulation",
+    gradient: "from-[#1C46B4]/20 via-[#4465BF]/10 to-transparent",
+  },
+  {
+    title: "5-Layer Ergonomic Pressure-Relief Core",
+    tag: "Technology",
+    desc: "4D Thai Natural Latex + Graphene thermal dissipation foam",
+    gradient: "from-[#7347AE]/20 via-[#8C64C4]/10 to-transparent",
+  },
+  {
+    title: "Wave-Zone Targeted Lumbar Alignment",
+    tag: "Ergonomics",
+    desc: "Contours precisely to 7 body zones with zero motion transfer",
+    gradient: "from-[#F28131]/20 via-[#F6A364]/10 to-transparent",
+  },
+  {
+    title: "100-Night In-Home Trial Guarantee",
+    tag: "Services",
+    desc: "Free white-glove doorstep delivery with complimentary returns",
+    gradient: "from-[#10B981]/20 via-[#34D399]/10 to-transparent",
+  },
+];
+
 export function ProductCarousel({
-  slides = DEFAULT_SLIDES,
+  slides,
   className,
 }: {
   slides?: ProductPhotoSlide[];
   className?: string;
 }) {
+  const { isZh } = useLanguage();
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
+
+  const activeSlides = slides || (isZh ? SLIDES_ZH : SLIDES_EN);
 
   React.useEffect(() => {
     if (!api) return;
@@ -82,7 +113,7 @@ export function ProductCarousel({
         className="w-full"
       >
         <CarouselContent>
-          {slides.map((slide, index) => (
+          {activeSlides.map((slide, index) => (
             <CarouselItem key={index} className="md:basis-1/2">
               <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card p-6 shadow-xs">
                 <div
@@ -92,41 +123,41 @@ export function ProductCarousel({
                   )}
                 >
                   <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="bg-background/80 backdrop-blur-xs">
+                    <Badge variant="secondary" className="font-semibold text-xs">
                       {slide.tag}
                     </Badge>
                     <span className="font-mono text-xs text-muted-foreground">
-                      0{index + 1} / 0{slides.length}
+                      0{index + 1} / 0{activeSlides.length}
                     </span>
                   </div>
                   <div className="space-y-1">
-                    <h4 className="typo-h4 text-foreground">{slide.title}</h4>
-                    <p className="typo-body-sm text-muted-foreground">
-                      {slide.desc}
-                    </p>
+                    <h4 className="typo-h4 font-bold text-foreground">{slide.title}</h4>
+                    <p className="typo-body-sm text-muted-foreground">{slide.desc}</p>
                   </div>
                 </div>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="hidden sm:flex" />
+        <CarouselNext className="hidden sm:flex" />
       </Carousel>
-      <div className="mt-4 flex items-center justify-center gap-2" role="tablist" aria-label="投影片切換導航">
-        {slides.map((_, i) => (
+
+      {/* Slide indicator dots */}
+      <div className="mt-4 flex items-center justify-center gap-1.5">
+        {activeSlides.map((_, i) => (
           <Button
             key={i}
             variant="ghost"
-            size="sm"
-            className={cn(
-              "h-2 min-h-0 p-0 rounded-full transition-all duration-300",
-              current === i
-                ? "w-8 bg-primary hover:bg-primary"
-                : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/60"
-            )}
+            size="icon"
             onClick={() => api?.scrollTo(i)}
-            aria-label={`跳至第 ${i + 1} 張投影片`}
+            className={cn(
+              "size-2 p-0 rounded-full transition-all",
+              current === i
+                ? "bg-primary w-6"
+                : "bg-muted-foreground/30 hover:bg-muted-foreground/60"
+            )}
+            aria-label={isZh ? `跳至第 {i + 1} 張投影片` : `Go to slide {i + 1}`}
           />
         ))}
       </div>

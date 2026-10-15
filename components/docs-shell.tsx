@@ -52,15 +52,15 @@ function NavList({ onChoose }: { onChoose?: () => void }) {
               return (
                 <Link
                   key={l.slug}
-                  href={`/docs/${l.slug}`}
+                  href={`/docs/{l.slug}`}
                   onClick={onChoose}
-                  aria-current={path === `/docs/${l.slug}` ? "page" : undefined}
-                  data-active={path === `/docs/${l.slug}`}
+                  aria-current={path === `/docs/{l.slug}` ? "page" : undefined}
+                  data-active={path === `/docs/{l.slug}`}
                   className="docs-sidebar-link"
                 >
                   <span className="min-w-[30px] text-[10px] font-mono text-muted-foreground">{l.number}</span>
                   <span className="flex-1">{displayTitle}</span>
-                  {path === `/docs/${l.slug}` && <ChevronRight size={14} />}
+                  {path === `/docs/{l.slug}` && <ChevronRight size={14} />}
                 </Link>
               );
             })}
@@ -291,7 +291,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
               {allDocs.map((d) => {
                 const title = isZh ? (titlesZh[d.slug] || d.title) : d.title;
                 return (
-                  <CommandItem key={d.slug} value={`${d.title} ${title} ${d.slug}`} onSelect={() => {setSearchOpen(false);router.push(`/docs/${d.slug}`);}}>
+                  <CommandItem key={d.slug} value={`{d.title} {title} {d.slug}`} onSelect={() => {setSearchOpen(false);router.push(`/docs/{d.slug}`);}}>
                     <FileCode2 className="size-4 text-primary"/>
                     <span className="flex-1">{title}</span>
                     <ChevronRight className="size-4 text-muted-foreground"/>

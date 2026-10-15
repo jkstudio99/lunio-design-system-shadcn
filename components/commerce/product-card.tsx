@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLanguage } from "@/components/language-provider";
 import { cn } from "@/lib/utils";
 
 /**
@@ -19,26 +22,63 @@ export type CommerceProductSummary = {
   soldOut?: boolean;
 };
 
-export function ProductCard({product,children,className}: {product:CommerceProductSummary;children?:React.ReactNode;className?:string}){
- return <Card className={cn("gap-0 overflow-hidden py-0",className)}>
-   <div className="relative flex aspect-[4/3] items-center justify-center bg-muted/60 dark:bg-[#151D2C] border-b border-border/50">
-    {product.imageUrl ? <img alt={product.imageAlt||product.name} src={product.imageUrl} loading="lazy" className="size-full object-cover" /> : <div aria-label="Product image pending" role="img" className="text-center typo-body-sm text-muted-foreground">產品圖片</div>}
-    {product.badge&&<Badge className="absolute left-4 top-4">{product.badge}</Badge>}
-   </div>
-   <CardContent className="space-y-2 p-5">
-    <h3 className="typo-h4 break-words">{product.name}</h3>
-    {product.description&&<p className="typo-body-sm text-muted-foreground">{product.description}</p>}
-    <p className="typo-price-md text-primary">{product.priceLabel}</p>
-    {product.regularPriceLabel&&<p className="typo-caption text-muted-foreground line-through">{product.regularPriceLabel}</p>}
-    {product.soldOut&&<Badge variant="destructive">已售完</Badge>}
-    {children}
-   </CardContent>
- </Card>;
+export function ProductCard({
+  product,
+  children,
+  className,
+}: {
+  product: CommerceProductSummary;
+  children?: React.ReactNode;
+  className?: string;
+}) {
+  const { isZh } = useLanguage();
+
+  return (
+    <Card className={cn("gap-0 overflow-hidden py-0", className)}>
+      <div className="relative flex aspect-[4/3] items-center justify-center bg-muted/60 dark:bg-[#151D2C] border-b border-border/50">
+        {product.imageUrl ? (
+          <img
+            alt={product.imageAlt || product.name}
+            src={product.imageUrl}
+            loading="lazy"
+            className="size-full object-cover"
+          />
+        ) : (
+          <div
+            aria-label="Product image placeholder"
+            role="img"
+            className="text-center typo-body-sm text-muted-foreground"
+          >
+            {isZh ? "產品圖片" : "Product image"}
+          </div>
+        )}
+        {product.badge && <Badge className="absolute left-4 top-4">{product.badge}</Badge>}
+      </div>
+      <CardContent className="space-y-2 p-5">
+        <h3 className="typo-h4 break-words">{product.name}</h3>
+        {product.description && (
+          <p className="typo-body-sm text-muted-foreground">{product.description}</p>
+        )}
+        <p className="typo-price-md text-primary">{product.priceLabel}</p>
+        {product.regularPriceLabel && (
+          <p className="typo-caption text-muted-foreground line-through">{product.regularPriceLabel}</p>
+        )}
+        {product.soldOut && <Badge variant="destructive">{isZh ? "已售完" : "Sold Out"}</Badge>}
+        {children}
+      </CardContent>
+    </Card>
+  );
 }
 
-export function ProductCardSkeleton({className}: {className?: string}) {
+export function ProductCardSkeleton({ className }: { className?: string }) {
+  const { isZh } = useLanguage();
+
   return (
-    <Card className={cn("gap-0 overflow-hidden py-0", className)} aria-busy="true" aria-label="產品資料載入中">
+    <Card
+      className={cn("gap-0 overflow-hidden py-0", className)}
+      aria-busy="true"
+      aria-label={isZh ? "產品資料載入中" : "Loading product data"}
+    >
       <div className="relative flex aspect-[4/3] items-center justify-center bg-muted/50 border-b border-border/50">
         <Skeleton className="size-full rounded-none" />
       </div>
@@ -53,4 +93,3 @@ export function ProductCardSkeleton({className}: {className?: string}) {
     </Card>
   );
 }
-

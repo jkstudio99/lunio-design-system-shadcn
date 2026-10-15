@@ -164,9 +164,9 @@ export function Showcase(){
         <span className="text-[11px] text-muted-foreground">{t.showcase.usageStack}</span>
       </div>
       <div className="relative rounded-lg border border-border/80 bg-slate-50/90 dark:bg-[#161C28] dark:border-[#2A344A] px-5 py-5 pr-16 font-mono text-[12px] leading-6 text-foreground shadow-xs">
-        <span className="text-primary font-bold">$ </span>npm run tokens:build<br/>
-        <span className="text-primary font-bold">$ </span>npm run tokens:check<br/>
-        <span className="text-primary font-bold">$ </span>npm run dev
+        <span className="text-primary font-bold"> </span>npm run tokens:build<br/>
+        <span className="text-primary font-bold"> </span>npm run tokens:check<br/>
+        <span className="text-primary font-bold"> </span>npm run dev
         <div className="absolute right-3.5 top-3.5 z-10">
           <Button
             variant="outline"
@@ -206,15 +206,15 @@ export function Showcase(){
    <section className="mt-12">
     <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
       <div>
-        <div className="eyebrow text-muted-foreground">EXPERIENCE</div>
-        <h2 className="mt-1 text-[24px] font-bold">Live preview</h2>
+        <div className="eyebrow text-muted-foreground">{isZh ? "體驗預覽" : "EXPERIENCE"}</div>
+        <h2 className="mt-1 text-[24px] font-bold">{isZh ? "即時預覽" : "Live preview"}</h2>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <div className="inline-flex rounded-lg border border-border bg-muted p-1">
-          <Button variant="ghost" onClick={()=>setDevice('desktop')} aria-pressed={device==='desktop'} className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs ${device==='desktop' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}><Monitor size={14}/>Desktop</Button>
-          <Button variant="ghost" onClick={()=>setDevice('mobile')} aria-pressed={device==='mobile'} className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs ${device==='mobile' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}><Smartphone size={14}/>375px</Button>
+          <Button variant="ghost" onClick={()=>setDevice('desktop')} aria-pressed={device==='desktop'} className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs ${device==='desktop' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}><Monitor size={14}/>{isZh ? "電腦版" : "Desktop"}</Button>
+          <Button variant="ghost" onClick={()=>setDevice('mobile')} aria-pressed={device==='mobile'} className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs ${device==='mobile' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}><Smartphone size={14}/>{isZh ? "手機版 375px" : "375px"}</Button>
         </div>
-        <Button variant="outline" onClick={()=>setTab('preview')} className={`shell-action ${tab==='preview'?'!border-primary !text-primary':''}`}>Live Preview</Button>
+        <Button variant="outline" onClick={()=>setTab('preview')} className={`shell-action ${tab==='preview'?'!border-primary !text-primary':''}`}>{isZh ? "即時預覽" : "Live Preview"}</Button>
         <Button variant="outline" onClick={()=>setTab('design')} className={`shell-action ${tab==='design'?'!border-primary !text-primary':''}`}>DESIGN.md</Button>
       </div>
     </div>
@@ -230,49 +230,49 @@ export function Showcase(){
            <span className="mr-auto text-[15px] font-extrabold tracking-tight">lunio<span className="text-primary">.</span></span>
            {device==='desktop' && (
              <div className="flex items-center gap-5 text-[12px] font-semibold text-muted-foreground">
-               <Link href="/docs/colors" className="hover:text-foreground transition-colors">Colors</Link>
-               <Link href="/docs/typography" className="hover:text-foreground transition-colors">Typography</Link>
-               <Link href="/docs/components" className="hover:text-foreground transition-colors">Components</Link>
-               <Link href="/docs/commerce" className="hover:text-foreground transition-colors">Responsive</Link>
+               <Link href="/docs/colors" className="hover:text-foreground transition-colors">{isZh ? "色彩系統" : "Colors"}</Link>
+               <Link href="/docs/typography" className="hover:text-foreground transition-colors">{isZh ? "字體排印" : "Typography"}</Link>
+               <Link href="/docs/components" className="hover:text-foreground transition-colors">{isZh ? "UI 元件" : "Components"}</Link>
+               <Link href="/docs/commerce" className="hover:text-foreground transition-colors">{isZh ? "電商模式" : "Responsive"}</Link>
              </div>
            )}
-           <Badge>Design system</Badge>
+           <Badge>{isZh ? "設計系統" : "Design system"}</Badge>
          </div>
          <div className="preview-content">
            <div className="preview-hero-grid">
              <div>
-               <div className="eyebrow mb-5 text-primary">THE LUNIO DESIGN LANGUAGE</div>
-               <div className="demo-display">Design for a<br/>better everyday.</div>
+               <div className="eyebrow mb-5 text-primary">{isZh ? "LUNIO 設計語言規範" : "THE LUNIO DESIGN LANGUAGE"}</div>
+               <div className="demo-display">{isZh ? <>美好日常<br/>從細節開始。</> : <>Design for a<br/>better everyday.</>}</div>
                <p className="mt-6 max-w-[390px] text-[14px] leading-[1.8] text-muted-foreground">
-                 從每一天開始，打造一致、舒適且易於使用的體驗。共享規範，呈現獨特的品牌個性。
+                 {isZh ? "從每一天開始，打造一致、舒適且易於使用的體驗。共享規範，呈現獨特的品牌個性。" : "Crafting consistent, comfortable, and intuitive experiences every day. Shared foundations, distinct brand identities."}
                </p>
                <div className="mt-7 flex flex-wrap items-center gap-2">
                  <Button onClick={()=>document.getElementById('preview-foundations')?.scrollIntoView({behavior:'smooth'})}>
-                   Explore foundations <ArrowUpRight size={16}/>
+                   {isZh ? "探索設計基礎" : "Explore foundations"} <ArrowUpRight size={16}/>
                  </Button>
                  <Button asChild variant="outline">
-                   <Link href="/docs/components">UI components</Link>
+                   <Link href="/docs/components">{isZh ? "UI 元件庫" : "UI components"}</Link>
                  </Button>
                </div>
              </div>
              <div className="mattress-stage">
                <div className="absolute left-5 top-5 rounded-md border border-white/80 bg-white/70 dark:bg-card/90 dark:border-border dark:text-[var(--interactive-text)] px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-primary shadow-sm backdrop-blur-xs">
-                 {current.short} / Collection
+                 {current.short} / {isZh ? "床墊系列" : "Collection"}
                </div>
                <div className="mattress-base"><div className="mattress-pillow"/></div>
                <div className="absolute bottom-5 right-5 text-[10px] font-semibold text-muted-foreground">
-                 SOFT  ·  RESPONSIVE  ·  INTENTIONAL
+                 {isZh ? "舒適包覆 · 靈敏支撐 · 細節專注" : "SOFT · RESPONSIVE · INTENTIONAL"}
                </div>
              </div>
            </div>
            <div id="preview-foundations" className="mt-14 border-t border-border pt-8">
              <div className="mb-5 flex items-end justify-between">
                <div>
-                 <div className="eyebrow text-primary">FOUNDATIONS</div>
-                 <h3 className="mt-2 text-[27px] font-bold">Built from one system.</h3>
+                 <div className="eyebrow text-primary">{isZh ? "設計基礎" : "FOUNDATIONS"}</div>
+                 <h3 className="mt-2 text-[27px] font-bold">{isZh ? "源自同一套完整系統" : "Built from one system."}</h3>
                </div>
                <Link href="/docs/colors" className="text-[12px] font-semibold text-primary hover:underline">
-                 View tokens ↗
+                 {isZh ? "查看 Token ↗" : "View tokens ↗"}
                </Link>
              </div>
              <div className="preview-category">
@@ -281,20 +281,20 @@ export function Showcase(){
                    <div className="size-14 rounded-full bg-primary shadow-[0_8px_25px_#00000018]"/>
                    <div className="-ml-3 size-12 rounded-full bg-[var(--accent)] opacity-80"/>
                  </div>
-                 <div className="text-xs font-bold">Color system</div>
-                 <p className="mt-1 text-[11px] text-muted-foreground">Theme-specific semantic tokens.</p>
+                 <div className="text-xs font-bold">{isZh ? "色彩系統" : "Color system"}</div>
+                 <p className="mt-1 text-[11px] text-muted-foreground">{isZh ? "品牌專屬語意化色彩 Token。" : "Theme-specific semantic tokens."}</p>
                </div>
                <div className="preview-mini-card">
                  <div className="mb-4 flex h-[105px] items-center justify-center rounded-lg bg-muted">
                    <span className="text-[65px] font-extrabold leading-none tracking-[-.08em] text-foreground">Aa</span>
                  </div>
-                 <div className="text-xs font-bold">Typography</div>
+                 <div className="text-xs font-bold">{isZh ? "字體排印" : "Typography"}</div>
                  <p className="mt-1 text-[11px] text-muted-foreground">MiSansTC 400 / 500 / 600 / 700 / 800.</p>
                </div>
                <div className="preview-mini-card">
                  <div className="preview-mini-art mb-4"/>
-                 <div className="text-xs font-bold">Components</div>
-                 <p className="mt-1 text-[11px] text-muted-foreground">Consistent commerce interactions.</p>
+                 <div className="text-xs font-bold">{isZh ? "互動元件" : "Components"}</div>
+                 <p className="mt-1 text-[11px] text-muted-foreground">{isZh ? "一致且高互動性的台灣電商模式。" : "Consistent commerce interactions."}</p>
                </div>
              </div>
            </div>
@@ -303,9 +303,9 @@ export function Showcase(){
      ) : (
        <div className="preview-browser min-h-[560px] p-6 sm:p-10">
          <div className="eyebrow mb-4 text-primary">DESIGN.md · v1.4</div>
-         <h3 className="text-[30px] font-bold">The design language behind the UI</h3>
+         <h3 className="text-[30px] font-bold">{isZh ? "支撐使用者介面的設計語言" : "The design language behind the UI"}</h3>
          <p className="mt-2 text-[14px] leading-7 text-muted-foreground">
-           The same documented design tokens drive the Figma specs and generated CSS.
+           {isZh ? "以同一份規格手冊驅動 Figma 設計稿與自動產生的 CSS 變數。" : "The same documented design tokens drive the Figma specs and generated CSS."}
          </p>
           <div className="relative mt-8">
             <div className="code-panel pr-16">{designMdSummary}</div>
@@ -314,16 +314,16 @@ export function Showcase(){
                 variant="outline"
                 size="sm"
                 onClick={copyDesign}
-                aria-label={copiedDesign ? "Copied specification summary to clipboard" : "Copy DESIGN.md specification summary"}
+                aria-label={copiedDesign ? (isZh ? "已複製規格摘要至剪貼簿" : "Copied specification summary to clipboard") : (isZh ? "複製 DESIGN.md 規格摘要" : "Copy DESIGN.md specification summary")}
                 className="h-8 px-2.5 text-xs font-medium border-slate-700/80 bg-slate-900/90 text-slate-200 hover:bg-slate-800 hover:text-white shadow-xs gap-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {copiedDesign ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                <span>{copiedDesign ? "Copied!" : "Copy"}</span>
+                <span>{copiedDesign ? (isZh ? "已複製！" : "Copied!") : (isZh ? "複製" : "Copy")}</span>
               </Button>
             </div>
           </div>
          <Link className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold text-primary hover:underline" href="/docs/source">
-           Read complete DESIGN.md <ArrowUpRight size={16}/>
+           {isZh ? "閱讀完整 DESIGN.md 規範手冊" : "Read complete DESIGN.md"} <ArrowUpRight size={16}/>
          </Link>
        </div>
      )}
@@ -355,9 +355,9 @@ export function Showcase(){
   </main>
   <footer className="border-t border-border py-8">
     <div className="shell-container flex flex-wrap items-center justify-between gap-3 text-[12px] text-muted-foreground">
-      <div>LUNIO DESIGN SYSTEM © 2026 · Internal design reference</div>
+      <div>{isZh ? "LUNIO 設計系統 © 2026 · 內部設計與工程參考手冊" : "LUNIO DESIGN SYSTEM © 2026 · Internal design reference"}</div>
       <div className="flex gap-4">
-        <Link href="/docs/release" className="hover:text-foreground transition-colors">Release notes</Link>
+        <Link href="/docs/release" className="hover:text-foreground transition-colors">{isZh ? "版本發布說明" : "Release notes"}</Link>
         <a href="https://www.figma.com/design/46bJYM9raivd3wEwTxaaJI/Lunio-TW-Mattress?node-id=1036-636" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Figma ↗</a>
       </div>
     </div>
