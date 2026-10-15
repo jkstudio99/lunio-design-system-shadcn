@@ -30,6 +30,7 @@ import {MattressSpecsAccordion} from "@/components/commerce/mattress-specs-accor
 import {MattressRadioSelector} from "@/components/commerce/mattress-radio-selector";
 import {ProductCarousel} from "@/components/commerce/product-carousel";
 import {useBrand} from "@/components/brand-provider";
+import {useLanguage} from "@/components/language-provider";
 import {allDocs,brands,contrastRatio,roleNames,tokens,type TypeRole} from "@/lib/design-system";
 const sections:Record<string,{number:string;kicker:string;title:string;intro:string}>={
  "getting-started":{number:"00",kicker:"START HERE",title:"Getting started",intro:"Everything you need to understand, adopt and maintain the Lunio design language. Tokens first. Consistency always."},
@@ -45,6 +46,7 @@ const sections:Record<string,{number:string;kicker:string;title:string;intro:str
 };
 function Subheading({title,desc}:{title:string;desc?:string}){return <div className="mb-5"><h2 className="text-[22px] font-extrabold tracking-[-.035em] text-foreground">{title}</h2>{desc&&<p className="mt-1.5 text-[13px] leading-6 text-muted-foreground">{desc}</p>}</div>}
 function CopyButton({value,label="Copy",ariaLabel="Copy code to clipboard",className}:{value:string;label?:string;ariaLabel?:string;className?:string}){
+  const { isZh } = useLanguage();
   const [copied,setCopied]=useState(false);
   async function onCopy(){try{await navigator.clipboard.writeText(value);setCopied(true);setTimeout(()=>setCopied(false),1600)}catch{setCopied(false)}}
   return <Tooltip>
@@ -54,7 +56,7 @@ function CopyButton({value,label="Copy",ariaLabel="Copy code to clipboard",class
         type="button"
         variant="outline"
         size="sm"
-        aria-label={copied?"Copied code to clipboard":ariaLabel}
+        aria-label={copied ? (isZh ? "已複製程式碼至剪貼簿" : "Copied code to clipboard") : ariaLabel}
         className={cn(
           "h-8 px-2.5 text-xs font-medium border border-slate-700/80 bg-slate-900/90 text-slate-200 hover:bg-slate-800 hover:text-white dark:border-slate-700 dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-700 transition-colors shadow-xs gap-1.5 focus-visible:ring-2 focus-visible:ring-primary",
           copied&&"border-emerald-600 bg-emerald-950/50 text-emerald-400 dark:border-emerald-500",
@@ -62,11 +64,11 @@ function CopyButton({value,label="Copy",ariaLabel="Copy code to clipboard",class
         )}
       >
         {copied?<Check size={14} className="text-emerald-400"/>:<Copy size={14}/>}
-        <span>{copied?"Copied!":label}</span>
+        <span>{copied ? (isZh ? "已複製！" : "Copied!") : (label === "Copy" ? (isZh ? "複製" : "Copy") : label)}</span>
       </Button>
     </TooltipTrigger>
     <TooltipContent side="top" className="text-xs">
-      {copied?"已成功複製到剪貼簿":"點擊複製程式碼"}
+      {copied ? (isZh ? "已成功複製到剪貼簿" : "Copied to clipboard successfully") : (isZh ? "點擊複製程式碼" : "Click to copy code")}
     </TooltipContent>
   </Tooltip>;
 }
@@ -828,4 +830,50 @@ function ChangelogPage() {
   );
 }
 const pages:Record<string,()=>ReactNode>={"getting-started":Overview,brands:BrandPage,typography:TypographyPage,colors:ColorsPage,spacing:SpacingPage,components:ComponentsPage,commerce:CommercePage,accessibility:AccessibilityPage,release:ReleasePage,changelog:ChangelogPage};
-export function DocsContent({slug}:{slug:string}){const meta=sections[slug];const content=pages[slug];const index=allDocs.findIndex(d=>d.slug===slug);if(!meta||!content)return null;const next=allDocs[index+1];const Content=content;return <article className="docs-article"><div className="mb-5 flex flex-wrap items-center justify-between gap-2"><span className="eyebrow text-primary">{meta.number} / {meta.kicker}</span><span className="text-[11px] text-muted-foreground">LUNIO DS · v1.4</span></div><h1 className="typo-h1 max-w-4xl tracking-[-.03em]">{meta.title}</h1><p className="typo-body-md mt-4 max-w-3xl text-muted-foreground">{meta.intro}</p><div className="my-9 h-px bg-border"/><Content/>{next&&<div className="mt-12 border-t border-border pt-8"><Link href={`/docs/${next.slug}`} className="flex items-center justify-between rounded-xl border border-border bg-card p-5 transition hover:border-primary"><div><span className="text-[11px] uppercase tracking-widest text-muted-foreground">UP NEXT</span><div className="mt-2 text-[15px] font-bold">{next.title}</div></div><ArrowRight size={20} className="text-primary"/></Link></div>}</article>}
+const titlesZh: Record<string, string> = {
+  "getting-started": "快速入門指南",
+  brands: "多品牌規範",
+  typography: "字體排印系統",
+  colors: "色彩與語意 Token",
+  spacing: "空間與佈局律動",
+  components: "核心 UI 元件庫",
+  commerce: "台灣電商元件",
+  accessibility: "無障礙檢驗標準",
+  release: "生產環境發布",
+  changelog: "更新日誌與版本",
+  source: "完整 DESIGN.md",
+};
+
+export function DocsContent({slug}:{slug:string}){
+  const { isZh, t } = useLanguage();
+  const meta = sections[slug];
+  const localizedSection = (t.sections as Record<string, { kicker: string; title: string; intro: string }>)[slug];
+  const content = pages[slug];
+  const index = allDocs.findIndex(d=>d.slug===slug);
+  if(!meta||!content)return null;
+  const next = allDocs[index+1];
+  const Content = content;
+  const kicker = localizedSection?.kicker || meta.kicker;
+  const title = localizedSection?.title || meta.title;
+  const intro = localizedSection?.intro || meta.intro;
+  const nextTitle = next ? (isZh ? (titlesZh[next.slug] || next.title) : next.title) : "";
+  return <article className="docs-article">
+    <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
+      <span className="eyebrow text-primary">{meta.number} / {kicker}</span>
+      <span className="text-[11px] text-muted-foreground">LUNIO DS · v1.4</span>
+    </div>
+    <h1 className="typo-h1 max-w-4xl tracking-[-.03em]">{title}</h1>
+    <p className="typo-body-md mt-4 max-w-3xl text-muted-foreground">{intro}</p>
+    <div className="my-9 h-px bg-border"/>
+    <Content/>
+    {next&&<div className="mt-12 border-t border-border pt-8">
+      <Link href={`/docs/${next.slug}`} className="flex items-center justify-between rounded-xl border border-border bg-card p-5 transition hover:border-primary">
+        <div>
+          <span className="text-[11px] uppercase tracking-widest text-muted-foreground">{isZh ? "下一節" : "UP NEXT"}</span>
+          <div className="mt-2 text-[15px] font-bold">{nextTitle}</div>
+        </div>
+        <ArrowRight size={20} className="text-primary"/>
+      </Link>
+    </div>}
+  </article>;
+}

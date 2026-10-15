@@ -4,7 +4,9 @@ import {useState} from "react";
 import {ArrowLeft,ArrowUpRight,BookOpen,Check,CheckCircle2,ChevronDown,Copy,Download,ExternalLink,Layers3,Menu,Monitor,PanelTop,Smartphone,Sparkles, X} from "lucide-react";
 import {BrandSwitcher} from "@/components/brand-switcher";
 import {ThemeToggle} from "@/components/theme-toggle";
+import {LanguageToggle} from "@/components/language-toggle";
 import {useBrand} from "@/components/brand-provider";
+import {useLanguage} from "@/components/language-provider";
 import {brands,tokens} from "@/lib/design-system";
 import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
@@ -12,6 +14,7 @@ import {Sheet,SheetContent,SheetTrigger,SheetHeader,SheetTitle,SheetDescription}
 const sections=[{label:"Colors",href:"/docs/colors"},{label:"Typography",href:"/docs/typography"},{label:"Components",href:"/docs/components"},{label:"Commerce",href:"/docs/commerce"}];
 export function Showcase(){
  const {brand}=useBrand();const current=tokens.brands[brand];
+ const {isZh,t}=useLanguage();
  const [tab,setTab]=useState<"preview"|"design">("preview");const [device,setDevice]=useState<"desktop"|"mobile">("desktop");const [copied,setCopied]=useState(false);const [copiedDesign,setCopiedDesign]=useState(false);const [mobileOpen,setMobileOpen]=useState(false);
  const code="npm install\nnpm run tokens:build\nnpm run tokens:check\nnpm run dev";
  const copy=async()=>{try{await navigator.clipboard.writeText(code);setCopied(true);setTimeout(()=>setCopied(false),1800)}catch{setCopied(false)}};
@@ -28,14 +31,16 @@ export function Showcase(){
      <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4</span>
    </Link>
    <nav className="hidden items-center gap-7 text-[13px] lg:flex">
-     <Link href="/docs/getting-started" className="shell-link">Documentation</Link>
-     <Link href="/docs/components" className="shell-link">Components</Link>
-     <Link href="/docs/typography" className="shell-link">Tokens</Link>
+     <Link href="/docs/getting-started" className="shell-link">{isZh ? "快速入門" : "Documentation"}</Link>
+     <Link href="/docs/components" className="shell-link">{isZh ? "元件庫" : "Components"}</Link>
+     <Link href="/docs/typography" className="shell-link">{isZh ? "設計 Token" : "Tokens"}</Link>
+     <Link href="/docs/changelog" className="shell-link">{isZh ? "更新日誌" : "Changelog"}</Link>
      <Link href="/docs/source" className="shell-link">DESIGN.md</Link>
    </nav>
    <div className="flex items-center gap-2">
      <BrandSwitcher/>
      <ThemeToggle/>
+     <LanguageToggle/>
      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
        <SheetTrigger asChild>
          <Button variant="outline" size="icon" className="border-border bg-background text-foreground lg:hidden" aria-label="Open mobile navigation">
@@ -61,24 +66,24 @@ export function Showcase(){
   <main className="shell-container pb-32">
    <div className="showcase-hero">
     <Link href="/docs/getting-started" className="mb-6 inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
-      <ArrowLeft size={14}/> Back to system documentation
+      <ArrowLeft size={14}/> {isZh ? "返回設計系統手冊" : "Back to system documentation"}
     </Link>
     <div className="flex flex-wrap items-start justify-between gap-5">
       <div>
         <div className="eyebrow mb-4 text-primary">DESIGN SYSTEM ANALYSIS / LUNIO</div>
         <h1 className="max-w-[840px] text-[clamp(34px,4.4vw,62px)] leading-[1.04] tracking-[-.055em] font-bold">
-          One design language.<br/><span className="text-muted-foreground">Four brand experiences.</span>
+          {t.showcase.heroTitleLine1}<br/><span className="text-muted-foreground">{t.showcase.heroTitleLine2}</span>
         </h1>
         <p className="mt-5 max-w-[680px] text-[15px] leading-7 text-muted-foreground">
-          A comprehensive, token-first design language for Lunio Taiwan, Nooz Helix, Nooz Sunset and Lunio Bedding. MiSansTC across every interface.
+          {t.showcase.heroSubtitle}
         </p>
       </div>
       <div className="flex flex-wrap gap-2">
         <Link href="/docs/source" className="shell-action inline-flex items-center gap-2">
-          <BookOpen size={14}/> Read DESIGN.md
+          <BookOpen size={14}/> {t.showcase.readSpec}
         </Link>
         <a href="/DESIGN.md" download className="shell-action inline-flex items-center gap-2">
-          <Download size={14}/> Download source
+          <Download size={14}/> {t.showcase.downloadSpec}
         </a>
       </div>
     </div>
@@ -86,8 +91,8 @@ export function Showcase(){
    <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_290px]">
     <div className="shell-card p-5 md:p-6">
       <div className="mb-4 flex items-center justify-between gap-2">
-        <div className="eyebrow text-muted-foreground">Usage</div>
-        <span className="text-[11px] text-muted-foreground">Next.js 16 · Tailwind v4 · shadcn/ui</span>
+        <div className="eyebrow text-muted-foreground">{t.showcase.usageTitle}</div>
+        <span className="text-[11px] text-muted-foreground">{t.showcase.usageStack}</span>
       </div>
       <div className="relative rounded-lg border border-border/80 bg-slate-50/90 dark:bg-[#161C28] dark:border-[#2A344A] px-5 py-5 pr-16 font-mono text-[12px] leading-6 text-foreground shadow-xs">
         <span className="text-primary font-bold">$ </span>npm run tokens:build<br/>
@@ -98,22 +103,22 @@ export function Showcase(){
             variant="outline"
             size="sm"
             onClick={copy}
-            aria-label={copied ? "Copied installation commands to clipboard" : "Copy installation commands"}
+            aria-label={copied ? (isZh ? "已複製安裝指令至剪貼簿" : "Copied installation commands to clipboard") : (isZh ? "複製安裝指令" : "Copy installation commands")}
             className="h-8 px-2.5 text-xs font-medium border-border/80 bg-background/95 text-foreground hover:bg-accent hover:text-foreground shadow-xs gap-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-primary"
           >
             {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
-            <span>{copied ? "Copied!" : "Copy"}</span>
+            <span>{copied ? (isZh ? "已複製！" : "Copied!") : (isZh ? "複製" : "Copy")}</span>
           </Button>
         </div>
       </div>
       <p className="mt-4 text-[12px] text-muted-foreground">
-        Start the platform locally, then connect the approved typography and color tokens to Lunio&apos;s existing Next.js frontend.
+        {t.showcase.usageDesc}
       </p>
     </div>
     <div className="shell-card flex flex-col justify-between gap-5 p-5 md:p-6">
       <div>
-        <div className="eyebrow mb-4 text-muted-foreground">System status</div>
-        <div className="text-[29px] font-bold text-foreground">12 <span className="text-[13px] font-normal text-muted-foreground">type roles</span></div>
+        <div className="eyebrow mb-4 text-muted-foreground">{t.showcase.statusTitle}</div>
+        <div className="text-[29px] font-bold text-foreground">12 <span className="text-[13px] font-normal text-muted-foreground">{t.showcase.typeRoles}</span></div>
         <div className="mt-3 flex flex-wrap gap-2">
           {brands.map(b => (
             <span key={b.id} className="inline-flex size-7 items-center justify-center rounded-md border border-black/10 dark:border-white/20 shadow-sm" style={{background: b.primary}} title={b.name}>
@@ -123,9 +128,9 @@ export function Showcase(){
         </div>
       </div>
       <div className="space-y-2 border-t border-border pt-4 text-[12px] text-muted-foreground">
-        <div className="flex items-center justify-between"><span>5 font weights</span><CheckCircle2 size={15} className="text-primary"/></div>
-        <div className="flex items-center justify-between"><span>4 brand modes</span><CheckCircle2 size={15} className="text-primary"/></div>
-        <div className="flex items-center justify-between"><span>Bedding CI</span><span className="text-primary font-medium">Approved</span></div>
+        <div className="flex items-center justify-between"><span>{isZh ? "5 組官方字重" : "5 font weights"}</span><CheckCircle2 size={15} className="text-primary"/></div>
+        <div className="flex items-center justify-between"><span>{isZh ? "4 大品牌模式" : "4 brand modes"}</span><CheckCircle2 size={15} className="text-primary"/></div>
+        <div className="flex items-center justify-between"><span>Bedding CI</span><span className="text-primary font-medium">{isZh ? "已核准" : "Approved"}</span></div>
       </div>
     </div>
    </section>
@@ -255,27 +260,27 @@ export function Showcase(){
      )}
     </div>
     <div className="mt-4 flex items-center justify-between text-[11px] text-muted-foreground">
-      <span>Reference-inspired structure · Original Lunio content and theme</span>
+      <span>{t.showcase.referenceStructure}</span>
       <Link href="/docs/getting-started" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
-        Explore all documentation <ArrowUpRight size={14}/>
+        {t.showcase.exploreDocs} <ArrowUpRight size={14}/>
       </Link>
     </div>
    </section>
    <div className="mt-24 grid gap-8 border-t border-border pt-10 md:grid-cols-3">
      <div>
-       <div className="eyebrow mb-3 text-muted-foreground">DESIGN PRINCIPLE</div>
-       <h3 className="text-[18px] font-bold">One font, everywhere.</h3>
-       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">Five weights. Twelve roles. No arbitrary typography overrides from page to page.</p>
+       <div className="eyebrow mb-3 text-muted-foreground">{isZh ? "設計原則" : "DESIGN PRINCIPLE"}</div>
+       <h3 className="text-[18px] font-bold">{isZh ? "MiSans TC 單一字體體系" : "One font, everywhere."}</h3>
+       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{isZh ? "5 組官方字重、12 組響應式角色，杜絕各頁面隨意覆蓋字級。" : "Five weights. Twelve roles. No arbitrary typography overrides from page to page."}</p>
      </div>
      <div>
-       <div className="eyebrow mb-3 text-muted-foreground">THEMING</div>
-       <h3 className="text-[18px] font-bold">Scoped by brand.</h3>
-       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">Lunio, Helix, Sunset and Lunio Bedding share anatomy while maintaining color expression.</p>
+       <div className="eyebrow mb-3 text-muted-foreground">{isZh ? "多品牌主題" : "THEMING"}</div>
+       <h3 className="text-[18px] font-bold">{isZh ? "品牌作用域主題隔離" : "Scoped by brand."}</h3>
+       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{isZh ? "Lunio、Helix、Sunset 與 Lunio Bedding 共享元件架構，精準展現專屬調色盤。" : "Lunio, Helix, Sunset and Lunio Bedding share anatomy while maintaining color expression."}</p>
      </div>
      <div>
-       <div className="eyebrow mb-3 text-muted-foreground">DESIGN TO CODE</div>
-       <h3 className="text-[18px] font-bold">Built to ship.</h3>
-       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">Semantic tokens, accessible states and e-commerce contracts for a maintainable Next.js storefront.</p>
+       <div className="eyebrow mb-3 text-muted-foreground">{isZh ? "設計代碼落地" : "DESIGN TO CODE"}</div>
+       <h3 className="text-[18px] font-bold">{isZh ? "為台灣電商量身打造" : "Built to ship."}</h3>
+       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{isZh ? "語意化 Token、Radix 無障礙互動與台尺床墊規格，賦能高維護性 Next.js 購物網站。" : "Semantic tokens, accessible states and e-commerce contracts for a maintainable Next.js storefront."}</p>
      </div>
    </div>
   </main>
