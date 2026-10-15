@@ -71,6 +71,7 @@ export const translations = {
       typography: "字體排印",
       colors: "色彩與語意",
       spacing: "空間與佈局",
+      icons: "圖示系統",
       coreComponents: "核心 UI 元件",
       commercePatterns: "電商元件",
       accessibility: "無障礙標準",
@@ -133,6 +134,11 @@ export const translations = {
         kicker: "空間基礎",
         title: "空間格線、律動與圓角",
         intro: "嚴謹的 4px 律動體系，全站標準化 8px 控制元件圓角與 16px 容器卡片圓角。",
+      },
+      icons: {
+        kicker: "圖示系統",
+        title: "圖示系統與 Lucide React 規範",
+        intro: "精選專屬 lunio.com.tw 台灣電商前台所需之 60+ 組 Lucide React 向量圖示，包含床墊睡眠、購物信任、實體門市與導覽控制，支援多種尺寸與一鍵複製語法。",
       },
       components: {
         kicker: "介面元件",
@@ -216,6 +222,7 @@ export const translations = {
       typography: "Typography",
       colors: "Colors & semantics",
       spacing: "Spacing & layout",
+      icons: "Icons & iconography",
       coreComponents: "Core UI components",
       commercePatterns: "Commerce patterns",
       accessibility: "Accessibility",
@@ -278,6 +285,11 @@ export const translations = {
         kicker: "SPATIAL FOUNDATION",
         title: "Spacing, grid & elevation",
         intro: "A deliberate 4px rhythm with consistent 8px control radius and 16px container radius.",
+      },
+      icons: {
+        kicker: "ICONOGRAPHY",
+        title: "Iconography & Lucide React system",
+        intro: "Curated 60+ Lucide React icons purpose-built for lunio.com.tw e-commerce storefronts, bedding specifications, trust guarantees, and mobile navigation.",
       },
       components: {
         kicker: "INTERFACE COMPONENTS",

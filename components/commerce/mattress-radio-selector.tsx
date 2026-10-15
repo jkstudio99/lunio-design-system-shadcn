@@ -211,7 +211,7 @@ export function MattressRadioSelector({
             return (
               <Label
                 key={size.id}
-                htmlFor={`size-{size.id}`}
+                htmlFor={`size-${size.id}`}
                 className={cn(
                   "flex cursor-pointer items-center justify-between rounded-xl border p-3.5 transition-all outline-none",
                   isSelected
@@ -220,7 +220,7 @@ export function MattressRadioSelector({
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <RadioGroupItem value={size.id} id={`size-{size.id}`} />
+                  <RadioGroupItem value={size.id} id={`size-${size.id}`} />
                   <div>
                     <div className="flex items-center gap-1.5">
                       <span className="typo-label font-semibold text-foreground">
@@ -281,7 +281,7 @@ export function MattressRadioSelector({
             return (
               <Label
                 key={feel.id}
-                htmlFor={`feel-{feel.id}`}
+                htmlFor={`feel-${feel.id}`}
                 className={cn(
                   "flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-all outline-none",
                   isSelected
@@ -291,7 +291,7 @@ export function MattressRadioSelector({
               >
                 <RadioGroupItem
                   value={feel.id}
-                  id={`feel-{feel.id}`}
+                  id={`feel-${feel.id}`}
                   className="mt-0.5"
                 />
                 <div>

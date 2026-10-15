@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import {useState,type ReactNode} from "react";
-import {ArrowRight,ArrowUpRight,Calendar,Check,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,Copy,Download,Eye,FileCode2,GitCommit,HelpCircle,History,Info,Layers,Layers3,Minus,Monitor,Plus,RefreshCw,RotateCcw,ShieldCheck,ShoppingBag,Smartphone,Sparkles,Star,Tag,TriangleAlert,Truck,X} from "lucide-react";
+import {ArrowRight,ArrowUpRight,Calendar,Check,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,Copy,Download,Eye,FileCode2,GitCommit,HelpCircle,History,Info,Layers,Layers3,Minus,Monitor,Moon,Plus,RefreshCw,RotateCcw,ShieldCheck,ShoppingBag,Smartphone,Sparkles,Star,Tag,TriangleAlert,Truck,X} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {Card,CardContent} from "@/components/ui/card";
@@ -29,6 +29,7 @@ import {ProductRating} from "@/components/commerce/product-rating";
 import {MattressSpecsAccordion} from "@/components/commerce/mattress-specs-accordion";
 import {MattressRadioSelector} from "@/components/commerce/mattress-radio-selector";
 import {ProductCarousel} from "@/components/commerce/product-carousel";
+import {IconsGallery} from "@/components/docs-icons";
 import {useBrand} from "@/components/brand-provider";
 import {useLanguage} from "@/components/language-provider";
 import {allDocs,brands,contrastRatio,roleNames,tokens,type TypeRole} from "@/lib/design-system";
@@ -39,11 +40,12 @@ const sections:Record<string,{number:string;kicker:string;title:string;intro:str
  typography:{number:"02—03",kicker:"TYPOGRAPHY",title:"MiSansTC typography",intro:"Twelve semantic roles, five font weights, two reference viewports. No page-specific type styling."},
  colors:{number:"04",kicker:"COLORS",title:"Color & semantic tokens",intro:"Brand values stay distinct; UI components consume accessible foreground/background pairs, not hard-coded hex."},
  spacing:{number:"05",kicker:"SPATIAL FOUNDATION",title:"Spacing, grid & elevation",intro:"A deliberate 4px rhythm with consistent 8px control radius and 16px container radius."},
- components:{number:"06",kicker:"INTERFACE COMPONENTS",title:"Core UI components",intro:"Buttons, status badges, forms, selectors, and interactive states powered by the same semantic values."},
- commerce:{number:"07",kicker:"COMMERCE PATTERNS",title:"E-commerce components",intro:"Product cards, Taiwan mattress sizes, variation selection, mobile navigation and sticky purchase patterns."},
- accessibility:{number:"08",kicker:"ACCESSIBILITY",title:"Accessibility & UI quality",intro:"WCAG 2.2 AA as a measurable release goal. Check actual interactions, not tokens alone."},
- release:{number:"09",kicker:"OPERATIONS",title:"Production release",intro:"A shared contract between design, engineering, QA and brand ownership; a staged path to a maintainable storefront."},
- changelog:{number:"10",kicker:"VERSION HISTORY",title:"Changelog & versions",intro:"Complete release notes, milestones, component additions, and migration history across every version of Lunio Design System."}
+ icons:{number:"06",kicker:"ICONOGRAPHY",title:"Icons & iconography",intro:"Curated Lucide icons purpose-built for lunio.com.tw e-commerce storefronts, bedding specifications, trust guarantees, and mobile navigation."},
+ components:{number:"07",kicker:"INTERFACE COMPONENTS",title:"Core UI components",intro:"Buttons, status badges, forms, selectors, and interactive states powered by the same semantic values."},
+ commerce:{number:"08",kicker:"COMMERCE PATTERNS",title:"E-commerce components",intro:"Product cards, Taiwan mattress sizes, variation selection, mobile navigation and sticky purchase patterns."},
+ accessibility:{number:"09",kicker:"ACCESSIBILITY",title:"Accessibility & UI quality",intro:"WCAG 2.2 AA as a measurable release goal. Check actual interactions, not tokens alone."},
+ release:{number:"10",kicker:"OPERATIONS",title:"Production release",intro:"A shared contract between design, engineering, QA and brand ownership; a staged path to a maintainable storefront."},
+ changelog:{number:"11",kicker:"VERSION HISTORY",title:"Changelog & versions",intro:"Complete release notes, milestones, component additions, and migration history across every version of Lunio Design System."}
 };
 
 function Subheading({title,desc}:{title:string;desc?:string}){
@@ -1715,7 +1717,136 @@ function ChangelogPage() {
   );
 }
 
-const pages:Record<string,()=>ReactNode>={"getting-started":Overview,brands:BrandPage,typography:TypographyPage,colors:ColorsPage,spacing:SpacingPage,components:ComponentsPage,commerce:CommercePage,accessibility:AccessibilityPage,release:ReleasePage,changelog:ChangelogPage};
+function IconsPage() {
+  const { isZh } = useLanguage();
+  return (
+    <div className="space-y-12">
+      <div className="docs-block">
+        <Subheading
+          title={isZh ? "Lunio 官方精選圖示庫 (lunio.com.tw)" : "Lunio Curated Icon Gallery (lunio.com.tw)"}
+          desc={isZh ? "精選 50+ 組專為台灣床墊與寢具電商量身打造之 Lucide React 向量圖示。支援自訂尺寸、筆畫寬度切換與一鍵複製 JSX 程式碼。" : "Curated 50+ Lucide React vector icons tailored for Taiwan mattress and bedding e-commerce. Supports size previews, stroke customization, and one-click JSX copying."}
+        />
+        <IconsGallery />
+      </div>
+
+      <div className="docs-block">
+        <Subheading
+          title={isZh ? "台灣電商四大安心保證實務展示" : "Taiwan E-Commerce Trust Badges Live Demo"}
+          desc={isZh ? "lunio.com.tw 在商品詳情頁 (PDP) 與購物車重點展示之四大安心保證模組，結合語意 Token 與標準化圖示。" : "The four signature trust assurance modules displayed across lunio.com.tw PDP and checkout, combining semantic tokens and standardized iconography."}
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="rounded-xl border border-border bg-card p-4 transition hover:border-primary/50 shadow-xs flex flex-col items-center text-center">
+            <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-3">
+              <Moon size={24} strokeWidth={2} aria-hidden="true" />
+            </div>
+            <h4 className="text-sm font-bold text-foreground">{isZh ? "100 晚安心試睡" : "100-Night Sleep Trial"}</h4>
+            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{isZh ? "在家親身感受無重力好眠，不滿意專人協助回收退款" : "Experience zero-gravity sleep at home with full return assistance"}</p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card p-4 transition hover:border-primary/50 shadow-xs flex flex-col items-center text-center">
+            <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-3">
+              <Truck size={24} strokeWidth={2} aria-hidden="true" />
+            </div>
+            <h4 className="text-sm font-bold text-foreground">{isZh ? "全台免運送到府" : "Free Nationwide Delivery"}</h4>
+            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{isZh ? "台灣本島專車免運送到府，公寓樓層費全免專人搬運" : "Free white-glove specialized delivery with zero stairs surcharge"}</p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card p-4 transition hover:border-primary/50 shadow-xs flex flex-col items-center text-center">
+            <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-3">
+              <ShieldCheck size={24} strokeWidth={2} aria-hidden="true" />
+            </div>
+            <h4 className="text-sm font-bold text-foreground">{isZh ? "10 年原廠核心保固" : "10-Year Factory Warranty"}</h4>
+            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{isZh ? "天然乳膠與高錳鋼彈簧結構，享有 10 年抗下陷保固承諾" : "Guaranteed anti-sag structural durability on latex and pocket coils"}</p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card p-4 transition hover:border-primary/50 shadow-xs flex flex-col items-center text-center">
+            <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-3">
+              <RotateCcw size={24} strokeWidth={2} aria-hidden="true" />
+            </div>
+            <h4 className="text-sm font-bold text-foreground">{isZh ? "免費舊床回收協助" : "Free Mattress Recycling"}</h4>
+            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{isZh ? "專車配送時免費協助將舊床搬運至一樓或配合環保局回收" : "Free assistance moving old mattress downstairs upon delivery"}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="docs-block">
+        <Subheading
+          title={isZh ? "尺寸階層與排版對應規範" : "Icon Size Hierarchy & Typography Pairing"}
+          desc={isZh ? "全站圖示嚴格遵循 4px 空間律動，與 MiSans TC 文字階層形成最佳視覺比例。" : "Icons strictly adhere to the 4px rhythm, creating balanced visual hierarchy alongside MiSans TC typography."}
+        />
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-muted/50 border-b border-border text-[11px] font-semibold text-muted-foreground">
+              <tr>
+                <th className="p-3.5">{isZh ? "尺寸 (Size)" : "Size"}</th>
+                <th className="p-3.5">{isZh ? "Tailwind 類別" : "Tailwind Class"}</th>
+                <th className="p-3.5">{isZh ? "文字角色配對" : "Paired Typography"}</th>
+                <th className="p-3.5">{isZh ? "電商建議應用情境" : "Recommended Context"}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/60">
+              <tr>
+                <td className="p-3.5 font-mono font-bold text-foreground">16px</td>
+                <td className="p-3.5 font-mono text-primary">size-4 (16×16px)</td>
+                <td className="p-3.5">{isZh ? "Caption (12px) / Label (14px)" : "Caption (12px) / Label (14px)"}</td>
+                <td className="p-3.5 text-muted-foreground">{isZh ? "表單輸入框前後綴、麵包屑箭頭、輔助提示徽章" : "Input prefixes/suffixes, breadcrumb chevrons, compact helper badges"}</td>
+              </tr>
+              <tr>
+                <td className="p-3.5 font-mono font-bold text-foreground">20px</td>
+                <td className="p-3.5 font-mono text-primary">size-5 (20×20px)</td>
+                <td className="p-3.5">{isZh ? "Body MD (16px) / Button (14px)" : "Body MD (16px) / Button (14px)"}</td>
+                <td className="p-3.5 text-muted-foreground">{isZh ? "標準按鈕 (Button)、PDP 常駐購買列、全站導覽抽屜" : "Standard interactive buttons, sticky purchase bar, navigation drawer items"}</td>
+              </tr>
+              <tr>
+                <td className="p-3.5 font-mono font-bold text-foreground">24px</td>
+                <td className="p-3.5 font-mono text-primary">size-6 (24×24px)</td>
+                <td className="p-3.5">{isZh ? "H4 (20px) / H3 (24px)" : "H4 (20px) / H3 (24px)"}</td>
+                <td className="p-3.5 text-muted-foreground">{isZh ? "規格特色分類卡片、手風琴標題、彈窗標題" : "Category feature cards, accordion triggers, modal headers"}</td>
+              </tr>
+              <tr>
+                <td className="p-3.5 font-mono font-bold text-foreground">32px</td>
+                <td className="p-3.5 font-mono text-primary">size-8 (32×32px)</td>
+                <td className="p-3.5">{isZh ? "H2 (28px) / H1 (36px)" : "H2 (28px) / H1 (36px)"}</td>
+                <td className="p-3.5 text-muted-foreground">{isZh ? "安心信任保證模組、購物車空狀態、全館活動橫幅" : "Trust guarantee modules, empty cart states, campaign banners"}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="docs-block">
+        <Subheading
+          title={isZh ? "無障礙 WCAG 2.2 AA 規範" : "Accessibility & WCAG 2.2 AA Rules"}
+          desc={isZh ? "確保圖示在螢幕閱讀器與鍵盤導航下具備完善的語意可達性。" : "Ensure icons are accessible for screen readers and keyboard navigation."}
+        />
+        <div className="space-y-4">
+          <SpecNote>
+            {isZh
+              ? "若圖示僅作為文字輔助的裝飾性用途（例如按鈕內有文字「加入購物車」並附帶購物袋圖示），必須加上 aria-hidden=\"true\" 避免螢幕閱讀器重複報讀。"
+              : "When an icon is purely decorative alongside visible text (e.g. 'Add to Cart' with a shopping bag), add aria-hidden=\"true\" to prevent duplicate screen reader announcements."}
+          </SpecNote>
+
+          <CodePanel
+            label="REACT / ACCESSIBILITY PATTERN"
+            code={`// 1. 裝飾性圖示 (有文字並列)
+<Button className="gap-2">
+  <ShoppingBag className="size-5" aria-hidden="true" />
+  <span>加入購物車</span>
+</Button>
+
+// 2. 獨立圖示按鈕 (無文字，例如關閉或收藏按鈕)
+<Button variant="ghost" size="icon" aria-label="收藏商品">
+  <Heart className="size-5" aria-hidden="true" />
+  <span className="sr-only">加入願望清單</span>
+</Button>`}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const pages:Record<string,()=>ReactNode>={"getting-started":Overview,brands:BrandPage,typography:TypographyPage,colors:ColorsPage,spacing:SpacingPage,icons:IconsPage,components:ComponentsPage,commerce:CommercePage,accessibility:AccessibilityPage,release:ReleasePage,changelog:ChangelogPage};
 
 const titlesZh: Record<string, string> = {
   "getting-started": "快速入門指南",
@@ -1723,6 +1854,7 @@ const titlesZh: Record<string, string> = {
   typography: "字體排印系統",
   colors: "色彩與語意 Token",
   spacing: "空間與佈局律動",
+  icons: "圖示系統與規範",
   components: "核心 UI 元件庫",
   commerce: "台灣電商元件",
   accessibility: "無障礙檢驗標準",

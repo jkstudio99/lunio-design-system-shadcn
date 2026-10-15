@@ -33,8 +33,8 @@ export function ProductRating({
       className={cn("flex flex-wrap items-center gap-3 py-1", className)}
       aria-label={
         isZh
-          ? `評分 {score} 顆星，共 {reviewCount.toLocaleString()} 則真實評價`
-          : `Rating {score} out of 5 stars, based on {reviewCount.toLocaleString()} customer reviews`
+          ? `評分 ${score} 顆星，共 ${reviewCount.toLocaleString()} 則真實評價`
+          : `Rating ${score} out of 5 stars, based on ${reviewCount.toLocaleString()} customer reviews`
       }
     >
       <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400">

@@ -21,6 +21,7 @@ const titlesZh: Record<string, string> = {
   typography: "字體排印系統",
   colors: "色彩與語意 Token",
   spacing: "空間與佈局律動",
+  icons: "圖示系統 (Icons)",
   components: "核心 UI 元件庫",
   commerce: "台灣電商元件",
   accessibility: "無障礙檢驗標準",
@@ -52,15 +53,15 @@ function NavList({ onChoose }: { onChoose?: () => void }) {
               return (
                 <Link
                   key={l.slug}
-                  href={`/docs/{l.slug}`}
+                  href={`/docs/${l.slug}`}
                   onClick={onChoose}
-                  aria-current={path === `/docs/{l.slug}` ? "page" : undefined}
-                  data-active={path === `/docs/{l.slug}`}
+                  aria-current={path === `/docs/${l.slug}` ? "page" : undefined}
+                  data-active={path === `/docs/${l.slug}`}
                   className="docs-sidebar-link"
                 >
                   <span className="min-w-[30px] text-[10px] font-mono text-muted-foreground">{l.number}</span>
                   <span className="flex-1">{displayTitle}</span>
-                  {path === `/docs/{l.slug}` && <ChevronRight size={14} />}
+                  {path === `/docs/${l.slug}` && <ChevronRight size={14} />}
                 </Link>
               );
             })}
@@ -295,7 +296,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
               {allDocs.map((d) => {
                 const title = isZh ? (titlesZh[d.slug] || d.title) : d.title;
                 return (
-                  <CommandItem key={d.slug} value={`{d.title} {title} {d.slug}`} onSelect={() => {setSearchOpen(false);router.push(`/docs/{d.slug}`);}}>
+                  <CommandItem key={d.slug} value={`${d.title} ${title} ${d.slug}`} onSelect={() => {setSearchOpen(false);router.push(`/docs/${d.slug}`);}}>
                     <FileCode2 className="size-4 text-primary"/>
                     <span className="flex-1">{title}</span>
                     <ChevronRight className="size-4 text-muted-foreground"/>
