@@ -159,7 +159,7 @@ export function MattressRadioSelector({
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[min(94vw,420px)] p-6 overflow-y-auto">
-                <SheetHeader>
+                <SheetHeader className="p-0 pr-12">
                   <SheetTitle>{isZh ? "台灣床墊標準尺寸對照表" : "Taiwan Mattress Standard Size Chart"}</SheetTitle>
                   <SheetDescription>
                     {isZh

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import {useState} from "react";
-import {ArrowLeft,BookOpen,Check,CheckCircle2,ChevronRight,Copy,Download,Menu,Search} from "lucide-react";
+import {ArrowLeft,BookOpen,Check,CheckCircle2,ChevronRight,Copy,Download,Menu,Search,X} from "lucide-react";
 import {BrandSwitcher, MobileBrandGrid} from "@/components/brand-switcher";
 import {ThemeToggle, MobileThemeSelector} from "@/components/theme-toggle";
 import {LanguageToggle, MobileLanguageSelector} from "@/components/language-toggle";
@@ -9,7 +9,7 @@ import {useLanguage} from "@/components/language-provider";
 import {brands} from "@/lib/design-system";
 import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
-import {Sheet,SheetContent,SheetTrigger,SheetHeader,SheetTitle,SheetDescription} from "@/components/ui/sheet";
+import {Sheet,SheetClose,SheetContent,SheetTrigger,SheetHeader,SheetTitle,SheetDescription} from "@/components/ui/sheet";
 export function Showcase(){
  const {isZh,t}=useLanguage();
  const [copied,setCopied]=useState(false);const [mobileOpen,setMobileOpen]=useState(false);
@@ -50,9 +50,9 @@ export function Showcase(){
               <Menu size={18}/>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[min(90vw,350px)] p-0 flex flex-col border-l border-border">
-            <SheetHeader className="p-3.5 border-b border-border/80 flex flex-row items-center justify-between gap-3 space-y-0">
-              <div className="flex items-center gap-2">
+          <SheetContent side="right" showCloseButton={false} className="w-[min(90vw,350px)] gap-0 p-0 flex flex-col border-l border-border">
+            <SheetHeader className="h-[58px] px-4 py-0 border-b border-border/80 flex flex-row items-center justify-between gap-3 space-y-0 shrink-0">
+              <div className="flex items-center gap-2 min-w-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/lunio/lunio-primary.svg" alt="Lunio" className="logo-theme-light h-[22px] w-auto object-contain" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -61,6 +61,16 @@ export function Showcase(){
               </div>
               <SheetTitle className="sr-only">Lunio Design System</SheetTitle>
               <SheetDescription className="sr-only">Mobile navigation</SheetDescription>
+              <SheetClose asChild>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="size-9 shrink-0 rounded-lg border border-border/70 bg-muted/30 text-muted-foreground hover:bg-accent hover:text-foreground"
+                  aria-label={isZh ? "關閉導覽選單" : "Close navigation menu"}
+                >
+                  <X className="size-4" />
+                </Button>
+              </SheetClose>
             </SheetHeader>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">

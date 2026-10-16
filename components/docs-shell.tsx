@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
-import { ArrowUpRight, BookOpen, ChevronRight, FileCode2, Menu, Search } from "lucide-react";
+import { ArrowUpRight, BookOpen, ChevronRight, FileCode2, Menu, Search, X } from "lucide-react";
 import { BrandSwitcher, MobileBrandGrid } from "@/components/brand-switcher";
 import { ThemeToggle, MobileThemeSelector } from "@/components/theme-toggle";
 import { LanguageToggle, MobileLanguageSelector } from "@/components/language-toggle";
@@ -10,7 +10,7 @@ import { useLanguage } from "@/components/language-provider";
 import { docsNav, allDocs } from "@/lib/design-system";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Separator } from "@/components/ui/separator";
@@ -103,11 +103,12 @@ export function DocsShell({ children }: { children: ReactNode }) {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="w-[min(90vw,350px)] p-0 flex flex-col border-r border-border"
+            showCloseButton={false}
+            className="w-[min(90vw,350px)] gap-0 p-0 flex flex-col border-r border-border"
             aria-describedby="docs-mobile-nav-description"
           >
-            <SheetHeader className="p-3.5 border-b border-border/80 flex flex-row items-center justify-between gap-3 space-y-0">
-              <div className="flex items-center gap-2">
+            <SheetHeader className="h-[58px] px-4 py-0 border-b border-border/80 flex flex-row items-center justify-between gap-3 space-y-0 shrink-0">
+              <div className="flex items-center gap-2 min-w-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/lunio/lunio-primary.svg"
@@ -126,6 +127,16 @@ export function DocsShell({ children }: { children: ReactNode }) {
               <SheetDescription id="docs-mobile-nav-description" className="sr-only">
                 Lunio Design System mobile navigation
               </SheetDescription>
+              <SheetClose asChild>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="size-9 shrink-0 rounded-lg border border-border/70 bg-muted/30 text-muted-foreground hover:bg-accent hover:text-foreground"
+                  aria-label={isZh ? "關閉導覽選單" : "Close navigation menu"}
+                >
+                  <X className="size-4" />
+                </Button>
+              </SheetClose>
             </SheetHeader>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">

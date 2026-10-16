@@ -46,7 +46,7 @@ export function MobileMegaMenu() {
         className="w-[min(92vw,390px)] gap-0 p-0"
         aria-describedby="menu-description"
       >
-        <SheetHeader className="p-4 border-b border-border">
+        <SheetHeader className="p-4 pr-14 border-b border-border">
           <SheetTitle>{isZh ? "床墊導覽 · Lunio" : "Mattress Nav · Lunio"}</SheetTitle>
           <SheetDescription id="menu-description">
             {isZh ? "依品牌篩選床墊與周邊商品" : "Filter mattresses and sleep products by brand"}
