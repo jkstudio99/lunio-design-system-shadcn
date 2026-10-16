@@ -7,12 +7,15 @@ import { useLanguage } from "@/components/language-provider";
 import { formatPrice, normalizePriceLabel } from "@/lib/design-system";
 import { cn } from "@/lib/utils";
 
-type PDPStickyBarProps = {
+export type PDPStickyBarProps = {
   sizeLabel?: string;
   price?: number;
+  priceAmount?: number;
   regularPrice?: number;
+  compareAtAmount?: number;
   currencyCode?: string;
   priceLabel?: string;
+  discountBadge?: string;
   inStock: boolean;
   ready: boolean;
   onAdd?: () => void;
@@ -24,9 +27,12 @@ type PDPStickyBarProps = {
 export function PDPStickyBar({
   sizeLabel,
   price,
+  priceAmount,
   regularPrice,
+  compareAtAmount,
   currencyCode = "TWD",
   priceLabel,
+  discountBadge,
   inStock,
   ready,
   onAdd,
@@ -35,19 +41,22 @@ export function PDPStickyBar({
 }: PDPStickyBarProps) {
   const { isZh } = useLanguage();
 
+  const effectivePrice = price ?? priceAmount;
+  const effectiveRegular = regularPrice ?? compareAtAmount;
+
   const resolvedPrice =
-    typeof price === "number"
-      ? formatPrice(price, currencyCode)
+    typeof effectivePrice === "number"
+      ? formatPrice(effectivePrice, currencyCode)
       : normalizePriceLabel(priceLabel || "", currencyCode);
 
   const resolvedRegular =
-    typeof regularPrice === "number" && typeof price === "number" && regularPrice > price
-      ? formatPrice(regularPrice, currencyCode)
+    typeof effectiveRegular === "number" && typeof effectivePrice === "number" && effectiveRegular > effectivePrice
+      ? formatPrice(effectiveRegular, currencyCode)
       : undefined;
 
   const savings =
-    typeof regularPrice === "number" && typeof price === "number" && regularPrice > price
-      ? regularPrice - price
+    typeof effectiveRegular === "number" && typeof effectivePrice === "number" && effectiveRegular > effectivePrice
+      ? effectiveRegular - effectivePrice
       : undefined;
 
   const selectedText = isZh ? "已選擇：" : "Selected: ";
@@ -84,9 +93,9 @@ export function PDPStickyBar({
               {resolvedRegular}
             </span>
           )}
-          {savings && (
+          {(discountBadge || savings) && (
             <Badge variant="sale" className="px-2 py-0.5 text-[11px]">
-              {isZh ? `現省 ${formatPrice(savings, currencyCode)}` : `Save ${formatPrice(savings, currencyCode)}`}
+              {discountBadge || (isZh ? `現省 ${formatPrice(savings!, currencyCode)}` : `Save ${formatPrice(savings!, currencyCode)}`)}
             </Badge>
           )}
         </div>

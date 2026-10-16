@@ -58,7 +58,7 @@ test("Live pages use UI components instead of handmade select, modal or plain bu
 test("Brand portal styling and 5 weights remain in the token system",()=>{
  const css=read("src/styles/generated-tokens.css");
  const brand=read("components/brand-provider.tsx");
- for(const id of ["lunio","helix","sunset","bedding"])assert.ok(css.includes(`[data-brand="${id}"]`));
+ for(const id of ["lunio","helix","sunset","bedding","lunio-life"])assert.ok(css.includes(`[data-brand="${id}"]`));
  for(const w of ["regular","medium","semibold","bold","heavy"])assert.match(css,new RegExp(`--font-weight-${w}:`));
  assert.ok(css.includes("--interactive-text:"));
  assert.ok(brand.includes("document.documentElement.dataset.brand=brand"),"Radix portals must inherit the active brand theme");

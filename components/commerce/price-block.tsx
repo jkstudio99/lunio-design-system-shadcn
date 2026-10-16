@@ -10,11 +10,15 @@ import { formatPrice } from "@/lib/design-system";
 import { cn } from "@/lib/utils";
 
 export type PriceBlockProps = {
-  salePrice: number;
+  salePrice?: number;
+  priceAmount?: number;
   regularPrice?: number;
+  compareAtAmount?: number;
   currencyCode?: string;
-  installmentMonths?: 3 | 6 | 12;
+  installmentMonths?: 3 | 6 | 12 | number;
   sizeLabel?: string;
+  size?: "sm" | "md" | "lg" | "xl" | string;
+  sizeNote?: string;
   dimensionsCm?: string;
   mode?: "sale" | "regular" | "from" | "sold-out";
   compact?: boolean;
@@ -30,17 +34,26 @@ export type PriceBlockProps = {
  * - 月付 × 12期0利率 installment breakdown
  */
 export function PriceBlock({
-  salePrice,
-  regularPrice,
+  salePrice: rawSalePrice,
+  priceAmount,
+  regularPrice: rawRegularPrice,
+  compareAtAmount,
   currencyCode = "TWD",
   installmentMonths = 12,
   sizeLabel,
+  size,
+  sizeNote,
   dimensionsCm,
   mode = "sale",
   compact = false,
   className,
 }: PriceBlockProps) {
   const { isZh } = useLanguage();
+  const salePrice = rawSalePrice ?? priceAmount ?? 0;
+  const regularPrice = rawRegularPrice ?? compareAtAmount;
+  const isCompact = compact || size === "md" || size === "sm";
+  const resolvedDimensions = dimensionsCm ?? sizeNote;
+
   const hasDiscount =
     mode !== "regular" &&
     typeof regularPrice === "number" &&
@@ -58,16 +71,16 @@ export function PriceBlock({
       data-slot="price-block"
       className={cn(
         "rounded-2xl border border-border/80 bg-card p-5 shadow-2xs space-y-3",
-        compact && "p-4 space-y-2",
+        isCompact && "p-4 space-y-2",
         className
       )}
     >
-      {(sizeLabel || dimensionsCm) && (
+      {(sizeLabel || resolvedDimensions) && (
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
           <span>
             {isZh ? "目前計價規格：" : "Selected variation: "}
-            <strong className="font-semibold text-foreground">{sizeLabel}</strong>
-            {dimensionsCm ? ` (${dimensionsCm})` : ""}
+            {sizeLabel && <strong className="font-semibold text-foreground">{sizeLabel}</strong>}
+            {resolvedDimensions ? (sizeLabel ? ` (${resolvedDimensions})` : <strong className="font-semibold text-foreground">{resolvedDimensions}</strong>) : ""}
           </span>
           {mode === "sold-out" ? (
             <Badge variant="destructive">{isZh ? "暫無庫存" : "Sold Out"}</Badge>
@@ -80,7 +93,7 @@ export function PriceBlock({
       <div className="flex flex-wrap items-baseline gap-2.5">
         <span
           className={cn(
-            compact ? "typo-price-md" : "typo-price-xl",
+            isCompact ? "typo-price-md" : "typo-price-xl",
             "text-primary tracking-tight"
           )}
         >
@@ -159,7 +172,7 @@ export function PriceBlock({
         </div>
       )}
 
-      {!compact && (
+      {!isCompact && (
         <div className="flex items-center gap-1.5 typo-caption text-muted-foreground">
           <ShieldCheck className="size-3.5 text-primary shrink-0" aria-hidden="true" />
           <span>

@@ -19,6 +19,8 @@ export type CommerceProductSummary = {
   description?: string;
   price?: number;
   regularPrice?: number;
+  priceAmount?: number;
+  compareAtAmount?: number;
   currencyCode?: string;
   priceSuffix?: string;
   priceLabel?: string;
@@ -39,24 +41,26 @@ export function ProductCard({
 }) {
   const { isZh } = useLanguage();
   const currency = product.currencyCode || "TWD";
+  const effectivePrice = product.price ?? product.priceAmount;
+  const effectiveRegular = product.regularPrice ?? product.compareAtAmount;
 
   const resolvedPriceLabel =
-    typeof product.price === "number"
-      ? `${formatPrice(product.price, currency)}${product.priceSuffix ? ` ${product.priceSuffix}` : ""}`
+    typeof effectivePrice === "number"
+      ? `${formatPrice(effectivePrice, currency)}${product.priceSuffix ? ` ${product.priceSuffix}` : ""}`
       : normalizePriceLabel(product.priceLabel || "", currency);
 
   const resolvedRegularLabel =
-    typeof product.regularPrice === "number"
-      ? formatPrice(product.regularPrice, currency)
+    typeof effectiveRegular === "number"
+      ? formatPrice(effectiveRegular, currency)
       : product.regularPriceLabel
       ? normalizePriceLabel(product.regularPriceLabel, currency)
       : undefined;
 
   const savingsAmount =
-    typeof product.price === "number" &&
-    typeof product.regularPrice === "number" &&
-    product.regularPrice > product.price
-      ? product.regularPrice - product.price
+    typeof effectivePrice === "number" &&
+    typeof effectiveRegular === "number" &&
+    effectiveRegular > effectivePrice
+      ? effectiveRegular - effectivePrice
       : undefined;
 
   const resolvedDiscountBadge =

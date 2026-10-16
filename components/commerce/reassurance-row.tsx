@@ -69,6 +69,13 @@ const DEFAULT_REASSURANCE_ITEMS: ReassuranceItem[] = [
   },
 ];
 
+export type ReassuranceRowProps = {
+  items?: ReassuranceItem[];
+  showDisclaimer?: boolean;
+  compact?: boolean;
+  className?: string;
+};
+
 /**
  * Backlog 020 — ServiceList / ReassuranceRow
  * Placed directly under the PDP Buy CTA button to address top Taiwan buyer objections:
@@ -77,13 +84,46 @@ const DEFAULT_REASSURANCE_ITEMS: ReassuranceItem[] = [
 export function ReassuranceRow({
   items = DEFAULT_REASSURANCE_ITEMS,
   showDisclaimer = true,
+  compact = false,
   className,
-}: {
-  items?: ReassuranceItem[];
-  showDisclaimer?: boolean;
-  className?: string;
-}) {
+}: ReassuranceRowProps) {
   const { isZh } = useLanguage();
+
+  if (compact) {
+    return (
+      <div
+        data-slot="reassurance-row-compact"
+        className={cn(
+          "grid grid-cols-2 gap-2.5 rounded-xl border border-border/80 bg-card p-3 sm:grid-cols-4",
+          className
+        )}
+      >
+        {items.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div
+              key={item.id}
+              className="flex items-center gap-2 rounded-lg bg-muted/40 p-2"
+            >
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <Icon className="size-3.5" aria-hidden="true" />
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-semibold text-foreground">
+                  {isZh ? item.titleZh : item.titleEn}
+                </p>
+                {(item.badgeZh || item.badgeEn) && (
+                  <span className="block text-[10px] text-muted-foreground">
+                    {isZh ? item.badgeZh : item.badgeEn}
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div
