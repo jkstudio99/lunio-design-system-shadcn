@@ -6,7 +6,25 @@ The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ---
 
-## [v1.4.0] — 2026-10-15
+## [v1.4.1] — 2026-10-16
+
+### 🚀 Highlights & Production Readiness
+- **Vercel Build Compilation & TypeScript Strictness**: Resolved TypeScript compilation errors (`TS2353`, `TS2322`) during Next.js production builds on Vercel.
+- **Component Prop Ergonomics & Compatibility**: Added backward-compatible prop aliases (`priceAmount`, `compareAtAmount`, `size`, `sizeNote`, `compact`, `discountBadge`) across `ProductCard`, `PriceBlock`, `PDPStickyBar`, and `ReassuranceRow`.
+- **ReassuranceRow Compact Layout**: Introduced compact strip variant for high-density PDP buy sections and mobile navigation sheets.
+- **Automated Test Gate Coverage**: Added `data-brand="lunio-life"` check to `tests/shadcn.test.mjs` verifying Radix portal theme inheritance across all 5 storefront brands.
+- **Documentation & Spec Synchronization**: Synchronized documentation, tokens, and package manifests to v1.4.1.
+
+### 🐛 Fixed
+- `components/commerce/product-card.tsx`: Added `priceAmount?: number` and `compareAtAmount?: number` to `CommerceProductSummary` and `ProductCard` to eliminate prop mismatch.
+- `components/commerce/price-block.tsx`: Added flexible input support for `salePrice` / `priceAmount`, `regularPrice` / `compareAtAmount`, `size?: string`, and `sizeNote?: string` with responsive compact sizing.
+- `components/commerce/reassurance-row.tsx`: Added `compact?: boolean` prop and compact capsule layout.
+- `components/commerce/pdp-sticky-bar.tsx`: Added `priceAmount`, `compareAtAmount`, and `discountBadge` support with real-time `NT21,990` formatting and `#E53935` sale badge.
+- `tests/shadcn.test.mjs`: Added assertion for `data-brand="lunio-life"` alongside other 4 brands.
+
+---
+
+## [v1.4.0] — 2026-10-16
 
 ### 🚀 Highlights & Milestones
 - **Full Interactive Verification**: Passed end-to-end interactive testing for 20+ shadcn/ui primitives and 9 Taiwan e-commerce patterns with zero runtime/console errors.

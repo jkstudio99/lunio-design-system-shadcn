@@ -1,4 +1,4 @@
-# Validation · Lunio Design System v1.4.0
+# Validation · Lunio Design System v1.4.1
 
 **Status:** Full engineering verification passed; ready for storefront integration and staging QA.
 
@@ -6,24 +6,26 @@
 
 ## 1. Automated Verification Gates
 
-- **`npm run tokens:build`**: **SUCCESS**, generated CSS for 4 brand themes (Lunio, Helix, Sunset, Bedding) and 12 responsive typography roles.
-- **`npm run tokens:check`**: **7/7 PASS**
-  - Four official brand themes (Lunio, Helix, Sunset, Bedding) verified.
+- **`npm run tokens:build`**: **SUCCESS**, generated CSS for 5 brand themes (Lunio, Helix, Sunset, Bedding, Lunio Life) and 12 responsive typography roles.
+- **`npm run tokens:check`**: **9/9 PASS**
+  - Five official brand themes (Lunio, Helix, Sunset, Bedding, Lunio Life) verified.
+  - Sale promotion token (`#E53935`) verified distinct from error token (`#B42318`).
   - MiSans TC five official weights [400, 500, 600, 700, 800] verified.
   - 12 typography roles verified with H4 semibold (600) on mobile and desktop.
-  - All brand primary foreground contrast ratios >= 4.5:1 (AAA on Lunio/Bedding 8.13:1, AA on Helix 6.48:1, AA on Sunset 6.72:1).
-  - All brand accent foreground contrast ratios >= 4.5:1 (AAA on Lunio/Bedding/Sunset, AA on Helix 4.99:1).
+  - All brand primary foreground contrast ratios >= 4.5:1 (AAA on Lunio/Bedding 8.13:1, AA on Helix 6.48:1, AA on Sunset 6.72:1, AAA on Lunio Life 13.99:1).
+  - All brand accent foreground contrast ratios >= 4.5:1 (AAA on Lunio/Bedding/Sunset, AA on Helix 4.99:1, AA on Lunio Life 6.15:1).
+  - All brand surface vs ink contrast ratios >= 4.5:1.
   - 4px spatial rhythm strictly enforced on all spacing tokens.
-  - Radii verified (8px control, 16px container).
+  - Radii verified (8px control, 16px container, 9999px pill).
 - **`npm run shadcn:check`**: **6/6 PASS**
   - Registry configuration matches New York style and `app/globals.css`.
   - Every primitive has upstream Radix / cmdk dependency declared.
-  - All 20+ shadcn UI components carry authentic `data-slot` contracts.
+  - All 22 source-owned shadcn UI components carry authentic `data-slot` contracts.
   - Zero raw `<button>` or `<select>` HTML elements in live components (`docs-content`, `docs-shell`, `showcase`, `brand-switcher`, `theme-toggle`).
-  - Brand portal theme inheritance and 5 weights maintained in token system.
-  - Commerce patterns compose real shadcn components without unsemantic divs.
+  - Brand portal theme inheritance across all 5 brands (including `lunio-life`) and 5 weights maintained in token system.
+  - 19 Commerce patterns compose real shadcn components without unsemantic divs.
 - **`npm run typecheck` (`tsc --noEmit`)**: **SUCCESS** with 0 errors across entire workspace.
-- **`npm run build` (Next.js Turbopack SSG)**: **SUCCESS**, all 15 routes compiled and prerendered statically:
+- **`npm run build` (Next.js Turbopack SSG)**: **SUCCESS**, all 19 routes compiled and prerendered statically:
   - `/` (Showcase)
   - `/design-system`
   - `/docs`
@@ -32,10 +34,13 @@
   - `/docs/typography`
   - `/docs/colors`
   - `/docs/spacing`
+  - `/docs/icons`
+  - `/docs/custom-icons`
   - `/docs/components`
   - `/docs/commerce`
   - `/docs/accessibility`
   - `/docs/release`
+  - `/docs/changelog`
   - `/docs/source`
   - `/_not-found`
 

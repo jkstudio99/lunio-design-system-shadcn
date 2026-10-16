@@ -189,8 +189,8 @@ function Overview(){
     </div>
     <SpecNote>
       {isZh
-        ? "本設計系統為 lunio.com.tw 專屬設計與工程標準（v1.4.0 Production Certified），涵蓋 Lunio Taiwan、Nooz Helix、Nooz Sunset、Lunio Bedding 與 Lunio Life 五大品牌，並新增獨立促銷紅 Token (--sale: #E53935) 與統一 NT 售價格式 (NT21,990)。"
-        : "This design system is the official standard for lunio.com.tw (v1.4.0 Production Certified), covering Lunio Taiwan, Nooz Helix, Nooz Sunset, Lunio Bedding, and Lunio Life, with a dedicated sale token (--sale: #E53935) and canonical NT price formatting (NT21,990)."}
+        ? "本設計系統為 lunio.com.tw 專屬設計與工程標準（v1.4.1 Production Certified），涵蓋 Lunio Taiwan、Nooz Helix、Nooz Sunset、Lunio Bedding 與 Lunio Life 五大品牌，並新增獨立促銷紅 Token (--sale: #E53935) 與統一 NT 售價格式 (NT21,990)。"
+        : "This design system is the official standard for lunio.com.tw (v1.4.1 Production Certified), covering Lunio Taiwan, Nooz Helix, Nooz Sunset, Lunio Bedding, and Lunio Life, with a dedicated sale token (--sale: #E53935) and canonical NT price formatting (NT21,990)."}
     </SpecNote>
   </div>;
 }
@@ -1446,13 +1446,13 @@ function ReleasePage(){
 
   const p0Closures = isZh ? [
     ['UX-01', '全站價格格式與促銷語意統一', '全面統一由 currencyCode ("NT") 渲染 (如 NT21,990，移除 NT$28,990 混用)，並新增獨立 --sale (#E53935) 促銷 Token 與 --destructive 錯誤紅分離。', '已結案 (Closed)'],
-    ['DS-02', 'DESIGN.md 規範與實作數量同步', '修正版本標頭與 §10 為 v1.4.0 Production Certified；同步 22 個 shadcn/ui 原生基底、19 個台灣電商模式與 Badge rounded-full (9999px) 規格。', '已結案 (Closed)'],
+    ['DS-02', 'DESIGN.md 規範與實作數量同步', '修正版本標頭與 §10 為 v1.4.1 Production Certified；同步 22 個 shadcn/ui 原生基底、19 個台灣電商模式與 Badge rounded-full (9999px) 規格。', '已結案 (Closed)'],
     ['DS-03', '5 大商城品牌範疇與 Lunio Life 導入', '明確定義本系統專屬於 lunio.com.tw 商城之 5 大銷售品牌，並完整導入 data-brand="lunio-life" (Plum Night #2D274A / Titan White #CCD5F8 / Crocus Purple #9786F3)。', '已結案 (Closed)'],
     ['A11Y-04', '跨品牌前景色對比度 WCAG 2.2 AA 強制保護', '驗證 Sunset 主色搭配深墨色 #1C1526 (6.72:1)、Helix 強調色搭配純黑 #000000 (4.99:1)、Lunio Life 強調色搭配純黑 #141414 (6.15:1) 全數通過 AA。', '已結案 (Closed)'],
     ['DATA-05', '台灣床墊 SKU 實測尺寸與動態資料邊界', '修正標準單人 3 尺 (89×188×24 cm) 與單人加大 3.5 尺 (104×188×24 cm) 為 SKU 實測規格，並完整實作 001–024 轉化待辦元件。', '已結案 (Closed)']
   ] : [
     ['UX-01', 'Unified NT Price Formatting & Sale Token', 'Standardized all prices on currencyCode ("NT", e.g., NT21,990, eliminating NT$ mixing) and added dedicated --sale (#E53935) token separate from --destructive.', 'Closed & Verified'],
-    ['DS-02', 'Spec Consistencies & Component Counts', 'Synchronized header and §10 to v1.4.0 Production Certified; aligned 22 shadcn/ui primitives, 19 commerce patterns, and Badge rounded-full (9999px).', 'Closed & Verified'],
+    ['DS-02', 'Spec Consistencies & Component Counts', 'Synchronized header and §10 to v1.4.1 Production Certified; aligned 22 shadcn/ui primitives, 19 commerce patterns, and Badge rounded-full (9999px).', 'Closed & Verified'],
     ['DS-03', 'lunio.com.tw 5-Brand Scope & Lunio Life CI', 'Clarified scope specifically for lunio.com.tw covering 5 brands and added data-brand="lunio-life" (Plum Night #2D274A / Titan White #CCD5F8 / Crocus Purple #9786F3).', 'Closed & Verified'],
     ['A11Y-04', 'Cross-Brand WCAG 2.2 AA Contrast Enforcement', 'Enforced Sunset dark ink #1C1526 (6.72:1), Helix accent black #000000 (4.99:1), and Lunio Life Crocus Purple dark ink #141414 (6.15:1) in automated tests.', 'Closed & Verified'],
     ['DATA-05', 'SKU-Verified Taiwan Dimensions & Backlog 001–024', 'Aligned Single 3ft (89×188×24 cm) and Single XL 3.5ft (104×188×24 cm) to SKU-verified specs and completed all 9 missing conversion backlog suites.', 'Closed & Verified']
@@ -1462,7 +1462,7 @@ function ReleasePage(){
     <div className="docs-block overflow-x-auto">
       <Subheading
         title={isZh ? "P0 生產環境放行項目結案紀錄 (Production Readiness)" : "P0 Production Readiness Closure Record"}
-        desc={isZh ? "v1.4.0 正式版已全數關閉 5 項 P0 核心審查議題，通過自動化 Token、無障礙對比與型別檢驗。" : "All 5 P0 blockers have been resolved and verified in v1.4.0 across automated token, contrast, and typecheck gates."}
+        desc={isZh ? "v1.4.1 正式版已全數關閉 5 項 P0 核心審查議題，通過自動化 Token、無障礙對比與型別檢驗。" : "All 5 P0 blockers have been resolved and verified in v1.4.1 across automated token, contrast, and typecheck gates."}
       />
       <table className="token-table min-w-[680px]">
         <thead>
@@ -1542,7 +1542,7 @@ function ReleasePage(){
     <div className="docs-grille">
       <div className="docs-block">
         <div className="eyebrow text-primary">{isZh ? "官方核准設計源" : "APPROVED SOURCE"}</div>
-        <div className="mt-3 text-[19px] font-bold">DESIGN.md v1.4.0</div>
+        <div className="mt-3 text-[19px] font-bold">DESIGN.md v1.4.1</div>
         <p className="mt-3 text-[13px] leading-6 text-muted-foreground">
           {isZh ? "lunio.com.tw 五大品牌 (Lunio、Helix、Sunset、Bedding、Lunio Life) 字體排印與色彩權威來源。" : "Authoritative typography and 5-brand color specification for lunio.com.tw."}
         </p>
@@ -1566,10 +1566,42 @@ function ReleasePage(){
 
 const releaseListZh = [
   {
-    version: "v1.4.0",
+    version: "v1.4.1",
     date: "2026-10-16",
     badge: "最新版本 · Production Certified",
     badgeClass: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+    title: "TypeScript 生產型別強化、Vercel Build 修正與元件 API 彈性擴充",
+    description: "全面修正 Vercel 生產建置 TypeScript 型別不相容問題，為 ProductCard、PriceBlock、PDPStickyBar 與 ReassuranceRow 提供向下相容的屬性別名與緊湊版佈局支援，並在自動化測試套件中納入第 5 品牌 Lunio Life 的主題繼承驗證。",
+    highlights: [
+      "解決 Vercel Build TS2353/TS2322 錯誤：全面相容 priceAmount、compareAtAmount、size、sizeNote、compact 與 discountBadge",
+      "ReassuranceRow 新增 compact 緊湊膠囊佈局，無縫適配 PDP 購買區域與手機版抽屜",
+      "擴充 tests/shadcn.test.mjs 自動化驗證閘門，確保 data-brand=\"lunio-life\" 與其餘 4 大品牌一致具備完整 Radix Portal 主題繼承",
+      "通過 9/9 Token 測試、6/6 shadcn 測試、零 TypeScript 錯誤與 19/19 SSG 靜態路由編譯"
+    ],
+    sections: [
+      {
+        tag: "生產建置與型別強化",
+        items: [
+          "CommerceProductSummary 與 ProductCard 全面支援 priceAmount 與 compareAtAmount 屬性別名",
+          "PriceBlockProps 與 PriceBlock 支援 salePrice / priceAmount、regularPrice / compareAtAmount 以及 size (sm/md/lg/xl) 與 sizeNote 規格尺寸",
+          "PDPStickyBarProps 與 PDPStickyBar 支援 priceAmount、compareAtAmount 與 discountBadge",
+          "ReassuranceRow 支援 compact?: boolean 屬性與 4 欄緊湊列模式"
+        ]
+      },
+      {
+        tag: "測試套件與規範同步",
+        items: [
+          "tests/shadcn.test.mjs 新增 lunio-life 品牌檢查，覆蓋全部 5 大商城品牌",
+          "同步 DESIGN.md、tokens.json 與 package.json 至 v1.4.1"
+        ]
+      }
+    ]
+  },
+  {
+    version: "v1.4.0",
+    date: "2026-10-16",
+    badge: "5 品牌架構與 19 個電商元件",
+    badgeClass: "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30",
     title: "lunio.com.tw 五大品牌體系 (含 Lunio Life)、22 個 UI 基底與 19 個台灣電商轉化模式",
     description: "明確定義系統專屬於 lunio.com.tw 台灣官方商城之 5 大銷售品牌，正式導入第 5 品牌 Lunio Life (#2D274A / #CCD5F8 / #9786F3)，統一全站 NT 價格格式與獨立促銷紅 Sale Token (#E53935)，並完成全部 19 個電商轉化元件。",
     highlights: [
@@ -1731,10 +1763,42 @@ const releaseListZh = [
 
 const releaseListEn = [
   {
-    version: "v1.4.0",
+    version: "v1.4.1",
     date: "2026-10-16",
     badge: "Latest · Production Certified",
     badgeClass: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+    title: "TypeScript Production Hardening, Vercel Build Fix & Component API Ergonomics",
+    description: "Resolved all TypeScript property incompatibility errors during Vercel production Next.js builds, added backward-compatible prop aliases and compact layout variants across ProductCard, PriceBlock, PDPStickyBar, and ReassuranceRow, and extended automated test gates to verify 5th brand Lunio Life theme inheritance.",
+    highlights: [
+      "Resolved Vercel Build TS2353/TS2322 errors: added full support for priceAmount, compareAtAmount, size, sizeNote, compact, and discountBadge aliases",
+      "Introduced ReassuranceRow compact capsule strip layout for high-density PDP buy sections and mobile sheets",
+      "Enhanced tests/shadcn.test.mjs automated quality gate to assert data-brand=\"lunio-life\" alongside the existing 4 brands",
+      "Verified across 9/9 token tests, 6/6 shadcn tests, 0 TypeScript errors, and 19/19 SSG static routes"
+    ],
+    sections: [
+      {
+        tag: "Production Build & TypeScript Hardening",
+        items: [
+          "CommerceProductSummary and ProductCard support priceAmount and compareAtAmount aliases",
+          "PriceBlockProps and PriceBlock support salePrice / priceAmount, regularPrice / compareAtAmount, and size (sm/md/lg/xl) / sizeNote",
+          "PDPStickyBarProps and PDPStickyBar support priceAmount, compareAtAmount, and discountBadge",
+          "ReassuranceRow supports compact?: boolean prop and 4-column inline strip layout"
+        ]
+      },
+      {
+        tag: "Test Gates & Spec Alignment",
+        items: [
+          "tests/shadcn.test.mjs adds lunio-life assertion covering all 5 storefront brands",
+          "Synchronized DESIGN.md, tokens.json, and package.json to v1.4.1"
+        ]
+      }
+    ]
+  },
+  {
+    version: "v1.4.0",
+    date: "2026-10-16",
+    badge: "5-Brand Scope & 19 Commerce Patterns",
+    badgeClass: "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30",
     title: "lunio.com.tw 5-Brand Architecture (incl. Lunio Life), 22 Primitives & 19 Commerce Patterns",
     description: "Explicitly scoped the design system to lunio.com.tw covering 5 brands, onboarded the 5th brand Lunio Life (#2D274A / #CCD5F8 / #9786F3), standardized all storefront prices on currencyCode ('NT') with a dedicated Sale token (#E53935), and completed all 19 Taiwan commerce patterns.",
     highlights: [
@@ -1957,7 +2021,7 @@ function ChangelogPage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                {isZh ? "目前版本：v1.4.0 (Production Certified)" : "Current: v1.4.0 (Production Certified)"}
+                {isZh ? "目前版本：v1.4.1 (Production Certified)" : "Current: v1.4.1 (Production Certified)"}
               </span>
               <span className="text-xs text-muted-foreground">
                 {isZh ? "發布日期：2026-10-16" : "Released 2026-10-16"}
@@ -2010,8 +2074,9 @@ function ChangelogPage() {
         />
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="mb-6 flex flex-wrap h-auto p-1 bg-muted/60">
-            <TabsTrigger value="all" className="text-xs">{isZh ? "全部版本 (5)" : "All Releases (5)"}</TabsTrigger>
-            <TabsTrigger value="v1.4.0" className="text-xs">{isZh ? "v1.4.0 (最新)" : "v1.4.0 (Latest)"}</TabsTrigger>
+            <TabsTrigger value="all" className="text-xs">{isZh ? "全部版本 (6)" : "All Releases (6)"}</TabsTrigger>
+            <TabsTrigger value="v1.4.1" className="text-xs">{isZh ? "v1.4.1 (最新)" : "v1.4.1 (Latest)"}</TabsTrigger>
+            <TabsTrigger value="v1.4.0" className="text-xs">v1.4.0</TabsTrigger>
             <TabsTrigger value="v1.3.0" className="text-xs">v1.3.0</TabsTrigger>
             <TabsTrigger value="v1.2.0" className="text-xs">v1.2.0</TabsTrigger>
             <TabsTrigger value="v1.1.0" className="text-xs">v1.1.0</TabsTrigger>
@@ -2218,7 +2283,7 @@ export function DocsContent({slug}:{slug:string}){
   return <article className="docs-article">
     <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
       <span className="eyebrow text-primary">{meta.number} / {kicker}</span>
-      <span className="text-[11px] text-muted-foreground">LUNIO DS · v1.4</span>
+      <span className="text-[11px] text-muted-foreground">LUNIO DS · v1.4.1</span>
     </div>
     <h1 className="typo-h1 max-w-4xl tracking-[-.03em]">{title}</h1>
     <p className="typo-body-md mt-4 max-w-3xl text-muted-foreground">{intro}</p>

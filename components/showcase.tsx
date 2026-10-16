@@ -24,7 +24,7 @@ export function Showcase(){
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[22px] sm:h-[28px] w-auto object-contain" />
         <span className="text-[13px] sm:text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
-        <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4.0</span>
+        <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4.1</span>
       </Link>
       <nav className="hidden items-center gap-7 text-[13px] lg:flex">
         <Link href="/docs/getting-started" className="shell-link">{isZh ? "快速入門" : "Documentation"}</Link>
@@ -58,7 +58,7 @@ export function Showcase(){
                 <img src="/images/lunio/lunio-primary.svg" alt="Lunio" className="logo-theme-light h-[22px] w-auto object-contain" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[22px] w-auto object-contain" />
-                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">v1.4.0</Badge>
+                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">v1.4.1</Badge>
               </div>
               <SheetTitle className="sr-only">Lunio Design System</SheetTitle>
               <SheetDescription className="sr-only">Mobile navigation</SheetDescription>

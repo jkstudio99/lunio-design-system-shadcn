@@ -121,7 +121,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
                   alt="Lunio"
                   className="logo-theme-dark h-[22px] w-auto object-contain"
                 />
-                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">v1.4</Badge>
+                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">v1.4.1</Badge>
               </div>
               <SheetTitle className="sr-only">{isZh ? "文檔導覽" : "Documentation"}</SheetTitle>
               <SheetDescription id="docs-mobile-nav-description" className="sr-only">
@@ -207,7 +207,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
                   onClick={() => setNavigationOpen(false)}
                   className="hover:underline"
                 >
-                  DESIGN.md v1.4
+                  DESIGN.md v1.4.1
                 </Link>
               </div>
             </div>
@@ -233,7 +233,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
           />
           <span className="text-[13px] sm:text-[14px] font-semibold tracking-tight text-muted-foreground">/design</span>
         </Link>
-        <Badge variant="outline" className="hidden md:inline-flex text-[10px] font-mono">v1.4 · shadcn/ui</Badge>
+        <Badge variant="outline" className="hidden md:inline-flex text-[10px] font-mono">v1.4.1 · shadcn/ui</Badge>
       </div>
 
       <div className="flex items-center gap-1.5 sm:gap-2">
@@ -286,7 +286,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2 text-[11px] font-semibold text-muted-foreground">
             <BookOpen size={15}/> {isZh ? "單一信任來源" : "SOURCE OF TRUTH"}
           </div>
-          <div className="mt-2 text-[12px] text-muted-foreground">DESIGN.md v1.4 · shadcn/ui</div>
+          <div className="mt-2 text-[12px] text-muted-foreground">DESIGN.md v1.4.1 · shadcn/ui</div>
           <a href="https://www.figma.com/design/46bJYM9raivd3wEwTxaaJI/Lunio-TW-Mattress?node-id=1036-636" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-primary">
             {isZh ? "開啟 Figma" : "Open Figma"} <ArrowUpRight size={14}/>
           </a>

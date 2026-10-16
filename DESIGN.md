@@ -2,7 +2,7 @@
 
 > Comprehensive design specification, semantic tokens, and component guidelines specifically for **`lunio.com.tw`**, covering the **5 brands** sold on the Taiwan official storefront: **Lunio Taiwan**, **Nooz Helix**, **Nooz Sunset**, **Lunio Bedding**, and **Lunio Life**. Standardized on **MiSansTC**, **4px rhythm grid**, and **WCAG 2.2 AA**.
 
-> **Document version:** v1.4.0 — Production Certified · Senior E-commerce UX/UI & Frontend Architecture (2026-10-16)
+> **Document version:** v1.4.1 — Production Certified · Senior E-commerce UX/UI & Frontend Architecture (2026-10-16)
 > **Status:** Production-certified design system specification for `lunio.com.tw` updated with **5 brand themes** (including `data-brand="lunio-life"`), **12 responsive typography roles**, **5 font weights**, **22 source-owned `shadcn/ui` primitives**, and **19 Taiwan e-commerce conversion patterns** (covering conversion backlog 001–024). Next.js Turbopack SSG production verified across all routes.
 
 ---
@@ -46,7 +46,7 @@ Extracted from the official Lunio Life Brand Identity Guidelines (02 Brand Color
 - **Pink `#EC9BB0`** (`--brand-lifestyle-accent`): Warm lifestyle callout accent for cozy home-living highlights.
 - **Light Pink `#F6D0D7`** (`--brand-support-tone`): Soft supportive pastel surface for seasonal and bundle callouts.
 
-#### Accessible semantic foreground & status decisions (v1.4.0)
+#### Accessible semantic foreground & status decisions (v1.4.1)
 
 - **Sunset primary:** preserve `#F28131` as the approved brand fill; set `color/on-primary` to `#1C1526` (calculated **6.72:1**) instead of `#FFFFFF` (**2.64:1**, fail). Do not hardcode `text-white` in brand-scoped primary buttons.
 - **Helix accent:** `#9362D9` with `#FFFFFF` is **4.21:1** (fails normal-text AA), and with `#000000` is **4.99:1** (passes normal-text AA). Use `color/on-accent` that resolves to a dark foreground where the accent serves as a text background.
@@ -273,6 +273,12 @@ npm run build
 - **shadcn/ui Migration:** Converted source-owned UI components to shadcn/ui on Radix primitives with zero raw HTML `<button>` or `<select>` elements in live pages.
 - **Commerce Patterns:** Introduced initial commerce patterns (`ProductCard`, `SizeSelector`, `QuantityStepper`, `PDPStickyBar`, `MobileMegaMenu`).
 
+### v1.4.1 — 2026-10-16 · Production TypeScript Hardening & Component API Ergonomics
+- **Vercel Build Compilation & TypeScript Fix:** Resolved `TS2353` and `TS2322` property mismatch errors during production Next.js builds. Added backward-compatible prop aliases (`priceAmount`, `compareAtAmount`, `size`, `sizeNote`, `compact`, `discountBadge`) across `ProductCard`, `PriceBlock`, `PDPStickyBar`, and `ReassuranceRow`.
+- **ReassuranceRow Compact Layout:** Added high-density horizontal strip layout for PDP buy modules and mobile navigation sheets.
+- **5-Brand Portal Theming Automated Test:** Extended `tests/shadcn.test.mjs` to explicitly assert `data-brand="lunio-life"` theme inheritance alongside `lunio`, `helix`, `sunset`, and `bedding`.
+- **Quality Gates:** 9/9 token tests, 6/6 shadcn static checks, 0 TypeScript errors (`tsc --noEmit`), and 19/19 SSG static routes compiled cleanly.
+
 ### v1.4.0 — 2026-10-16 · 5-Brand `lunio.com.tw` Scope (Lunio Life), Unified `"NT"` Pricing, Sale Token & Full Conversion Backlog (001–024)
 - **Explicit `lunio.com.tw` 5-Brand Scope & `data-brand="lunio-life"`:** Clarified that the system is specifically for `lunio.com.tw` and added the 5th brand **Lunio Life** (`Plum Night #2D274A`, `Titan White #CCD5F8`, `Crocus Purple #9786F3` with `#141414` ink, plus secondary colors `#ECE8D8`, `#EC9BB0`, `#F6D0D7`).
 - **Unified `"NT"` Price Formatting & Dedicated Sale Token (`#E53935`):** Standardized all prices on `currencyCode = "NT"` (`NT21,990`, eliminating `NT$` mixing) and introduced `--sale: #E53935` (`<Badge variant="sale">`) so promotional `現省` badges do not reuse `--destructive` (`#B42318`).
@@ -284,7 +290,7 @@ npm run build
 ## 9. Frontend Implementation Contract (Next.js + shadcn/ui)
 
 ### 9.1 Source-of-truth architecture
-- **Figma & `DESIGN.md` v1.4.0:** Approved visual specs, 5 brand modes, text styles, component anatomy and interaction examples for `lunio.com.tw`.
+- **Figma & `DESIGN.md` v1.4.1:** Approved visual specs, 5 brand modes, text styles, component anatomy and interaction examples for `lunio.com.tw`.
 - **`src/design-system/tokens.json`:** Versioned JSON source compiled via `npm run tokens:build` into `src/styles/generated-tokens.css`.
 - **WordPress / WooCommerce:** Dynamic product IDs, SKUs, variation dimensions, descriptions, price in minor units, `currencyCode` (`"NT"`), discounts, stock, shipping, order and payment information.
 - **Next.js storefront:** Accessible semantic HTML, responsive layouts, 22 `components/ui/` primitives, and 19 `components/commerce/` patterns.
@@ -303,20 +309,20 @@ npm run build
 
 | ID | Priority | Finding | Correction / Decision | Status |
 |---|---|---|---|---|
-| UX-01 | P0 | Mobile label/Body-SM readability & mixed `NT$` / `NT` price format | Raised Label 16/24, Body SM 14/22, Body MD 16/26; standardized all prices on `currencyCode` (`"NT"`, e.g. `NT21,990`) and added `--sale: #E53935` | **Closed & Verified (v1.4.0)** |
-| DS-02 | P0 | Spec inconsistencies (version header vs §10, primitive count, commerce count, Badge radius) | Aligned header & §10 to `v1.4.0`; synchronized **22** primitives, **19** commerce patterns, and `Badge` `rounded-full` (`9999px`) | **Closed & Verified (v1.4.0)** |
-| DS-03 | P0 | Storefront scope wording & missing 5th brand (`Lunio Life`) | Explicitly scoped to `lunio.com.tw` (5 brands) and added `data-brand="lunio-life"` (`#2D274A`, `#CCD5F8`, `#9786F3`) | **Closed & Verified (v1.4.0)** |
-| A11Y-04 | P0 | Cross-brand foreground contrast enforcement | Enforced Sunset `#1C1526` on `#F28131` (6.72:1), Helix `#000000` on `#9362D9` (4.99:1), Lunio Life `#141414` on `#9786F3` (6.15:1), and Sale `#FFFFFF` on `#E53935` (4.53:1) | **Closed & Verified (v1.4.0)** |
-| DATA-05 | P0 | Hardcoded 90/105cm dimensions & missing conversion backlog (001–024) | Updated Single/Single XL defaults to SKU-verified `89×188×24 cm` / `104×188×24 cm` and implemented all 9 missing commerce suites | **Closed & Verified (v1.4.0)** |
-| UX-06 | P1 | Mega Menu tab overflow at 375px | Responsive fluid grid + 5-brand support in `MobileMegaMenu` & `DesktopMegaMenu` | **Closed & Verified (v1.4.0)** |
-| UX-07 | P1 | Product Row title H3 oversized for compact 375 layout | Mapped narrow Product Card to H4 18/26 | **Closed & Verified (v1.4.0)** |
-| COMP-08 | P1 | Size Selector states & comparison modal | Implemented 4-state `SizeSelector` and `MattressRadioSelector` with Sheet modal | **Closed & Verified (v1.4.0)** |
-| A11Y-09 | P1 | Form error color/focus alone is insufficient | Implemented textual errors + `aria-invalid`/`aria-describedby` in `Input` and `TaiwanAddressForm` | **Closed & Verified (v1.4.0)** |
-| COMP-10 | P1 | Sticky PDP Bar safe-area padding & variation sync | Shared variation state + `env(safe-area-inset-bottom)` + `"NT"` price & sale badge support | **Closed & Verified (v1.4.0)** |
-| BRAND-11 | P2 | Lunio Bedding & Lunio Life CI tokens + dedicated Sale token | Signed off all 5 brands (`lunio`, `helix`, `sunset`, `bedding`, `lunio-life`) and `--sale` (`#E53935`) | **Closed & Verified (v1.4.0)** |
-| QA-12 | P2 | Automated token, contrast, and component test gates | `npm run tokens:check` (9/9) and `npm run shadcn:check` (6/6) + `npm run build` verified | **Closed & Verified (v1.4.0)** |
+| UX-01 | P0 | Mobile label/Body-SM readability & mixed `NT$` / `NT` price format | Raised Label 16/24, Body SM 14/22, Body MD 16/26; standardized all prices on `currencyCode` (`"NT"`, e.g. `NT21,990`) and added `--sale: #E53935` | **Closed & Verified (v1.4.1)** |
+| DS-02 | P0 | Spec inconsistencies (version header vs §10, primitive count, commerce count, Badge radius) | Aligned header & §10 to `v1.4.1`; synchronized **22** primitives, **19** commerce patterns, and `Badge` `rounded-full` (`9999px`) | **Closed & Verified (v1.4.1)** |
+| DS-03 | P0 | Storefront scope wording & missing 5th brand (`Lunio Life`) | Explicitly scoped to `lunio.com.tw` (5 brands) and added `data-brand="lunio-life"` (`#2D274A`, `#CCD5F8`, `#9786F3`) | **Closed & Verified (v1.4.1)** |
+| A11Y-04 | P0 | Cross-brand foreground contrast enforcement | Enforced Sunset `#1C1526` on `#F28131` (6.72:1), Helix `#000000` on `#9362D9` (4.99:1), Lunio Life `#141414` on `#9786F3` (6.15:1), and Sale `#FFFFFF` on `#E53935` (4.53:1) | **Closed & Verified (v1.4.1)** |
+| DATA-05 | P0 | Hardcoded 90/105cm dimensions & missing conversion backlog (001–024) | Updated Single/Single XL defaults to SKU-verified `89×188×24 cm` / `104×188×24 cm` and implemented all 9 missing commerce suites | **Closed & Verified (v1.4.1)** |
+| UX-06 | P1 | Mega Menu tab overflow at 375px | Responsive fluid grid + 5-brand support in `MobileMegaMenu` & `DesktopMegaMenu` | **Closed & Verified (v1.4.1)** |
+| UX-07 | P1 | Product Row title H3 oversized for compact 375 layout | Mapped narrow Product Card to H4 18/26 | **Closed & Verified (v1.4.1)** |
+| COMP-08 | P1 | Size Selector states & comparison modal | Implemented 4-state `SizeSelector` and `MattressRadioSelector` with Sheet modal | **Closed & Verified (v1.4.1)** |
+| A11Y-09 | P1 | Form error color/focus alone is insufficient | Implemented textual errors + `aria-invalid`/`aria-describedby` in `Input` and `TaiwanAddressForm` | **Closed & Verified (v1.4.1)** |
+| COMP-10 | P1 | Sticky PDP Bar safe-area padding & variation sync | Shared variation state + `env(safe-area-inset-bottom)` + `"NT"` price & sale badge support | **Closed & Verified (v1.4.1)** |
+| BRAND-11 | P2 | Lunio Bedding & Lunio Life CI tokens + dedicated Sale token | Signed off all 5 brands (`lunio`, `helix`, `sunset`, `bedding`, `lunio-life`) and `--sale` (`#E53935`) | **Closed & Verified (v1.4.1)** |
+| QA-12 | P2 | Automated token, contrast, and component test gates | `npm run tokens:check` (9/9) and `npm run shadcn:check` (6/6) + `npm run build` verified | **Closed & Verified (v1.4.1)** |
 
-**Release status:** `DESIGN SYSTEM v1.4.0 — PRODUCTION CERTIFIED FOR LUNIO.COM.TW (5 BRANDS, 22 PRIMITIVES, 19 COMMERCE PATTERNS)`.
+**Release status:** `DESIGN SYSTEM v1.4.1 — PRODUCTION CERTIFIED FOR LUNIO.COM.TW (5 BRANDS, 22 PRIMITIVES, 19 COMMERCE PATTERNS)`.
 
 ### References
 - [Lunio Taiwan Official Storefront (`lunio.com.tw`)](https://lunio.com.tw/)
@@ -327,7 +333,7 @@ npm run build
 
 ---
 
-## 11. UI Implementation Addendum — shadcn/ui + Radix (v1.4.0, 2026-10-16)
+## 11. UI Implementation Addendum — shadcn/ui + Radix (v1.4.1, 2026-10-16)
 
 The approved UI implementation foundation is **shadcn/ui with Radix primitives** (source-owned in `components/ui/`), Tailwind CSS v4, Lucide icons, and Lunio Multi-brand Semantic CSS Tokens for `lunio.com.tw`.
 

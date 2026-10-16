@@ -31,8 +31,8 @@ export function SourceContent({ doc }: { doc: string }) {
       </div>
       <p className="mt-4 max-w-2xl text-[14px] leading-7 text-muted-foreground">
         {isZh
-          ? "來自專案根目錄之完整原始手冊。涵蓋 Lunio 核心規範、審核通過之 v1.4 規範標準、設計治理與工程落地指南。"
-          : "Verbatim source from the project root. Contains the original Lunio specification, reviewed v1.4 specifications, design governance and implementation notes."}
+          ? "來自專案根目錄之完整原始手冊。涵蓋 Lunio 核心規範、審核通過之 v1.4.1 規範標準、設計治理與工程落地指南。"
+          : "Verbatim source from the project root. Contains the original Lunio specification, reviewed v1.4.1 specifications, design governance and implementation notes."}
       </p>
       <div className="docs-block mt-9">
         <div className="mb-6 flex items-center gap-2 border-b border-border pb-5 text-[13px] font-bold text-primary">

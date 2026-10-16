@@ -1,10 +1,10 @@
-# Lunio Design System — shadcn/ui Migration & Implementation Guide (v1.4)
+# Lunio Design System — shadcn/ui Migration & Implementation Guide (v1.4.1)
 
 ## สถานะและเป้าหมาย
 
-เวอร์ชัน **v1.4.0** ขยายขอบเขต **shadcn/ui Source-owned Components (New York style) บน Radix UI Primitives** ให้ครอบคลุมทุกการมีปฏิสัมพันธ์ (Interaction) และแพทเทิร์น E-Commerce ของตลาดที่นอนในไต้หวัน โดยมี Primitives มากกว่า 20 ชิ้น พร้อมทั้ง Commerce Compositions 9 รายการ ทุกคอมโพเนนต์ยึดถือ:
+เวอร์ชัน **v1.4.1** ขยายขอบเขต **shadcn/ui Source-owned Components (New York style) บน Radix UI Primitives** ให้ครอบคลุมทุกการมีปฏิสัมพันธ์ (Interaction) และแพทเทิร์น E-Commerce ของตลาดที่นอนในไต้หวัน โดยมี 22 Primitives พร้อมทั้ง 19 Commerce Compositions ครอบคลุม 5 แบรนด์ (Lunio, Helix, Sunset, Bedding, Lunio Life) ทุกคอมโพเนนต์ยึดถือ:
 1. **MiSansTC 5 Weights** (`400`, `500`, `600`, `700`, `800`)
-2. **Lunio Semantic CSS Variables** สำหรับ 4 แบรนด์ (Lunio, Nooz Helix, Nooz Sunset, Lunio Bedding)
+2. **Lunio Semantic CSS Variables** สำหรับ 5 แบรนด์ (Lunio, Nooz Helix, Nooz Sunset, Lunio Bedding, Lunio Life)
 3. **WCAG 2.2 AA Contrast & Accessibility** (ขั้นต่ำ 4.5:1 สำหรับ Normal Text และ 3:1 สำหรับ Large Text)
 4. **4px Spatial Rhythm** และมาตรฐานรัศมี (Control: 8px, Container: 16px, Pill: 9999px)
 5. **No Raw HTML Buttons/Selects** ในหน้า Live Page

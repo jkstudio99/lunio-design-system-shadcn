@@ -82,7 +82,7 @@ export const translations = {
       source: "完整 DESIGN.md",
     },
     showcase: {
-      badge: "LUNIO.COM.TW 台灣官方設計系統 · v1.4.0",
+      badge: "LUNIO.COM.TW 台灣官方設計系統 · v1.4.1",
       heroKicker: "DESIGN SYSTEM FOR LUNIO.COM.TW",
       heroTitleLine1: "一套設計語言，",
       heroTitleLine2: "五大品牌體驗。",
@@ -240,7 +240,7 @@ export const translations = {
       source: "Full DESIGN.md",
     },
     showcase: {
-      badge: "LUNIO.COM.TW DESIGN SYSTEM · v1.4.0",
+      badge: "LUNIO.COM.TW DESIGN SYSTEM · v1.4.1",
       heroKicker: "DESIGN SYSTEM FOR LUNIO.COM.TW",
       heroTitleLine1: "One design language.",
       heroTitleLine2: "Five brand experiences.",
