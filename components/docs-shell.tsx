@@ -14,6 +14,7 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTi
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 const titlesZh: Record<string, string> = {
   "getting-started": "快速入門指南",
@@ -75,6 +76,7 @@ function NavList({ onChoose }: { onChoose?: () => void }) {
 
 export function DocsShell({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const { isZh } = useLanguage();
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -89,22 +91,136 @@ export function DocsShell({ children }: { children: ReactNode }) {
   }, []);
   return <div className="min-h-screen bg-background text-foreground transition-colors">
     <header className="docs-topbar">
-      <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+      <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        <Link
+          href="/"
+          className="flex items-center gap-1.5 sm:gap-2.5 transition-opacity hover:opacity-85 shrink-0"
+          aria-label="Lunio Design System Home"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/lunio/lunio-primary.svg"
+            alt="Lunio"
+            className="logo-theme-light h-[22px] sm:h-[28px] w-auto object-contain"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/lunio/lunio-white.svg"
+            alt="Lunio"
+            className="logo-theme-dark h-[22px] sm:h-[28px] w-auto object-contain"
+          />
+          <span className="text-[13px] sm:text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
+          <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4.1</span>
+        </Link>
+      </div>
+
+      {/* Responsive Center Navigation - matching Home page */}
+      <nav className="hidden items-center gap-5 xl:gap-7 text-[13px] lg:flex">
+        <Link
+          href="/docs/getting-started"
+          className={cn(
+            "shell-link transition-colors",
+            (pathname === "/docs/getting-started" || pathname === "/docs/brands") && "text-foreground font-semibold"
+          )}
+        >
+          {isZh ? "快速入門" : "Documentation"}
+        </Link>
+        <Link
+          href="/docs/components"
+          className={cn(
+            "shell-link transition-colors",
+            pathname === "/docs/components" && "text-foreground font-semibold"
+          )}
+        >
+          {isZh ? "元件庫" : "Components"}
+        </Link>
+        <Link
+          href="/docs/commerce"
+          className={cn(
+            "shell-link transition-colors",
+            pathname === "/docs/commerce" && "text-foreground font-semibold"
+          )}
+        >
+          {isZh ? "電商模式" : "Commerce"}
+        </Link>
+        <Link
+          href="/docs/typography"
+          className={cn(
+            "shell-link transition-colors",
+            (pathname === "/docs/typography" || pathname === "/docs/colors" || pathname === "/docs/spacing" || pathname === "/docs/icons" || pathname === "/docs/custom-icons") && "text-foreground font-semibold"
+          )}
+        >
+          {isZh ? "設計 Token" : "Tokens"}
+        </Link>
+        <Link
+          href="/docs/changelog"
+          className={cn(
+            "shell-link transition-colors",
+            pathname === "/docs/changelog" && "text-foreground font-semibold"
+          )}
+        >
+          {isZh ? "更新日誌" : "Changelog"}
+        </Link>
+        <Link
+          href="/docs/source"
+          className={cn(
+            "shell-link transition-colors",
+            pathname === "/docs/source" && "text-foreground font-semibold"
+          )}
+        >
+          DESIGN.md
+        </Link>
+      </nav>
+
+      {/* Right controls: Search, Brand, Theme, Language, and Mobile Menu */}
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Mobile Quick Search Button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setSearchOpen(true)}
+          className="flex sm:hidden h-8 px-2.5 items-center justify-between gap-1.5 rounded-lg border-border/80 bg-muted/40 text-muted-foreground hover:text-foreground hover:bg-muted/70 shadow-2xs text-xs font-normal max-w-[150px] min-w-[110px]"
+          aria-label={isZh ? "快速搜尋文檔與元件" : "Quick search documentation"}
+        >
+          <span className="flex items-center gap-1.5 truncate">
+            <Search size={13} className="text-primary shrink-0" />
+            <span className="truncate">{isZh ? "搜尋規範..." : "Search..."}</span>
+          </span>
+          <kbd className="rounded border border-border/70 bg-background px-1 py-0 text-[9px] font-mono text-muted-foreground shrink-0">⌘K</kbd>
+        </Button>
+
+        {/* Desktop Search Button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setSearchOpen(true)}
+          className="hidden min-w-[140px] xl:min-w-[160px] items-center justify-between gap-4 text-muted-foreground sm:flex h-9 px-3"
+          aria-label={isZh ? "快速搜尋文檔與元件" : "Quick search documentation"}
+        >
+          <span className="flex items-center gap-2"><Search size={14} className="text-primary" /> {isZh ? "快速搜尋" : "Quick search"}</span>
+          <kbd className="rounded border px-1 text-[10px] font-mono">⌘K</kbd>
+        </Button>
+
+        <BrandSwitcher className="hidden sm:inline-flex" />
+        <ThemeToggle className="hidden sm:inline-flex" />
+        <LanguageToggle className="hidden sm:inline-flex" />
+
+        {/* Mobile Navigation Sheet Trigger - matching Home page responsive pattern */}
         <Sheet open={navigationOpen} onOpenChange={setNavigationOpen}>
           <SheetTrigger asChild>
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
-              className="lg:hidden size-9 shrink-0 text-foreground hover:bg-accent/50"
-              aria-label="Open documentation navigation / 開啟導覽選單"
+              className="size-9 border-border bg-background text-foreground lg:hidden shrink-0"
+              aria-label={isZh ? "開啟導覽選單" : "Open mobile navigation"}
             >
-              <Menu className="size-5" />
+              <Menu size={18} />
             </Button>
           </SheetTrigger>
           <SheetContent
-            side="left"
+            side="right"
             showCloseButton={false}
-            className="w-[min(90vw,350px)] gap-0 p-0 flex flex-col border-r border-border"
+            className="w-[min(90vw,350px)] gap-0 p-0 flex flex-col border-l border-border"
             aria-describedby="docs-mobile-nav-description"
           >
             <SheetHeader className="h-[58px] px-4 py-0 border-b border-border/80 flex flex-row items-center justify-between gap-3 space-y-0 shrink-0">
@@ -213,63 +329,6 @@ export function DocsShell({ children }: { children: ReactNode }) {
             </div>
           </SheetContent>
         </Sheet>
-
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-85 shrink-0"
-          aria-label="Lunio Design System Home"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/lunio/lunio-primary.svg"
-            alt="Lunio"
-            className="logo-theme-light h-[22px] sm:h-[26px] w-auto object-contain"
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/lunio/lunio-white.svg"
-            alt="Lunio"
-            className="logo-theme-dark h-[22px] sm:h-[26px] w-auto object-contain"
-          />
-          <span className="text-[13px] sm:text-[14px] font-semibold tracking-tight text-muted-foreground">/design</span>
-        </Link>
-        <Badge variant="outline" className="hidden md:inline-flex text-[10px] font-mono">v1.4.1 · shadcn/ui</Badge>
-      </div>
-
-      <div className="flex items-center gap-1.5 sm:gap-2">
-        {/* Mobile Full Search Bar */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setSearchOpen(true)}
-          className="flex sm:hidden h-8 px-2.5 items-center justify-between gap-1.5 rounded-lg border-border/80 bg-muted/40 text-muted-foreground hover:text-foreground hover:bg-muted/70 shadow-2xs text-xs font-normal max-w-[150px] min-w-[110px]"
-          aria-label={isZh ? "快速搜尋文檔與元件" : "Quick search documentation"}
-        >
-          <span className="flex items-center gap-1.5 truncate">
-            <Search size={13} className="text-primary shrink-0" />
-            <span className="truncate">{isZh ? "搜尋規範..." : "Search..."}</span>
-          </span>
-          <kbd className="rounded border border-border/70 bg-background px-1 py-0 text-[9px] font-mono text-muted-foreground shrink-0">⌘K</kbd>
-        </Button>
-
-        {/* Desktop Search Button */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setSearchOpen(true)}
-          className="hidden min-w-[155px] items-center justify-between gap-5 text-muted-foreground sm:flex"
-        >
-          <span className="flex items-center gap-2"><Search size={14} className="text-primary" /> {isZh ? "快速搜尋" : "Quick search"}</span>
-          <kbd className="rounded border px-1 text-[10px]">⌘K</kbd>
-        </Button>
-
-        <BrandSwitcher className="hidden sm:inline-flex" />
-        <ThemeToggle className="hidden sm:inline-flex" />
-        <LanguageToggle className="hidden sm:inline-flex" />
-
-        <Button variant="link" size="sm" asChild className="hidden xl:inline-flex text-xs">
-          <Link href="/">{isZh ? "首頁展示" : "Showcase"} <ArrowUpRight size={14} /></Link>
-        </Button>
       </div>
     </header>
     <div className="docs-layout">
