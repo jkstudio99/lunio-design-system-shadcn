@@ -25,14 +25,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       const stored = localStorage.getItem(STORAGE_KEY) as Locale | null;
       if (stored === "zh-TW" || stored === "en") {
         setLocaleState(stored);
-      } else {
-        // Detect browser language
-        const navLang = navigator.language?.toLowerCase() || "";
-        if (navLang.startsWith("zh")) {
-          setLocaleState("zh-TW");
-        } else if (navLang.startsWith("en")) {
-          setLocaleState("en");
-        }
       }
     } catch {
       // Fallback silently if localStorage is restricted

@@ -974,7 +974,7 @@ export function IconsGallery() {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="text-xs">
-                      {isCopied ? (isZh ? "已複製到剪貼簿！" : "Copied to clipboard!") : `點擊複製 ${snippet}`}
+                      {isCopied ? (isZh ? "已複製到剪貼簿！" : "Copied to clipboard!") : (isZh ? `點擊複製 ${snippet}` : `Click to copy ${snippet}`)}
                     </TooltipContent>
                   </Tooltip>
                 </div>

@@ -153,7 +153,7 @@ export function DocsShell({ children }: { children: ReactNode }) {
                     {isZh ? "切換品牌體驗" : "Brand Theme"}
                   </span>
                   <span className="text-[10px] font-mono font-semibold text-primary">
-                    4 BRANDS
+                    {isZh ? "4 大品牌" : "4 BRANDS"}
                   </span>
                 </div>
                 <MobileBrandGrid onSelect={() => {}} />

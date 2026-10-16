@@ -245,7 +245,7 @@ function BrandPage(){
         ))}
       </div>
     </div>
-    <div className="docs-grille">{brands.map(b=><div key={b.id} data-brand={b.id} className="docs-block"><div className="brand-swatch"/><div className="mt-4 flex items-center justify-between gap-2"><div className="text-[16px] font-bold">{b.name}</div>{b.id===brand&&<span className="rounded-full bg-primary px-2 py-1 text-[10px] font-bold text-primary-foreground">{isZh ? "目前使用" : "ACTIVE"}</span>}</div><div className="mt-3 flex flex-wrap gap-2">{[[isZh ? "主色" : "Primary",b.primary],[isZh ? "強調色" : "Accent",b.accent],[isZh ? "表面色" : "Surface",b.surface],[isZh ? "文字色" : "Ink",b.ink]].map(p=><span key={p[0]} className="token-code">{p[0]} {p[1]}</span>)}</div><p className="mt-3 text-[12px] text-muted-foreground">{b.status}</p></div>)}</div>
+    <div className="docs-grille">{brands.map(b=><div key={b.id} data-brand={b.id} className="docs-block"><div className="brand-swatch"/><div className="mt-4 flex items-center justify-between gap-2"><div className="text-[16px] font-bold">{b.name}</div>{b.id===brand&&<span className="rounded-full bg-primary px-2 py-1 text-[10px] font-bold text-primary-foreground">{isZh ? "目前使用" : "ACTIVE"}</span>}</div><div className="mt-3 flex flex-wrap gap-2">{[[isZh ? "主色" : "Primary",b.primary],[isZh ? "強調色" : "Accent",b.accent],[isZh ? "表面色" : "Surface",b.surface],[isZh ? "文字色" : "Ink",b.ink]].map(p=><span key={p[0]} className="token-code">{p[0]} {p[1]}</span>)}</div><p className="mt-3 text-[12px] text-muted-foreground">{isZh ? (bStatusZh[b.status] || b.status) : b.status}</p></div>)}</div>
     <div className="docs-block">
       <Subheading
         title={isZh ? "品牌作用域主題模式" : "Scoped theme modes"}
@@ -276,7 +276,46 @@ function BrandPage(){
   </div>;
 }
 
+const bStatusZh: Record<string, string> = {
+  "Specified in DESIGN.md": "已明訂於 DESIGN.md 官方規範",
+};
+
+const roleLabelsZh: Record<TypeRole, string> = {
+  display: "display · 主視覺超大展示標題",
+  h1: "h1 · 頁面與商品主標題",
+  h2: "h2 · 章節區塊主標題",
+  h3: "h3 · 卡片與彈窗標題",
+  h4: "h4 · 手機版商品列標題",
+  "body-lg": "body-lg · 導言大段落內文",
+  "body-md": "body-md · 標準閱讀內文",
+  "body-sm": "body-sm · 次要輔助內文",
+  label: "label · 互動按鈕與表單標籤",
+  caption: "caption · 微型註記與說明",
+  "price-xl": "price-xl · PDP 主售價特大字級",
+  "price-md": "price-md · 商品卡片售價字級",
+};
+
+const weightLabelsZh: Record<string, string> = {
+  regular: "常規體 Regular",
+  medium: "中等體 Medium",
+  semibold: "半粗體 Semibold",
+  bold: "粗體 Bold",
+  extrabold: "特粗體 ExtraBold",
+};
+
 const useCaseZh: Record<string, string> = {
+  "Hero / Display": "首頁主視覺大標題、大檔促銷橫幅",
+  "Page Title / PDP Heading": "頁面主標題、商品詳情頁 (PDP) 主標題",
+  "Section Heading": "章節區塊標題、主打特色標題",
+  "Modal / Card Header": "彈窗標題、商品卡片與側邊欄標題",
+  "Mobile Product Row": "手機版橫向商品列標題",
+  "Lead Paragraph": "導言大段落、核心產品宣言",
+  "Body Copy": "標準閱讀內文、商品詳情說明敘述",
+  "Supporting Copy": "次要輔助說明、規格明細與顧客評價",
+  "Interactive Labels": "按鈕文字、表單標籤、分頁與規格篩選鈕",
+  "Tertiary Caption": "輔助微文案、時間戳記、法規免責註記",
+  "Main PDP Price": "商品詳情頁 (PDP) 主售價特大字級",
+  "Product Card Price": "商品卡片與底部常駐列售價字級",
   "Main banner headline, strong promotional hero": "首頁主視覺大標題、大檔促銷 Hero",
   "Page title, collection header": "頁面主標題、床墊系列分類標題",
   "Section title, featured product title": "區塊標題、主打商品名稱",
@@ -295,7 +334,12 @@ function TypographyPage(){
   const {isZh}=useLanguage();
   const [device,setDevice]=useState<"mobile"|"desktop">("mobile");
   const [role,setRole]=useState<TypeRole>("h1");
-  const [sample,setSample]=useState(isZh ? "讓每一天，都有好睡眠。" : "Design for a better everyday sleep.");
+  const defaultZh = "讓每一天，都有好睡眠。";
+  const defaultEn = "Design for a better everyday sleep.";
+  const [customSample,setCustomSample]=useState<string|null>(null);
+  const sample = customSample !== null && customSample !== defaultZh && customSample !== defaultEn
+    ? customSample
+    : (isZh ? defaultZh : defaultEn);
   const [weight,setWeight]=useState<number|null>(null);
   const current=tokens.typography[role];
   const size=current[device][0],lh=current[device][1];
@@ -319,19 +363,19 @@ function TypographyPage(){
         <label className="text-[12px] font-bold text-foreground">
           {isZh ? "語意排印角色" : "Semantic role"}
           <Select value={role} onValueChange={v=>{setRole(v as TypeRole);setWeight(null)}}>
-            <SelectTrigger className="mt-2" aria-label="Typography role"><SelectValue placeholder="Select role"/></SelectTrigger>
-            <SelectContent>{roleNames.map(s=><SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+            <SelectTrigger className="mt-2" aria-label={isZh ? "選擇字體排印語意角色" : "Typography role"}><SelectValue placeholder={isZh ? "選擇排印角色" : "Select role"}/></SelectTrigger>
+            <SelectContent>{roleNames.map(s=><SelectItem key={s} value={s}>{isZh ? (roleLabelsZh[s] || s) : s}</SelectItem>)}</SelectContent>
           </Select>
         </label>
         <label className="text-[12px] font-bold text-foreground">
           {isZh ? "測試範例文本" : "Sample text"}
-          <Input className="mt-2" value={sample} onChange={e=>setSample(e.target.value)}/>
+          <Input className="mt-2" value={sample} onChange={e=>setCustomSample(e.target.value)}/>
         </label>
       </div>
       <div className="mt-6 rounded-[14px] border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-7 shadow-xs" style={{maxWidth:device==='mobile'?375:undefined}}>
-        <span className="eyebrow text-primary">LIVE SPECIMEN / {device==='mobile'?'375':'1440'}</span>
+        <span className="eyebrow text-primary">{isZh ? `即時字級預覽 / ${device==='mobile'?'手機版 375px':'電腦版 1440px'}` : `LIVE SPECIMEN / ${device==='mobile'?'375px':'1440px'}`}</span>
         <div className="mt-7 break-words text-[var(--brand-ink)]" style={{fontSize:`${size}px`,lineHeight:`${lh}px`,fontWeight:weight??current.weight}}>
-          {sample||(isZh ? '讓每一天，都有好睡眠。' : 'Design for a better everyday sleep.')}
+          {sample||(isZh ? defaultZh : defaultEn)}
         </div>
       </div>
       <div className="mt-6 grid grid-cols-3 gap-4 rounded-lg border border-border/80 bg-slate-50/50 dark:bg-[#182030] dark:border-[#2A344A] p-4 text-center shadow-xs">
@@ -362,7 +406,7 @@ function TypographyPage(){
         {Object.entries(tokens.weights).map(([k,v])=>(
           <Button type="button" variant="outline" aria-pressed={weight===v} key={k} onClick={()=>setWeight(v)} className={`flex w-full flex-wrap items-center justify-between gap-3 rounded-lg border p-4 text-left transition ${weight===v?'border-2 border-primary bg-primary/10 dark:bg-primary/15 shadow-xs':'border-border/80 hover:border-primary/40'}`}>
             <div>
-              <div className="text-xs font-semibold text-muted-foreground">{k.toUpperCase()} / {v}</div>
+              <div className="text-xs font-semibold text-muted-foreground">{isZh ? `${weightLabelsZh[k] || k.toUpperCase()} / ${v}` : `${k.toUpperCase()} / ${v}`}</div>
               <div className="mt-1 text-[23px] text-foreground" style={{fontWeight:v}}>{isZh ? "生活，應該更舒適。" : "Everyday life should be comfortable."}</div>
             </div>
             <span className="token-code">--font-weight-{k}</span>
@@ -389,7 +433,7 @@ function TypographyPage(){
           {roleNames.map(key=>{
             const t=tokens.typography[key];
             return <tr key={key}>
-              <td className="font-bold">{key}</td>
+              <td className="font-bold">{isZh ? (roleLabelsZh[key] || key) : key}</td>
               <td>{t.mobile[0]} / {t.mobile[1]}</td>
               <td>{t.desktop[0]} / {t.desktop[1]}</td>
               <td>{t.weight}</td>
@@ -459,9 +503,9 @@ function ColorsPage(){
           {checks.map(b=>(
             <tr key={b.name}>
               <td className="font-semibold">{b.name}</td>
-              <td><span className="font-bold">{b.primary.toFixed(2)}:1</span> <span className="text-[#147b53] dark:text-[#4ADE80] font-bold">PASS</span></td>
-              <td>{b.accent.toFixed(2)}:1 <span className="text-[#147b53] dark:text-[#4ADE80] font-bold">PASS</span></td>
-              <td className="text-xs text-muted-foreground">{b.status}</td>
+              <td><span className="font-bold">{b.primary.toFixed(2)}:1</span> <span className="text-[#147b53] dark:text-[#4ADE80] font-bold">{isZh ? "通過 AA" : "PASS"}</span></td>
+              <td>{b.accent.toFixed(2)}:1 <span className="text-[#147b53] dark:text-[#4ADE80] font-bold">{isZh ? "通過 AA" : "PASS"}</span></td>
+              <td className="text-xs text-muted-foreground">{isZh ? (bStatusZh[b.status] || b.status) : b.status}</td>
             </tr>
           ))}
         </tbody>
@@ -491,7 +535,7 @@ function ColorsPage(){
         ))}
       </div>
     </div>
-    <CodePanel label="DESIGN TOKEN EXAMPLE" code={'[data-brand="sunset"] {\n  --primary: #F28131;\n  --primary-foreground: #1C1526; /* accessible */\n}\n\n.button { background: var(--primary); color: var(--primary-foreground); }'}/>
+    <CodePanel label={isZh ? "設計 TOKEN 範例" : "DESIGN TOKEN EXAMPLE"} code={'[data-brand="sunset"] {\n  --primary: #F28131;\n  --primary-foreground: #1C1526; /* accessible */\n}\n\n.button { background: var(--primary); color: var(--primary-foreground); }'}/>
   </div>;
 }
 
@@ -957,7 +1001,7 @@ function CommercePage(){
       }}/>
       <Card className="gap-0 border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] py-0 shadow-xs">
         <CardContent className="p-5">
-          <p className="eyebrow text-primary">MOBILE PRODUCT ROW / 375</p>
+          <p className="eyebrow text-primary">{isZh ? "手機版橫向商品列 / 375px" : "MOBILE PRODUCT ROW / 375"}</p>
           <div className="mt-6 flex gap-3">
             <div className="flex size-[132px] shrink-0 items-center justify-center rounded-xl border border-border/60 bg-muted/70 dark:bg-[#131926]">
               <div className="h-[35px] w-[85px] -rotate-[5deg] rounded-lg bg-gradient-to-br from-white to-[#9ba6b7] shadow-[0_13px_0_-4px_#6b7791]"/>
@@ -1106,12 +1150,12 @@ function AccessibilityPage(){
         </thead>
         <tbody>
           {[
-            ["1.4.3 Contrast", "4.5:1 text / 3:1 large", isZh ? "所有真實介面表面，包含圖片覆蓋層與漸層" : "Every real surface including image overlays"],
-            ["1.4.4 Resize Text", "200%", isZh ? "文字放大時價格、表單標籤或 CTA 按鈕不得被截斷" : "No truncated price, form label or CTA"],
-            ["1.4.10 Reflow", "320 CSS px", isZh ? "螢幕緊縮至 320px 時不得出現非預期的水平捲軸" : "No unexpected horizontal scroll"],
-            ["1.4.12 Text Spacing", "Override test", isZh ? "覆蓋文字行距字距時，內容依然完整可見且可操作" : "Content stays visible and usable"],
-            ["2.4.7 Focus Visible", "Visible focus", isZh ? "全站鍵盤旅程、抽屜面版與所有表單具備清晰聚焦外框" : "Keyboard journey, sheet, forms"],
-            ["2.5.8 Target Size", "24×24 with exceptions", isZh ? "內部設計偏好：手機版觸控目標一律 ≥ 44×44px" : "Internal preference ≥44×44 mobile"]
+            [isZh ? "1.4.3 對比度 (Contrast)" : "1.4.3 Contrast", isZh ? "一般文字 4.5:1 / 大字 3:1" : "4.5:1 text / 3:1 large", isZh ? "所有真實介面表面，包含圖片覆蓋層與漸層" : "Every real surface including image overlays"],
+            [isZh ? "1.4.4 文字縮放 (Resize Text)" : "1.4.4 Resize Text", "200%", isZh ? "文字放大時價格、表單標籤或 CTA 按鈕不得被截斷" : "No truncated price, form label or CTA"],
+            [isZh ? "1.4.10 響應重排 (Reflow)" : "1.4.10 Reflow", "320 CSS px", isZh ? "螢幕緊縮至 320px 時不得出現非預期的水平捲軸" : "No unexpected horizontal scroll"],
+            [isZh ? "1.4.12 文字間距 (Text Spacing)" : "1.4.12 Text Spacing", isZh ? "覆寫樣式測試" : "Override test", isZh ? "覆蓋文字行距字距時，內容依然完整可見且可操作" : "Content stays visible and usable"],
+            [isZh ? "2.4.7 焦點可見 (Focus Visible)" : "2.4.7 Focus Visible", isZh ? "清晰聚焦外框" : "Visible focus", isZh ? "全站鍵盤旅程、抽屜面版與所有表單具備清晰聚焦外框" : "Keyboard journey, sheet, forms"],
+            [isZh ? "2.5.8 目標尺寸 (Target Size)" : "2.5.8 Target Size", isZh ? "24×24px (含例外)" : "24×24 with exceptions", isZh ? "內部設計偏好：手機版觸控目標一律 ≥ 44×44px" : "Internal preference ≥44×44 mobile"]
           ].map(x=>(
             <tr key={x[0]}>
               <td className="font-bold">{x[0]}</td>

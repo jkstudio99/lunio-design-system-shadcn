@@ -71,7 +71,7 @@ export function Showcase(){
                     {isZh ? "切換品牌體驗" : "Brand Theme"}
                   </span>
                   <span className="text-[10px] font-mono font-semibold text-primary">
-                    4 BRANDS
+                    {isZh ? "4 大品牌" : "4 BRANDS"}
                   </span>
                 </div>
                 <MobileBrandGrid onSelect={() => {}} />
@@ -143,7 +143,7 @@ export function Showcase(){
     </Link>
     <div className="flex flex-wrap items-start justify-between gap-5">
       <div>
-        <div className="eyebrow mb-4 text-primary">DESIGN SYSTEM ANALYSIS / LUNIO</div>
+        <div className="eyebrow mb-4 text-primary">{isZh ? "LUNIO 多品牌設計系統規範" : "DESIGN SYSTEM ANALYSIS / LUNIO"}</div>
         <h1 className="max-w-[840px] text-[clamp(34px,4.4vw,62px)] leading-[1.04] tracking-[-.055em] font-bold">
           {t.showcase.heroTitleLine1}<br/><span className="text-muted-foreground">{t.showcase.heroTitleLine2}</span>
         </h1>
@@ -203,7 +203,7 @@ export function Showcase(){
       <div className="space-y-2 border-t border-border pt-4 text-[12px] text-muted-foreground">
         <div className="flex items-center justify-between"><span>{isZh ? "5 組官方字重" : "5 font weights"}</span><CheckCircle2 size={15} className="text-primary"/></div>
         <div className="flex items-center justify-between"><span>{isZh ? "4 大品牌模式" : "4 brand modes"}</span><CheckCircle2 size={15} className="text-primary"/></div>
-        <div className="flex items-center justify-between"><span>Bedding CI</span><span className="text-primary font-medium">{isZh ? "已核准" : "Approved"}</span></div>
+        <div className="flex items-center justify-between"><span>{isZh ? "寢具 CI 識別" : "Bedding CI"}</span><span className="text-primary font-medium">{isZh ? "已核准" : "Approved"}</span></div>
       </div>
     </div>
    </section>

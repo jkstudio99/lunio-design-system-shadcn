@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useLanguage } from "@/components/language-provider";
 import { cn } from "@/lib/utils";
 
 export function ThemeToggle({
@@ -20,6 +21,7 @@ export function ThemeToggle({
   className?: string;
 }) {
   const { theme, setTheme, resolvedTheme } = useTheme();
+  const { isZh } = useLanguage();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -32,7 +34,7 @@ export function ThemeToggle({
         <Button
           variant="outline"
           size="icon"
-          aria-label="Toggle theme mode"
+          aria-label={isZh ? "切換深淺外觀主題" : "Toggle theme mode"}
           className={cn(
             "relative size-9 transition-colors",
             dark
@@ -54,7 +56,7 @@ export function ThemeToggle({
           ) : (
             <Sun className="size-4 opacity-50" />
           )}
-          <span className="sr-only">Toggle theme (Light / Dark / System)</span>
+          <span className="sr-only">{isZh ? "切換外觀主題 (淺色 / 深色 / 跟隨系統)" : "Toggle theme (Light / Dark / System)"}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-36">
@@ -64,7 +66,7 @@ export function ThemeToggle({
         >
           <span className="flex items-center gap-2">
             <Sun className="size-3.5 text-amber-500" />
-            Light
+            {isZh ? "淺色模式" : "Light"}
           </span>
           {mounted && theme === "light" && <Check className="size-3.5 text-primary" />}
         </DropdownMenuItem>
@@ -74,7 +76,7 @@ export function ThemeToggle({
         >
           <span className="flex items-center gap-2">
             <Moon className="size-3.5 text-blue-400" />
-            Dark
+            {isZh ? "深色模式" : "Dark"}
           </span>
           {mounted && theme === "dark" && <Check className="size-3.5 text-primary" />}
         </DropdownMenuItem>
@@ -84,7 +86,7 @@ export function ThemeToggle({
         >
           <span className="flex items-center gap-2">
             <Monitor className="size-3.5 text-muted-foreground" />
-            System
+            {isZh ? "跟隨系統" : "System"}
           </span>
           {mounted && theme === "system" && <Check className="size-3.5 text-primary" />}
         </DropdownMenuItem>
@@ -98,7 +100,8 @@ export function ThemeToggle({
  * Three touch buttons for Light / Dark / System modes
  */
 export function MobileThemeSelector({ onSelect }: { onSelect?: () => void }) {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const { isZh } = useLanguage();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -112,7 +115,7 @@ export function MobileThemeSelector({ onSelect }: { onSelect?: () => void }) {
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="Select theme mode">
+    <div className="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label={isZh ? "選擇外觀主題模式" : "Select theme mode"}>
       {items.map((item) => {
         const isActive = mounted && theme === item.value;
         const Icon = item.icon;
@@ -135,7 +138,7 @@ export function MobileThemeSelector({ onSelect }: { onSelect?: () => void }) {
             )}
           >
             <Icon className={cn("size-3.5 shrink-0", item.color)} />
-            <span className="text-[11px] font-semibold">{item.labelZh}</span>
+            <span className="text-[11px] font-semibold">{isZh ? item.labelZh : item.labelEn}</span>
           </Button>
         );
       })}
