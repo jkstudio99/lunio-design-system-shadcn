@@ -145,7 +145,7 @@ export const translations = {
       "custom-icons": {
         kicker: "自訂圖示工作室",
         title: "自訂圖示上傳與規範",
-        intro: "專為 Lunio 品牌設計之自訂向量圖示工作室。支援 SVG 檔案拖曳上傳與貼上、即時語意清理、React JSX 元件轉換、多尺寸與主題色彩預覽，及 5 組官方床墊睡眠標章。",
+        intro: "上傳或貼上 SVG，保留原始外觀或套用語意色彩，預覽不同尺寸，再匯出 SVG 與 React JSX。內含 5 組示範圖示。",
       },
       components: {
         kicker: "介面元件",
@@ -303,7 +303,7 @@ export const translations = {
       "custom-icons": {
         kicker: "CUSTOM ICONS STUDIO",
         title: "Custom Icons Studio & Upload",
-        intro: "Dedicated studio to upload, sanitize, preview, and generate production-ready React JSX components for custom Lunio brand vector icons alongside standard Lucide iconography.",
+        intro: "Upload or paste an SVG, preserve its artwork or apply semantic color, compare sizes, and export SVG or React JSX. Includes five illustrative icons.",
       },
       components: {
         kicker: "INTERFACE COMPONENTS",

@@ -1,20 +1,16 @@
 "use client";
 
-import { useState, useMemo, useRef, type ChangeEvent, type DragEvent } from "react";
-import {
-  Upload, Download, Copy, Check, Sparkles, RefreshCw, FileCode2,
-  Eye, CheckCircle2, AlertCircle, Trash2, ArrowUpRight, Palette,
-  Maximize2, ShieldCheck, HelpCircle, Layers, SlidersHorizontal, ZoomIn
-} from "lucide-react";
+import { useEffect, useId, useRef, useState } from "react";
+import { Upload, Download, Copy, Check, FileCode2, Eye, AlertCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { Separator } from "@/components/ui/separator";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { sanitizeAndParseSvg, scopeSvgIds, type SanitizeResult } from "@/lib/custom-icons";
 import { useLanguage } from "@/components/language-provider";
 
 export interface PreloadedIcon {
@@ -32,10 +28,10 @@ export const PRELOADED_LUNIO_ICONS: PreloadedIcon[] = [
   {
     id: "lunio-bedding-seal",
     name: "LunioBeddingSeal",
-    labelZh: "Lunio Bedding 官方認證印章",
-    labelEn: "Lunio Bedding Official Seal",
-    descZh: "官方寢具真品防偽標章，象徵台灣官方正品與嚴苛品保檢驗合格。",
-    descEn: "Authentic seal mark for Lunio bedding certifications, genuine warranty cards and premium product tags.",
+    labelZh: "Lunio Bedding 印章範例",
+    labelEn: "Lunio Bedding seal example",
+    descZh: "寢具風格的印章圖示範例，僅供圖示工作室操作與版面示範。",
+    descEn: "A bedding-inspired seal for exploring icon styling and placement.",
     category: "Brand Trust",
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="12" cy="9" r="7" />
@@ -47,10 +43,10 @@ export const PRELOADED_LUNIO_ICONS: PreloadedIcon[] = [
   {
     id: "zero-gravity-contour",
     name: "ZeroGravityContour",
-    labelZh: "零重力釋壓人體曲線圖",
-    labelEn: "Zero-Gravity Pressure Relief Contour",
-    descZh: "描繪人體平躺時頸部、腰部與臀部的零重力服貼曲度，應用於釋壓科技介紹。",
-    descEn: "Ergonomic body contour curve showing spine alignment, floating sensation, and pressure distribution vectors.",
+    labelZh: "人體曲線範例",
+    labelEn: "Body contour example",
+    descZh: "以人體曲線示範圓角線條、路徑與小尺寸圖示的呈現。",
+    descEn: "A body contour study for rounded strokes and small-size legibility.",
     category: "Sleep Ergonomics",
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M2 19h20" />
@@ -63,10 +59,10 @@ export const PRELOADED_LUNIO_ICONS: PreloadedIcon[] = [
   {
     id: "natural-latex-drop",
     name: "NaturalLatexDrop",
-    labelZh: "泰國特級天然乳膠認證標章",
-    labelEn: "Premium Thai Natural Latex Droplet",
-    descZh: "泰國高純度天然橡膠樹液萃取純度標記，應用於防蟎抗菌乳膠層解說。",
-    descEn: "Botanical latex droplet symbol denoting 100% natural Thai rubber sap purity and hypo-allergenic properties.",
+    labelZh: "植物水滴範例",
+    labelEn: "Botanical droplet example",
+    descZh: "植物水滴圖示範例，結合描邊與實心細節以檢查匯出結果。",
+    descEn: "A botanical droplet that combines outline paths and a filled detail.",
     category: "Material Certification",
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M12 2.5C8 7.5 5 11 5 15a7 7 0 0 0 14 0c0-4-3-7.5-7-12.5z" />
@@ -78,10 +74,10 @@ export const PRELOADED_LUNIO_ICONS: PreloadedIcon[] = [
   {
     id: "five-zone-spine",
     name: "FiveZoneSpine",
-    labelZh: "五段式人體脊椎護腰分區",
-    labelEn: "5-Zone Ergonomic Spine Alignment",
-    descZh: "頭頸、肩背、腰椎、骨盆、腿部五段獨立分區支撐標章，強調人體工學護腰減壓。",
-    descEn: "Orthopedic five-zone mattress core representation for targeted spinal posture support.",
+    labelZh: "五區結構範例",
+    labelEn: "Five-zone structure example",
+    descZh: "五區線條結構範例，供比較對稱性、線寬與視覺重心。",
+    descEn: "A five-zone line study for symmetry, stroke weight and optical balance.",
     category: "Spine Support",
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M12 2v20" />
@@ -96,10 +92,10 @@ export const PRELOADED_LUNIO_ICONS: PreloadedIcon[] = [
   {
     id: "hundred-night-bed",
     name: "HundredNightBed",
-    labelZh: "100晚安心試睡官方床墊專屬標誌",
-    labelEn: "100-Night Risk-Free Sleep Guarantee",
-    descZh: "官方 100 晚安心試睡計畫，不滿意專人免費清運退款之專屬信任圖騰。",
-    descEn: "Official 100-night in-home trial trust mark combining bedroom bedframe and night moon reassurance.",
+    labelZh: "床與月亮範例",
+    labelEn: "Bed and moon example",
+    descZh: "床架與月亮圖示範例，僅供介面情境展示，不代表實際試睡政策。",
+    descEn: "A bed and moon illustration for interface examples, with no trial-policy claim.",
     category: "Commerce Trust",
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M2 19h20" />
@@ -111,1101 +107,364 @@ export const PRELOADED_LUNIO_ICONS: PreloadedIcon[] = [
   }
 ];
 
-export interface SanitizeOptions {
-  convertToCurrentColor: boolean;
-  componentName: string;
-  iconMode?: "stroke" | "fill";
-}
+type IconSource = { raw: string; componentName: string; exampleId: string | null };
+type FileState = { status: "idle" } | { status: "loading"; name: string } | { status: "error"; message: string };
+type Feedback = { tone: "success" | "error"; message: string } | null;
+type ColorRole = "primary" | "foreground" | "muted" | "success";
+type Backdrop = "grid" | "canvas" | "contrast";
 
-export interface SanitizeResult {
-  isValid: boolean;
-  error: string | null;
-  warnings: string[];
-  viewBox: string;
-  cleanSvg: string;
-  innerSvg: string;
-  reactJsx: string;
-  sanitizedComponentName: string;
-}
+const iconSizes = [16, 20, 24, 32, 48];
+const colorRoles: Record<ColorRole, string> = {
+  primary: "text-[var(--interactive-text)]",
+  foreground: "text-foreground",
+  muted: "text-muted-foreground",
+  success: "text-[var(--status-success-ink)]",
+};
 
-/**
- * Client-Side SVG Parser & Sanitizer
- * - Strips dangerous tags: <script>, <style>, <foreignObject>, <iframe>, <object>, <embed>, <applet>, <meta>, <link>, <base>
- * - Strips inline event handlers (onclick, onload, etc.)
- * - Strips javascript:, vbscript: and dangerous data: protocol URLs
- * - Converts inline CSS styles (style="fill:...; stroke:...") to valid SVG attributes so React JSX does not crash
- * - Converts kebab-case SVG attributes to React camelCase (stroke-width -> strokeWidth, vector-effect -> vectorEffect, etc.)
- * - Converts hardcoded color values to 'currentColor' for token cascading
- * - Ensures componentName is a valid TypeScript/JavaScript identifier (prefixes leading digits with 'Icon')
- * - Normalizes viewBox to 0 0 24 24 when appropriate
- */
-export function sanitizeAndParseSvg(rawInput: string, options: SanitizeOptions): SanitizeResult {
-  const warnings: string[] = [];
-  const trimmed = rawInput.trim();
-
-  if (!trimmed) {
-    return {
-      isValid: false,
-      error: "請輸入或上傳 SVG 代碼",
-      warnings: [],
-      viewBox: "0 0 24 24",
-      cleanSvg: "",
-      innerSvg: "",
-      reactJsx: "",
-      sanitizedComponentName: "CustomIcon"
-    };
-  }
-
-  if (!trimmed.includes("<svg") && !trimmed.includes("<SVG")) {
-    return {
-      isValid: false,
-      error: "輸入內容未包含 <svg> 根節點標籤",
-      warnings: [],
-      viewBox: "0 0 24 24",
-      cleanSvg: "",
-      innerSvg: "",
-      reactJsx: "",
-      sanitizedComponentName: "CustomIcon"
-    };
-  }
-
-  let working = trimmed;
-
-  // 1. Strip XML declaration, DOCTYPE and comments
-  working = working.replace(/<\?xml[\s\S]*?\?>/gi, "");
-  working = working.replace(/<!DOCTYPE[\s\S]*?>/gi, "");
-  working = working.replace(/<!--[\s\S]*?-->/g, "");
-
-  // 2. Strip dangerous tags
-  const dangerousTags = ["script", "style", "foreignObject", "iframe", "object", "embed", "applet", "meta", "link", "base"];
-  for (const tag of dangerousTags) {
-    const tagRegex = new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}>|<${tag}\\b[^>]*\\/?>`, "gi");
-    if (tagRegex.test(working)) {
-      warnings.push(`已移除潛在不安全標籤 <${tag}>`);
-      working = working.replace(tagRegex, "");
-    }
-  }
-
-  // 3. Strip event handlers (on* attributes)
-  const eventRegex = /\s*on[a-zA-Z]+\s*=\s*(?:["'][^"']*["']|[^\s>]+)/gi;
-  if (eventRegex.test(working)) {
-    warnings.push("已移除內嵌 JavaScript 事件處理器 (如 onclick, onload)");
-    working = working.replace(eventRegex, "");
-  }
-
-  // 4. Strip javascript:, vbscript: and dangerous data: protocol URLs
-  const dangerousHrefRegex = /\s*(?:href|xlink:href)\s*=\s*(?:["']\s*(?:javascript|vbscript|data):[^"']*["']|[^\s>]*(?:javascript|vbscript|data):[^\s>]*)/gi;
-  if (dangerousHrefRegex.test(working)) {
-    warnings.push("已移除含有 javascript: 或 data: 協定之超連結");
-    working = working.replace(dangerousHrefRegex, "");
-  }
-
-  // 5. Convert inline CSS style attributes (e.g. style="fill: #1C46B4; stroke: #333") into SVG attributes
-  // This prevents React runtime errors where string styles crash JSX execution
-  const styleAttrRegex = /\bstyle\s*=\s*["']([^"']+)["']/gi;
-  if (styleAttrRegex.test(working)) {
-    warnings.push("已將 inline CSS 樣式轉換為標準 SVG 標籤屬性");
-    working = working.replace(styleAttrRegex, (match, styleContent: string) => {
-      const rules = styleContent.split(";");
-      const attrs: string[] = [];
-      for (const rule of rules) {
-        const parts = rule.split(":");
-        if (parts.length === 2) {
-          const prop = parts[0].trim().toLowerCase();
-          const val = parts[1].trim();
-          if (["fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin", "opacity", "fill-opacity", "stroke-opacity", "fill-rule"].includes(prop)) {
-            attrs.push(`${prop}="${val}"`);
-          }
-        }
-      }
-      return attrs.length > 0 ? attrs.join(" ") : "";
-    });
-  }
-
-  // 6. Extract viewBox or synthesize from width/height
-  let viewBox = "0 0 24 24";
-  const viewBoxMatch = working.match(/viewBox\s*=\s*["']([^"']+)["']/i);
-  if (viewBoxMatch && viewBoxMatch[1]) {
-    viewBox = viewBoxMatch[1].trim();
-  } else {
-    const widthMatch = working.match(/width\s*=\s*["'](\d+)["']/i);
-    const heightMatch = working.match(/height\s*=\s*["'](\d+)["']/i);
-    if (widthMatch && heightMatch) {
-      viewBox = `0 0 ${widthMatch[1]} ${heightMatch[1]}`;
-      warnings.push(`未偵測到 viewBox，已自動依寬高轉換為 viewBox="${viewBox}"`);
-    } else {
-      warnings.push("未偵測到 viewBox，已自動套用預設 0 0 24 24");
-    }
-  }
-
-  // 7. Extract inner content between <svg ...> and </svg>
-  const openTagMatch = working.match(/<svg\b([^>]*)>/i);
-  if (!openTagMatch) {
-    return {
-      isValid: false,
-      error: "無法解析 <svg> 起始標籤",
-      warnings,
-      viewBox,
-      cleanSvg: "",
-      innerSvg: "",
-      reactJsx: "",
-      sanitizedComponentName: "CustomIcon"
-    };
-  }
-
-  let inner = working
-    .replace(/<svg\b[^>]*>/i, "")
-    .replace(/<\/svg\s*>/i, "")
-    .trim();
-
-  // 8. Hardcoded color conversion to currentColor if enabled
-  if (options.convertToCurrentColor) {
-    const initialInner = inner;
-    // Replace hex, rgb, hsl, or named colors in stroke and fill attributes (preserving "none" and "currentColor")
-    inner = inner.replace(/stroke\s*=\s*["'](?!none\b|currentColor\b)[^"']+["']/gi, 'stroke="currentColor"');
-    inner = inner.replace(/fill\s*=\s*["'](?!none\b|currentColor\b)[^"']+["']/gi, 'fill="currentColor"');
-    if (initialInner !== inner) {
-      warnings.push("已將寫死色碼 (hex/rgb) 轉換為 currentColor 以支援 Tailwind 語意色彩");
-    }
-  }
-
-  // Determine icon mode (stroke vs solid fill)
-  const isSolidFill = options.iconMode === "fill";
-  const rootFill = isSolidFill ? "currentColor" : "none";
-  const rootStroke = isSolidFill ? "none" : "currentColor";
-  const rootStrokeWidth = isSolidFill ? "0" : "2";
-
-  // Clean raw SVG code
-  const cleanSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="${viewBox}" fill="${rootFill}" stroke="${rootStroke}" stroke-width="${rootStrokeWidth}" stroke-linecap="round" stroke-linejoin="round">\n  ${inner}\n</svg>`;
-
-  // 9. Convert attributes to React JSX conventions
-  const jsxAttrMap: Record<string, string> = {
-    "stroke-width": "strokeWidth",
-    "stroke-linecap": "strokeLinecap",
-    "stroke-linejoin": "strokeLinejoin",
-    "stroke-miterlimit": "strokeMiterlimit",
-    "stroke-dasharray": "strokeDasharray",
-    "stroke-dashoffset": "strokeDashoffset",
-    "stroke-opacity": "strokeOpacity",
-    "fill-opacity": "fillOpacity",
-    "fill-rule": "fillRule",
-    "clip-path": "clipPath",
-    "clip-rule": "clipRule",
-    "vector-effect": "vectorEffect",
-    "class": "className",
-    "xmlns:xlink": "xmlnsXlink",
-    "xlink:href": "xlinkHref",
-    "color-interpolation": "colorInterpolation",
-    "stop-color": "stopColor",
-    "stop-opacity": "stopOpacity",
-    "font-size": "fontSize",
-    "font-family": "fontFamily",
-    "font-weight": "fontWeight",
-    "letter-spacing": "letterSpacing",
-    "text-anchor": "textAnchor",
-    "dominant-baseline": "dominantBaseline",
-    "alignment-baseline": "alignmentBaseline",
-    "shape-rendering": "shapeRendering",
-    "image-rendering": "imageRendering"
-  };
-
-  let reactInner = inner;
-  for (const [kebab, camel] of Object.entries(jsxAttrMap)) {
-    const attrRegex = new RegExp(`\\b${kebab}=`, "g");
-    reactInner = reactInner.replace(attrRegex, `${camel}=`);
-  }
-
-  // Indent react inner lines for pristine code generation
-  const formattedReactInner = reactInner
-    .split("\n")
-    .map((line) => (line.trim() ? `      ${line.trim()}` : ""))
-    .join("\n");
-
-  // 10. Sanitize Component Name into a strictly valid TypeScript / JavaScript identifier
-  let rawName = options.componentName.trim().replace(/[^a-zA-Z0-9]/g, "");
-  if (!rawName) {
-    rawName = "CustomIcon";
-  } else if (/^[0-9]/.test(rawName)) {
-    rawName = `Icon${rawName}`;
-  }
-  const componentName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
-
-  const reactJsx = `import type { SVGProps } from "react";
-
-export interface ${componentName}Props extends SVGProps<SVGSVGElement> {
-  size?: number | string;
-  strokeWidth?: number | string;
-}
-
-/**
- * ${componentName} — Lunio Brand Custom Vector Icon
- * Bounding box: ${viewBox} · Default stroke: ${isSolidFill ? "0" : "2"}px · Responsive currentColor
- */
-export function ${componentName}({
-  size = 24,
-  strokeWidth = ${isSolidFill ? "0" : "2"},
-  className,
-  ...props
-}: ${componentName}Props) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="${viewBox}"
-      fill="${rootFill}"
-      stroke="${rootStroke}"
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-      {...props}
-    >
-${formattedReactInner}
-    </svg>
-  );
-}
-`;
-
-  return {
-    isValid: true,
-    error: null,
-    warnings,
-    viewBox,
-    cleanSvg,
-    innerSvg: inner,
-    reactJsx,
-    sanitizedComponentName: componentName
-  };
+function nameFromFilename(filename: string) {
+  const name = filename.replace(/\.svg$/i, "").split(/[-_\s]+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join("");
+  return name || "CustomIcon";
 }
 
 export function CustomIconsStudio() {
   const { isZh } = useLanguage();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const locale = isZh ? "zh" : "en";
+  const id = useId();
+  const fileInput = useRef<HTMLInputElement>(null);
+  const readOperation = useRef(0);
+  const [source, setSource] = useState<IconSource>({
+    raw: PRELOADED_LUNIO_ICONS[0].svg,
+    componentName: PRELOADED_LUNIO_ICONS[0].name,
+    exampleId: PRELOADED_LUNIO_ICONS[0].id,
+  });
+  const [size, setSize] = useState(24);
+  const [strokeWidth, setStrokeWidth] = useState<number | undefined>();
+  const [convertToCurrentColor, setConvertToCurrentColor] = useState(false);
+  const [zoom, setZoom] = useState(2);
+  const [colorRole, setColorRole] = useState<ColorRole>("primary");
+  const [backdrop, setBackdrop] = useState<Backdrop>("grid");
+  const [dragging, setDragging] = useState(false);
+  const [fileState, setFileState] = useState<FileState>({ status: "idle" });
+  const [feedback, setFeedback] = useState<Feedback>(null);
+  const [copiedAction, setCopiedAction] = useState<string | null>(null);
+  const [snapshot, setSnapshot] = useState<{ key: string; result: SanitizeResult } | null>(null);
+  const parseKey = JSON.stringify([source.raw, source.componentName, size, strokeWidth, convertToCurrentColor, locale]);
+  const parsed = snapshot?.key === parseKey && fileState.status === "idle" ? snapshot.result : null;
+  const valid = parsed?.isValid === true;
 
-  // Studio states
-  const [activePreloadId, setActivePreloadId] = useState<string>("lunio-bedding-seal");
-  const [componentName, setComponentName] = useState<string>("LunioBeddingSeal");
-  const [rawSvg, setRawSvg] = useState<string>(PRELOADED_LUNIO_ICONS[0].svg);
-  const [size, setSize] = useState<number>(24);
-  const [zoom, setZoom] = useState<1 | 2 | 4>(2);
-  const [strokeWidth, setStrokeWidth] = useState<number>(2);
-  const [colorRole, setColorRole] = useState<string>("primary");
-  const [backdrop, setBackdrop] = useState<"checker" | "light" | "dark">("checker");
-  const [iconMode, setIconMode] = useState<"stroke" | "fill">("stroke");
-  const [convertToCurrentColor, setConvertToCurrentColor] = useState<boolean>(true);
-  const [isDragOver, setIsDragOver] = useState<boolean>(false);
-  const [copiedType, setCopiedType] = useState<"jsx" | "svg" | null>(null);
-  const [preloadCopiedId, setPreloadCopiedId] = useState<string | null>(null);
-
-  // Parse result derived memo
-  const parsed = useMemo(() => {
-    return sanitizeAndParseSvg(rawSvg, {
-      convertToCurrentColor,
-      componentName,
-      iconMode
+  useEffect(() => {
+    setSnapshot({
+      key: parseKey,
+      result: sanitizeAndParseSvg(source.raw, {
+        componentName: source.componentName, size, strokeWidth, convertToCurrentColor, locale,
+      }),
     });
-  }, [rawSvg, convertToCurrentColor, componentName, iconMode]);
+  }, [parseKey, source.raw, source.componentName, size, strokeWidth, convertToCurrentColor, locale]);
 
-  // Color mappings
-  const colorClasses: Record<string, string> = {
-    primary: "text-primary",
-    foreground: "text-foreground",
-    muted: "text-muted-foreground",
-    amber: "text-amber-500",
-    emerald: "text-emerald-500"
-  };
+  useEffect(() => () => { readOperation.current += 1; }, []);
 
-  const currentColorClass = colorClasses[colorRole] || "text-primary";
-
-  // Handle preloaded icon selection
-  function handleSelectPreloaded(icon: PreloadedIcon) {
-    setActivePreloadId(icon.id);
-    setComponentName(icon.name);
-    setRawSvg(icon.svg);
+  function updateSource(next: IconSource) {
+    readOperation.current += 1;
+    setFileState({ status: "idle" });
+    setSource(next);
+    setFeedback(null);
+    setCopiedAction(null);
   }
 
-  // Quick copy preloaded icon JSX
-  async function handleQuickCopyPreloaded(icon: PreloadedIcon) {
-    const res = sanitizeAndParseSvg(icon.svg, {
-      convertToCurrentColor: true,
-      componentName: icon.name,
-      iconMode: "stroke"
-    });
+  function loadExample(icon: PreloadedIcon) {
+    updateSource({ raw: icon.svg, componentName: icon.name, exampleId: icon.id });
+    setSize(24);
+    setStrokeWidth(undefined);
+    setConvertToCurrentColor(false);
+  }
+
+  async function loadFile(file: File) {
+    const operation = ++readOperation.current;
+    setFeedback(null);
+    setCopiedAction(null);
+    setSource({ raw: "", componentName: nameFromFilename(file.name), exampleId: null });
+    if (!/\.svg$/i.test(file.name)) {
+      setFileState({ status: "error", message: isZh ? "請選擇副檔名為 .svg 的檔案。" : "Choose a file with the .svg extension." });
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setFileState({ status: "error", message: isZh ? "SVG 檔案不得超過 2 MiB。" : "The SVG file must be 2 MiB or smaller." });
+      return;
+    }
+    setFileState({ status: "loading", name: file.name });
     try {
-      await navigator.clipboard.writeText(res.reactJsx);
-      setPreloadCopiedId(icon.id);
-      setTimeout(() => setPreloadCopiedId(null), 1800);
+      const raw = await file.text();
+      if (operation !== readOperation.current) return;
+      setSource({ raw, componentName: nameFromFilename(file.name), exampleId: null });
+      setFileState({ status: "idle" });
     } catch {
-      setPreloadCopiedId(null);
+      if (operation !== readOperation.current) return;
+      setFileState({ status: "error", message: isZh ? "無法讀取檔案，請重新選擇或貼上 SVG。" : "The file could not be read. Choose it again or paste the SVG." });
     }
   }
 
-  // Convert uploaded filename to clean PascalCase component name
-  function nameFromFilename(fileName: string): string {
-    const baseName = fileName.replace(/\.svg$/i, "");
-    let pascal = baseName
-      .split(/[-_\s]+/)
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-      .join("");
-    if (!pascal) return "CustomIcon";
-    if (/^[0-9]/.test(pascal)) pascal = `Icon${pascal}`;
-    return pascal;
-  }
-
-  // Handle file drop
-  function handleDrop(e: DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-    setIsDragOver(false);
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0];
-      if (file.name.endsWith(".svg") || file.type.includes("svg")) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const content = event.target?.result as string;
-          if (content) {
-            setRawSvg(content);
-            setComponentName(nameFromFilename(file.name));
-            setActivePreloadId("");
-          }
-        };
-        reader.readAsText(file);
-      }
-    }
-  }
-
-  // Handle file input
-  function handleFileInput(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const content = event.target?.result as string;
-        if (content) {
-          setRawSvg(content);
-          setComponentName(nameFromFilename(file.name));
-          setActivePreloadId("");
-        }
-      };
-      reader.readAsText(file);
-    }
-  }
-
-  // Copy helper
-  async function copyToClipboard(text: string, type: "jsx" | "svg") {
+  async function copy(text: string, action: string) {
+    setCopiedAction(null);
     try {
       await navigator.clipboard.writeText(text);
-      setCopiedType(type);
-      setTimeout(() => setCopiedType(null), 1800);
+      setCopiedAction(action);
+      setFeedback({ tone: "success", message: isZh ? "已複製至剪貼簿。" : "Copied to clipboard." });
     } catch {
-      setCopiedType(null);
+      setFeedback({ tone: "error", message: isZh ? "無法存取剪貼簿，請從下方程式碼手動複製。" : "Clipboard access failed. Select and copy the code below manually." });
     }
   }
 
-  // Download .svg file
-  function handleDownloadSvg() {
-    if (!parsed.cleanSvg) return;
-    const blob = new Blob([parsed.cleanSvg], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
+  async function quickCopy(icon: PreloadedIcon) {
+    const result = sanitizeAndParseSvg(icon.svg, { componentName: icon.name, convertToCurrentColor: false, locale });
+    if (result.isValid) await copy(result.reactJsx, icon.id);
+    else setFeedback({ tone: "error", message: result.error || (isZh ? "無法匯出此範例。" : "This example could not be exported.") });
+  }
+
+  function download() {
+    if (!valid || !parsed) return;
+    const url = URL.createObjectURL(new Blob([parsed.cleanSvg], { type: "image/svg+xml;charset=utf-8" }));
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${parsed.sanitizedComponentName.toLowerCase().replace(/[^a-z0-9]/g, "-") || "lunio-custom-icon"}.svg`;
-    document.body.appendChild(link);
+    link.download = `${parsed.sanitizedComponentName}.svg`;
     link.click();
-    document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    setFeedback({ tone: "success", message: isZh ? "已建立 SVG 下載檔案。" : "SVG download created." });
+  }
+
+  function preview(surface: string, pixels: number) {
+    if (!valid || !parsed) return null;
+    return <span aria-hidden="true" className="inline-flex shrink-0 [&>svg]:block [&>svg]:size-full"
+      style={{ width: pixels, height: pixels }}
+      dangerouslySetInnerHTML={{ __html: scopeSvgIds(parsed.cleanSvg, `${id}-${surface}`) }} />;
   }
 
   return (
-    <div className="space-y-12">
-      {/* Preloaded Lunio Brand Icons Showcase */}
-      <section className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-wider text-primary border-primary/30 bg-primary/10">
-                {isZh ? "官方品牌圖騰" : "PROPRIETARY BRAND MARKS"}
-              </Badge>
-              <span className="text-xs text-muted-foreground font-mono">5 Custom SVGs</span>
-            </div>
-            <h2 className="text-lg font-bold text-foreground mt-1">
-              {isZh ? "Lunio 台灣專屬客製向量標章" : "Lunio Taiwan Proprietary Custom Icons"}
-            </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {isZh
-                ? "非標準 Lucide 圖庫之專利床墊結構、天然乳膠檢驗標章與安心試睡官方標誌，點擊卡片即可載入工作室，亦可直接一鍵複製語法。"
-                : "Brand-proprietary marks not available in Lucide React: bedding certification seal, ergonomic curves, latex purity, and guarantee badges."}
-            </p>
-          </div>
+    <div className="@container min-w-0 space-y-10">
+      <section aria-labelledby={`${id}-examples`} className="space-y-4">
+        <div className="space-y-2">
+          <p className="typo-caption text-muted-foreground">{isZh ? "5 組可載入範例" : "5 editable examples"}</p>
+          <h2 id={`${id}-examples`} className="typo-h3">{isZh ? "從範例開始" : "Start with an example"}</h2>
+          <p className="typo-body-sm text-muted-foreground">{isZh
+            ? "這些圖示僅供操作與版面示範，不代表官方認證、產品功效或服務承諾。載入以調整，或直接複製原始外觀的 JSX。"
+            : "These illustrative icons do not establish certification, product benefits or service promises. Load one to edit, or copy its original-appearance JSX."}</p>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid min-w-0 grid-cols-1 gap-3 @[36rem]:grid-cols-2 @[58rem]:grid-cols-3">
           {PRELOADED_LUNIO_ICONS.map((icon) => {
-            const isSelected = activePreloadId === icon.id;
-            const isCopied = preloadCopiedId === icon.id;
+            const selected = source.exampleId === icon.id;
             return (
-              <Card
-                key={icon.id}
-                onClick={() => handleSelectPreloaded(icon)}
-                className={cn(
-                  "cursor-pointer transition-all hover:border-primary/60 hover:shadow-sm text-left group relative flex flex-col justify-between",
-                  isSelected ? "border-primary ring-1 ring-primary/40 bg-primary/5" : "bg-card"
-                )}
-              >
-                <CardContent className="p-3.5 space-y-2 flex-1">
-                  <div className="flex items-center justify-between">
-                    <div className="size-10 rounded-xl bg-muted/50 group-hover:bg-primary/15 transition-colors flex items-center justify-center text-primary">
-                      <div
-                        className="size-6 transition-transform group-hover:scale-110 duration-200"
-                        dangerouslySetInnerHTML={{
-                          __html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">${icon.svg.replace(/<svg\b[^>]*>/i, "").replace(/<\/svg\s*>/i, "")}</svg>`
-                        }}
-                      />
-                    </div>
-                    {isSelected ? (
-                      <Badge variant="default" className="text-[10px] h-5 px-1.5 font-sans bg-primary">
-                        {isZh ? "已載入" : "Active"}
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="text-[9px] h-4 px-1 text-muted-foreground border-border/70 font-mono">
-                        {icon.category}
-                      </Badge>
-                    )}
-                  </div>
-
-                  <div>
-                    <div className="font-mono text-xs font-bold text-foreground group-hover:text-primary transition-colors truncate">
-                      {icon.name}
-                    </div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">
-                      {isZh ? icon.labelZh : icon.labelEn}
+              <Card key={icon.id} className={cn("min-w-0 gap-4 py-4 shadow-none", selected && "border-[var(--interactive-text)] bg-[var(--brand-surface)]")}>
+                <CardContent className="flex min-w-0 flex-1 flex-col gap-3 px-4">
+                  <div className="flex items-start gap-3">
+                    <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-muted text-[var(--interactive-text)] [&>svg]:size-6"
+                      dangerouslySetInnerHTML={{ __html: icon.svg }} />
+                    <div className="min-w-0 space-y-1">
+                      <h3 className="typo-label wrap-anywhere">{icon.name}</h3>
+                      <p className="typo-caption text-muted-foreground">{isZh ? icon.labelZh : icon.labelEn}</p>
                     </div>
                   </div>
-
-                  <p className="text-[10px] text-muted-foreground/80 line-clamp-2 leading-relaxed">
-                    {isZh ? icon.descZh : icon.descEn}
-                  </p>
+                  <p className="typo-body-sm text-muted-foreground">{isZh ? icon.descZh : icon.descEn}</p>
+                  <div className="mt-auto flex flex-wrap gap-2 pt-1">
+                    <Button variant={selected ? "secondary" : "outline"} className="min-h-11 flex-1 px-3 typo-body-sm"
+                      aria-pressed={selected} aria-label={`${isZh ? "載入" : "Load"} ${icon.name}`}
+                      onClick={() => loadExample(icon)}>
+                      {selected && <Check aria-hidden="true" className="size-4" />}{selected ? (isZh ? "已載入" : "Loaded") : (isZh ? "載入" : "Load")}
+                    </Button>
+                    <Button variant="ghost" className="min-h-11 flex-1 px-3 typo-body-sm" aria-label={`${isZh ? "複製" : "Copy"} ${icon.name} JSX`}
+                      onClick={() => quickCopy(icon)}>
+                      {copiedAction === icon.id ? <Check aria-hidden="true" className="size-4" /> : <Copy aria-hidden="true" className="size-4" />} JSX
+                    </Button>
+                  </div>
                 </CardContent>
-
-                {/* Card Quick Action Bar */}
-                <div className="p-2.5 pt-0 border-t border-border/40 mt-1 flex items-center justify-between gap-1">
-                  <span className="text-[10px] font-mono text-muted-foreground/70">
-                    24×24px
-                  </span>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant={isCopied ? "default" : "outline"}
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleQuickCopyPreloaded(icon);
-                        }}
-                        className={cn(
-                          "h-6 px-2 text-[10px] font-mono gap-1 transition-all",
-                          isCopied ? "bg-emerald-600 hover:bg-emerald-700 text-white border-transparent" : "text-muted-foreground hover:text-foreground"
-                        )}
-                        aria-label={`Copy JSX for ${icon.name}`}
-                      >
-                        {isCopied ? <Check className="size-2.5" /> : <Copy className="size-2.5" />}
-                        <span>{isCopied ? (isZh ? "已複製" : "Copied") : "JSX"}</span>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="text-xs">
-                      {isZh ? `立即複製 ${icon.name} React JSX` : `Quick copy ${icon.name} JSX`}
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
               </Card>
             );
           })}
         </div>
       </section>
 
-      {/* Main Studio Interactive Workspace */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <SlidersHorizontal className="size-5 text-primary" />
-            <h2 className="text-xl font-bold tracking-tight text-foreground">
-              {isZh ? "向量圖示解析與預覽工作室" : "Interactive SVG Studio & Parser"}
-            </h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="font-mono text-xs">
-              viewBox: {parsed.viewBox}
-            </Badge>
-          </div>
+      <section aria-labelledby={`${id}-studio`} className="min-w-0 space-y-5">
+        <div className="space-y-2 border-t border-border pt-8">
+          <h2 id={`${id}-studio`} className="typo-h3">{isZh ? "SVG 圖示工作室" : "SVG icon studio"}</h2>
+          <p className="typo-body-sm text-muted-foreground">{isZh ? "上傳或貼上 SVG，檢查外觀，再匯出。所有處理均在此瀏覽器內完成。" : "Upload or paste an SVG, check its appearance, then export. Processing stays in your browser."}</p>
         </div>
+        <div role="status" aria-live="polite" aria-atomic="true" className={cn("typo-body-sm", feedback?.tone === "error" ? "text-destructive" : "text-[var(--status-success-ink)]")}>
+          {feedback?.message}
+        </div>
+        <div className="grid min-w-0 grid-cols-1 items-start gap-5 @[58rem]:grid-cols-2">
+          <Card className="min-w-0 gap-5 shadow-none">
+            <CardHeader className="px-4 sm:px-6">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="typo-h4">{isZh ? "1. SVG 來源" : "1. SVG source"}</h3>
+                <Button variant="ghost" className="min-h-11 px-3 typo-body-sm" disabled={!source.raw && fileState.status === "idle"}
+                  onClick={() => { updateSource({ raw: "", componentName: "CustomIcon", exampleId: null }); if (fileInput.current) fileInput.current.value = ""; }}>
+                  <Trash2 aria-hidden="true" className="size-4" />{isZh ? "清除" : "Clear"}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="min-w-0 space-y-5 px-4 sm:px-6">
+              <div className={cn("space-y-3 rounded-lg border border-dashed border-border p-4 text-center", dragging && "border-[var(--interactive-text)] bg-[var(--brand-surface)]")}
+                onDragOver={(event) => { event.preventDefault(); setDragging(true); }}
+                onDragLeave={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDragging(false); }}
+                onDrop={(event) => { event.preventDefault(); setDragging(false); const file = event.dataTransfer.files[0]; if (file) void loadFile(file); }}>
+                <Upload aria-hidden="true" className="mx-auto size-6 text-[var(--interactive-text)]" />
+                <Button variant="outline" className="max-w-full min-h-11 whitespace-normal px-4" onClick={() => fileInput.current?.click()}>
+                  {isZh ? "選擇 SVG 檔案" : "Choose SVG file"}
+                </Button>
+                <input ref={fileInput} type="file" accept=".svg,image/svg+xml" className="hidden" aria-label={isZh ? "選擇 SVG 檔案" : "Choose SVG file"}
+                  onChange={(event) => { const file = event.currentTarget.files?.[0]; event.currentTarget.value = ""; if (file) void loadFile(file); }} />
+                <p className="typo-body-sm text-muted-foreground">{isZh ? "也可拖曳檔案至此。僅限 SVG，最大 2 MiB。" : "Or drop a file here. SVG only, up to 2 MiB."}</p>
+              </div>
+              {fileState.status === "loading" && <p role="status" className="typo-body-sm wrap-anywhere text-muted-foreground">{isZh ? "正在讀取" : "Reading"} {fileState.name}…</p>}
+              {fileState.status === "error" && <p role="alert" className="typo-body-sm text-destructive">{fileState.message}</p>}
+              <div className="space-y-2">
+                <Label htmlFor={`${id}-source`}>{isZh ? "SVG 程式碼" : "SVG markup"}</Label>
+                <p id={`${id}-source-hint`} className="typo-body-sm text-muted-foreground">{isZh ? "貼上 Figma 或向量編輯器匯出的完整 <svg>。" : "Paste the complete <svg> exported by Figma or your vector editor."}</p>
+                <Textarea id={`${id}-source`} value={source.raw} spellCheck={false} className="min-h-64 resize-y typo-body-sm"
+                  aria-describedby={`${id}-source-hint${source.raw.trim() && parsed && !valid ? ` ${id}-parse-error` : ""}`}
+                  aria-invalid={!!source.raw.trim() && !!parsed && !valid}
+                  onChange={(event) => updateSource({ ...source, raw: event.target.value, exampleId: null })} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor={`${id}-name`}>{isZh ? "React 元件名稱" : "React component name"}</Label>
+                <Input id={`${id}-name`} value={source.componentName} spellCheck={false} className="min-h-11"
+                  aria-describedby={`${id}-name-hint`}
+                  onChange={(event) => { setSource({ ...source, componentName: event.target.value }); setFeedback(null); setCopiedAction(null); }} />
+                <p id={`${id}-name-hint`} className="typo-caption wrap-anywhere text-muted-foreground">{valid && parsed ? `${isZh ? "匯出名稱" : "Export name"}: ${parsed.sanitizedComponentName}` : (isZh ? "匯出時會轉為有效的元件名稱。" : "The export uses a valid component identifier.")}</p>
+              </div>
+            </CardContent>
+          </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Column: Upload / Paste & Options */}
-          <div className="lg:col-span-6 space-y-4">
-            <Card className="border-border">
-              <CardHeader className="p-4 pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
-                    <Upload className="size-4 text-primary" />
-                    <span>{isZh ? "檔案上傳與原始碼" : "Upload or Paste SVG"}</span>
-                  </CardTitle>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setRawSvg("");
-                      setActivePreloadId("");
-                      setComponentName("CustomIcon");
-                    }}
-                    className="h-7 px-2 text-xs text-muted-foreground hover:text-destructive"
-                  >
-                    <Trash2 className="size-3.5 mr-1" />
-                    {isZh ? "清空" : "Clear"}
-                  </Button>
+          <Card className="min-w-0 gap-5 shadow-none">
+            <CardHeader className="px-4 sm:px-6">
+              <h3 className="typo-h4">{isZh ? "2. 外觀與預覽" : "2. Appearance & preview"}</h3>
+              <p className="typo-body-sm text-muted-foreground">{isZh ? "預設保留原始填色與描邊。尺寸、線寬與色彩轉換會套用至匯出檔。" : "Source fills and strokes are preserved by default. Size, stroke and color conversion apply to exports."}</p>
+            </CardHeader>
+            <CardContent className="min-w-0 space-y-5 px-4 sm:px-6">
+              <fieldset className="min-w-0 space-y-2">
+                <legend className="typo-label">{isZh ? "匯出尺寸" : "Export size"}</legend>
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {iconSizes.map((value) => <Button key={value} variant={size === value ? "secondary" : "ghost"} className="min-h-11 min-w-11 px-3 typo-body-sm"
+                    aria-pressed={size === value} onClick={() => { setSize(value); setCopiedAction(null); }}>{value}px</Button>)}
                 </div>
-                <CardDescription className="text-xs">
-                  {isZh
-                    ? "支援拖曳 .svg 檔案或直接貼上 <svg>...</svg> 向量原始碼。"
-                    : "Drag and drop .svg files or paste raw XML markup from Figma."}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="p-4 pt-0 space-y-4">
-                {/* Drag and Drop Zone */}
-                <div
-                  onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
-                  onDragLeave={() => setIsDragOver(false)}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                  className={cn(
-                    "border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2",
-                    isDragOver ? "border-primary bg-primary/10" : "border-border hover:border-primary/50 hover:bg-muted/30"
-                  )}
-                >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".svg,image/svg+xml"
-                    onChange={handleFileInput}
-                    className="hidden"
-                    aria-label="Upload SVG File"
-                  />
-                  <div className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
-                    <Upload className="size-5" />
+              </fieldset>
+              <div className="space-y-2">
+                <Label htmlFor={`${id}-stroke`}>{isZh ? "匯出線寬" : "Export stroke"}</Label>
+                <Select value={strokeWidth === undefined ? "original" : String(strokeWidth)} onValueChange={(value) => { setStrokeWidth(value === "original" ? undefined : Number(value)); setCopiedAction(null); }}>
+                  <SelectTrigger id={`${id}-stroke`} className="min-h-11"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="original">{isZh ? "原始線寬" : "Original stroke"}</SelectItem>
+                    {[1.5, 2, 2.5].map((value) => <SelectItem key={value} value={String(value)}>{value}px</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Button variant={convertToCurrentColor ? "secondary" : "outline"} className="min-h-11 w-full justify-between whitespace-normal px-3 text-left typo-body-sm"
+                  aria-pressed={convertToCurrentColor} onClick={() => { setConvertToCurrentColor(!convertToCurrentColor); setCopiedAction(null); }}>
+                  <span>{isZh ? "將純色轉為 currentColor" : "Convert solid colors to currentColor"}</span>
+                  <span className="shrink-0">{convertToCurrentColor ? (isZh ? "開" : "On") : (isZh ? "關" : "Off")}</span>
+                </Button>
+                <p className="typo-caption text-muted-foreground">{isZh ? "啟用後可繼承文字色彩。保留透明填色與漸層。" : "Enable to inherit text color. Transparent fills and gradients stay intact."}</p>
+              </div>
+              <div className="space-y-4 border-t border-border pt-4">
+                <p className="typo-caption text-muted-foreground">{isZh ? "以下設定僅影響預覽，不影響匯出。" : "The settings below affect preview only."}</p>
+                <fieldset className="min-w-0 space-y-2">
+                  <legend className="typo-label">{isZh ? "預覽色彩" : "Preview color"}</legend>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {(["primary", "foreground", "muted", "success"] as ColorRole[]).map((role) => <Button key={role} variant={colorRole === role ? "secondary" : "ghost"}
+                      className="min-h-11 px-3 typo-body-sm" aria-pressed={colorRole === role} onClick={() => setColorRole(role)}>
+                      <span aria-hidden="true" className={cn("size-2 rounded-full bg-current", colorRoles[role])} />
+                      {({ primary: isZh ? "品牌" : "Brand", foreground: isZh ? "文字" : "Text", muted: isZh ? "次要" : "Muted", success: isZh ? "成功" : "Success" })[role]}
+                    </Button>)}
                   </div>
-                  <div>
-                    <span className="text-xs font-semibold text-foreground">
-                      {isZh ? "點擊選擇或拖曳 SVG 檔案至此" : "Click to browse or drop SVG file here"}
-                    </span>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">
-                      {isZh ? "支援標準 SVG 1.1 / 2.0，最大 2MB" : "Supports SVG 1.1 / 2.0 vector exports"}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Direct SVG Code Input */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-muted-foreground">
-                      {isZh ? "SVG 向量代碼" : "SVG Code Markup"}
-                    </span>
-                    <span className="text-[10px] font-mono text-muted-foreground">
-                      {rawSvg.length} {isZh ? "字元" : "chars"}
-                    </span>
-                  </div>
-                  <Textarea
-                    value={rawSvg}
-                    onChange={(e) => {
-                      setRawSvg(e.target.value);
-                      setActivePreloadId("");
-                    }}
-                    placeholder='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">...</svg>'
-                    rows={6}
-                    className="font-mono text-xs resize-y bg-slate-950 text-slate-200 border-border"
-                    aria-label="SVG Raw Code"
-                  />
-                </div>
-
-                {/* Component Name & Formatting Controls */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div className="space-y-1">
-                    <span className="text-xs font-semibold text-muted-foreground">
-                      {isZh ? "React 元件名稱" : "React Component Name"}
-                    </span>
-                    <Input
-                      value={componentName}
-                      onChange={(e) => setComponentName(e.target.value)}
-                      placeholder="MyCustomIcon"
-                      className="font-mono text-xs h-9 bg-background"
-                      aria-label="Component Name"
-                    />
-                    <span className="text-[10px] font-mono text-muted-foreground block">
-                      export: {parsed.sanitizedComponentName}
-                    </span>
-                  </div>
-
+                  <p className="typo-caption text-muted-foreground">{isZh ? "僅影響使用 currentColor 的區域。" : "Applies only to areas using currentColor."}</p>
+                </fieldset>
+                <div className="grid min-w-0 grid-cols-1 gap-4 @[26rem]:grid-cols-2 @[58rem]:grid-cols-1 @[72rem]:grid-cols-2">
+                  <fieldset className="min-w-0 space-y-2">
+                    <legend className="typo-label">{isZh ? "縮放" : "Zoom"}</legend>
+                    <div className="flex flex-wrap gap-1 pt-2">{[1, 2, 4].map((value) => <Button key={value} variant={zoom === value ? "secondary" : "ghost"}
+                      className="min-h-11 min-w-11 px-3 typo-body-sm" aria-pressed={zoom === value} onClick={() => setZoom(value)}>{value}×</Button>)}</div>
+                  </fieldset>
                   <div className="space-y-2">
-                    {/* currentColor switch */}
-                    <div className="flex items-center justify-between border border-border rounded-xl p-2 bg-muted/20">
-                      <div className="space-y-0.5 pr-2">
-                        <span className="text-xs font-semibold text-foreground block">
-                          {isZh ? "轉為 currentColor" : "Use currentColor"}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground block">
-                          {isZh ? "相容 Tailwind text-*" : "Cascade text-* tokens"}
-                        </span>
-                      </div>
-                      <Button
-                        variant={convertToCurrentColor ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setConvertToCurrentColor(!convertToCurrentColor)}
-                        className="h-7 text-xs font-mono"
-                      >
-                        {convertToCurrentColor ? (isZh ? "已啟用" : "ON") : (isZh ? "原始色" : "OFF")}
-                      </Button>
-                    </div>
-
-                    {/* Stroke vs Solid mode */}
-                    <div className="flex items-center justify-between border border-border rounded-xl p-2 bg-muted/20">
-                      <div className="space-y-0.5 pr-2">
-                        <span className="text-xs font-semibold text-foreground block">
-                          {isZh ? "圖示型態" : "Render Mode"}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground block">
-                          {iconMode === "stroke" ? (isZh ? "線條 (Lucide 標準)" : "Stroke outline") : (isZh ? "填色 (實心印章)" : "Solid fill")}
-                        </span>
-                      </div>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => setIconMode(iconMode === "stroke" ? "fill" : "stroke")}
-                        className="h-7 text-xs font-mono"
-                      >
-                        {iconMode === "stroke" ? "Stroke" : "Solid"}
-                      </Button>
-                    </div>
+                    <Label htmlFor={`${id}-backdrop`}>{isZh ? "背景" : "Backdrop"}</Label>
+                    <Select value={backdrop} onValueChange={(value) => setBackdrop(value as Backdrop)}>
+                      <SelectTrigger id={`${id}-backdrop`} className="min-h-11"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="grid">{isZh ? "格線" : "Grid"}</SelectItem>
+                        <SelectItem value="canvas">{isZh ? "頁面底色" : "Canvas"}</SelectItem>
+                        <SelectItem value="contrast">{isZh ? "反差底色" : "Contrast"}</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
-
-                {/* Sanitizer Feedback / Warnings */}
-                {parsed.error ? (
-                  <div className="flex items-start gap-2 p-3 rounded-xl border border-destructive/40 bg-destructive/10 text-destructive text-xs">
-                    <AlertCircle className="size-4 shrink-0 mt-0.5" />
-                    <span>{parsed.error}</span>
-                  </div>
-                ) : (
-                  parsed.warnings.length > 0 && (
-                    <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs space-y-1">
-                      <div className="font-semibold flex items-center gap-1.5">
-                        <CheckCircle2 className="size-3.5 text-amber-500" />
-                        <span>{isZh ? "安全清理與最佳化紀錄" : "Sanitizer Optimizations Applied"}</span>
-                      </div>
-                      <ul className="list-disc pl-4 space-y-0.5 text-[11px]">
-                        {parsed.warnings.map((w, idx) => (
-                          <li key={idx}>{w}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Column: Live Interactive Preview & Export */}
-          <div className="lg:col-span-6 space-y-4">
-            <Card className="border-border">
-              <CardHeader className="p-4 pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
-                    <Eye className="size-4 text-primary" />
-                    <span>{isZh ? "即時預覽與 Token 調整" : "Live Preview & Token Studio"}</span>
-                  </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="font-mono text-[10px]">
-                      {size}px · {strokeWidth}px stroke
-                    </Badge>
-                  </div>
+              </div>
+              <div role="img" aria-label={isZh ? "SVG 即時預覽" : "Live SVG preview"}
+                className={cn("flex min-h-64 min-w-0 items-center justify-center overflow-hidden rounded-lg border border-border", backdrop === "contrast" ? "bg-foreground" : "bg-background", colorRoles[colorRole])}
+                style={backdrop === "grid" ? { backgroundImage: "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)", backgroundSize: "16px 16px" } : undefined}>
+                {valid ? preview("main", size * zoom) : <div className="max-w-full space-y-2 bg-background p-5 text-center text-muted-foreground">
+                  <Eye aria-hidden="true" className="mx-auto size-6" /><p className="typo-body-sm">{fileState.status === "loading" ? (isZh ? "正在讀取 SVG…" : "Reading SVG…") : source.raw.trim() ? (parsed ? (isZh ? "修正 SVG 以顯示預覽。" : "Fix the SVG to see its preview.") : (isZh ? "正在檢查 SVG…" : "Checking SVG…")) : (isZh ? "載入範例或加入 SVG 以開始。" : "Load an example or add an SVG to begin.")}</p>
+                </div>}
+              </div>
+              <p className="typo-caption wrap-anywhere text-muted-foreground">{valid && parsed ? `viewBox ${parsed.viewBox} · ${size}px × ${zoom} = ${size * zoom}px ${isZh ? "預覽" : "preview"}` : (isZh ? "有效的 SVG 會在此顯示。" : "A valid SVG appears here.")}</p>
+              {valid && <div className="space-y-3 rounded-lg border border-border p-3">
+                <p className="typo-caption text-muted-foreground">{isZh ? "實際尺寸比較，僅供預覽" : "Actual-size comparison, preview only"}</p>
+                <div className={cn("flex min-w-0 flex-wrap items-end justify-between gap-3", colorRoles[colorRole])}>{iconSizes.map((value) => <div key={value} className="flex min-w-11 flex-col items-center gap-2">
+                  {preview(`size-${value}`, value)}<span className="typo-caption text-muted-foreground">{value}px</span>
+                </div>)}</div>
+              </div>}
+              {valid && <div className="space-y-3 border-t border-border pt-4">
+                <p className="typo-caption text-muted-foreground">{isZh ? "介面情境範例" : "Illustrative UI context"}</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 typo-label text-primary-foreground">{preview("context-action", 16)}{isZh ? "繼續" : "Continue"}</span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 typo-body-sm text-foreground">{preview("context-badge", 16)}{isZh ? "範例標籤" : "Example badge"}</span>
                 </div>
-              </CardHeader>
-
-              <CardContent className="p-4 pt-0 space-y-4">
-                {/* Control Toolbars: Color, Size, Stroke, Zoom, Backdrop */}
-                <div className="flex flex-wrap items-center gap-2 p-2.5 rounded-xl border border-border/80 bg-muted/20">
-                  {/* Color Selector */}
-                  <div className="flex items-center gap-1">
-                    <span className="text-[11px] font-semibold text-muted-foreground mr-1">
-                      {isZh ? "色彩" : "Color"}:
-                    </span>
-                    {[
-                      { id: "primary", label: "Primary", bg: "bg-primary" },
-                      { id: "foreground", label: "Ink", bg: "bg-foreground" },
-                      { id: "muted", label: "Muted", bg: "bg-muted-foreground" },
-                      { id: "amber", label: "Amber", bg: "bg-amber-500" },
-                      { id: "emerald", label: "Emerald", bg: "bg-emerald-500" },
-                    ].map((c) => (
-                      <Button
-                        key={c.id}
-                        variant={colorRole === c.id ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setColorRole(c.id)}
-                        className={cn("h-7 px-2 text-xs gap-1.5", colorRole === c.id ? "shadow-xs" : "")}
-                      >
-                        <span className={cn("size-2 rounded-full", c.bg)} />
-                        <span>{c.label}</span>
-                      </Button>
-                    ))}
-                  </div>
-
-                  <Separator orientation="vertical" className="h-5" />
-
-                  {/* Size Selector */}
-                  <div className="flex items-center gap-1">
-                    <span className="text-[11px] font-semibold text-muted-foreground mr-1">
-                      {isZh ? "尺寸" : "Size"}:
-                    </span>
-                    {[16, 20, 24, 32, 48].map((s) => (
-                      <Button
-                        key={s}
-                        variant={size === s ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setSize(s)}
-                        className={cn("h-7 px-2 text-xs font-mono", size === s ? "shadow-xs" : "")}
-                      >
-                        {s}px
-                      </Button>
-                    ))}
-                  </div>
-
-                  <Separator orientation="vertical" className="h-5" />
-
-                  {/* Stroke Selector */}
-                  <div className="flex items-center gap-1">
-                    <span className="text-[11px] font-semibold text-muted-foreground mr-1">
-                      {isZh ? "線條" : "Stroke"}:
-                    </span>
-                    {[1.5, 2.0, 2.5].map((w) => (
-                      <Button
-                        key={w}
-                        variant={strokeWidth === w ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setStrokeWidth(w)}
-                        className={cn("h-7 px-2 text-xs font-mono", strokeWidth === w ? "shadow-xs" : "")}
-                      >
-                        {w}px
-                      </Button>
-                    ))}
-                  </div>
-
-                  <Separator orientation="vertical" className="h-5" />
-
-                  {/* Zoom Multiplier Selector */}
-                  <div className="flex items-center gap-1">
-                    <span className="text-[11px] font-semibold text-muted-foreground mr-1">
-                      {isZh ? "檢視" : "Zoom"}:
-                    </span>
-                    {[
-                      { value: 1, label: "1x" },
-                      { value: 2, label: "2x" },
-                      { value: 4, label: "4x" },
-                    ].map((z) => (
-                      <Button
-                        key={z.value}
-                        variant={zoom === z.value ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setZoom(z.value as 1 | 2 | 4)}
-                        className={cn("h-7 px-2 text-xs font-mono", zoom === z.value ? "shadow-xs" : "")}
-                      >
-                        {z.label}
-                      </Button>
-                    ))}
-                  </div>
-
-                  <Separator orientation="vertical" className="h-5" />
-
-                  {/* Backdrop Selector */}
-                  <div className="flex items-center gap-1">
-                    <span className="text-[11px] font-semibold text-muted-foreground mr-1">
-                      {isZh ? "底色" : "Backdrop"}:
-                    </span>
-                    {[
-                      { id: "checker", label: "Grid" },
-                      { id: "light", label: "Light" },
-                      { id: "dark", label: "Dark" },
-                    ].map((b) => (
-                      <Button
-                        key={b.id}
-                        variant={backdrop === b.id ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setBackdrop(b.id as any)}
-                        className="h-7 px-2 text-xs font-mono"
-                      >
-                        {b.label}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Interactive Preview Canvas with Scoped Theme Contrast */}
-                <div
-                  className={cn(
-                    "relative h-56 rounded-2xl border flex flex-col items-center justify-center p-6 transition-all overflow-hidden",
-                    backdrop === "checker" && "bg-[conic-gradient(#e2e8f0_90deg,#f8fafc_90deg_180deg,#e2e8f0_180deg_270deg,#f8fafc_270deg)] [background-size:16px_16px] dark:bg-[conic-gradient(#1e293b_90deg,#0f172a_90deg_180deg,#1e293b_180deg_270deg,#0f172a_270deg)] border-border",
-                    backdrop === "light" && "bg-white border-slate-200 text-slate-900 [--foreground:#1A1829] [--muted-foreground:#647086]",
-                    backdrop === "dark" && "dark bg-slate-950 border-slate-800 text-slate-100 [--foreground:#F1F5F9] [--muted-foreground:#94A3B8]"
-                  )}
-                >
-                  {parsed.isValid ? (
-                    <div className="flex flex-col items-center justify-center gap-3">
-                      <div
-                        className={cn("transition-all duration-150 flex items-center justify-center", currentColorClass)}
-                        style={{ width: `${size * zoom}px`, height: `${size * zoom}px` }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox={parsed.viewBox}
-                          fill={iconMode === "fill" ? "currentColor" : "none"}
-                          stroke={iconMode === "fill" ? "none" : "currentColor"}
-                          strokeWidth={iconMode === "fill" ? 0 : strokeWidth}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-full h-full"
-                          aria-hidden="true"
-                          dangerouslySetInnerHTML={{ __html: parsed.innerSvg }}
-                        />
-                      </div>
-                      <Badge variant="outline" className="font-mono text-[10px] bg-background/80 backdrop-blur-xs">
-                        {size}px {zoom > 1 ? `(${zoom}x view: ${size * zoom}px)` : "(1:1 scale)"} · {iconMode === "fill" ? "solid fill" : `${strokeWidth}px stroke`}
-                      </Badge>
-                    </div>
-                  ) : (
-                    <div className="text-center text-muted-foreground text-xs">
-                      {isZh ? "請輸入有效的 SVG 以預覽" : "Enter valid SVG markup to preview"}
-                    </div>
-                  )}
-                </div>
-
-                {/* Multi-Size Optical Check Row (at 1:1 true scale) */}
-                <div className="rounded-xl border border-border/80 bg-muted/20 p-3 space-y-2">
-                  <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
-                    {isZh ? "光學尺寸對比 (16px, 20px, 24px, 32px, 48px · 1:1 真實比例)" : "Optical Scale Inspection (1:1 True Pixel Scale)"}
-                  </span>
-                  <div className="flex items-end justify-around py-2 border-t border-border/50">
-                    {[16, 20, 24, 32, 48].map((s) => (
-                      <div key={s} className="flex flex-col items-center gap-1.5">
-                        <div
-                          className={cn("flex items-center justify-center", currentColorClass)}
-                          style={{ width: `${s}px`, height: `${s}px` }}
-                        >
-                          {parsed.isValid && (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox={parsed.viewBox}
-                              fill={iconMode === "fill" ? "currentColor" : "none"}
-                              stroke={iconMode === "fill" ? "none" : "currentColor"}
-                              strokeWidth={iconMode === "fill" ? 0 : strokeWidth}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="w-full h-full"
-                              aria-hidden="true"
-                              dangerouslySetInnerHTML={{ __html: parsed.innerSvg }}
-                            />
-                          )}
-                        </div>
-                        <span className="text-[10px] font-mono text-muted-foreground">{s}px</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* In-Context UI Mockup Preview */}
-                <div className="rounded-xl border border-border/80 bg-muted/20 p-3 space-y-2">
-                  <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
-                    {isZh ? "台灣電商真實介面情境模擬" : "Real-World Storefront Context Preview"}
-                  </span>
-                  <div className="flex flex-wrap items-center gap-2.5 pt-1">
-                    {/* Primary Button */}
-                    <Button size="sm" className="gap-2 text-xs">
-                      {parsed.isValid && (
-                        <div
-                          className="size-4 shrink-0"
-                          dangerouslySetInnerHTML={{
-                            __html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${parsed.viewBox}" fill="${iconMode === "fill" ? "currentColor" : "none"}" stroke="${iconMode === "fill" ? "none" : "currentColor"}" stroke-width="${iconMode === "fill" ? 0 : 2}" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">${parsed.innerSvg}</svg>`
-                          }}
-                        />
-                      )}
-                      <span>{isZh ? "立即前往結帳" : "Checkout Now"}</span>
-                    </Button>
-
-                    {/* Secondary Badge */}
-                    <Badge variant="outline" className="gap-1.5 py-1 text-xs border-primary/30 text-primary bg-primary/5">
-                      {parsed.isValid && (
-                        <div
-                          className="size-3.5 shrink-0"
-                          dangerouslySetInnerHTML={{
-                            __html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${parsed.viewBox}" fill="${iconMode === "fill" ? "currentColor" : "none"}" stroke="${iconMode === "fill" ? "none" : "currentColor"}" stroke-width="${iconMode === "fill" ? 0 : 2}" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">${parsed.innerSvg}</svg>`
-                          }}
-                        />
-                      )}
-                      <span>{isZh ? "100 晚安心試睡" : "100-Night Trial"}</span>
-                    </Badge>
-
-                    {/* Compact Chip */}
-                    <div className="flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground">
-                      {parsed.isValid && (
-                        <div
-                          className="size-3.5 shrink-0 text-emerald-600"
-                          dangerouslySetInnerHTML={{
-                            __html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${parsed.viewBox}" fill="${iconMode === "fill" ? "currentColor" : "none"}" stroke="${iconMode === "fill" ? "none" : "currentColor"}" stroke-width="${iconMode === "fill" ? 0 : 2}" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">${parsed.innerSvg}</svg>`
-                          }}
-                        />
-                      )}
-                      <span>{isZh ? "原廠正品防偽" : "Authentic Guarantee"}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Export & Code Output Tabs */}
-                <div className="space-y-2 pt-2">
-                  <Tabs defaultValue="jsx" className="w-full">
-                    <div className="flex items-center justify-between pb-2">
-                      <TabsList className="h-8">
-                        <TabsTrigger value="jsx" className="text-xs font-mono">React JSX</TabsTrigger>
-                        <TabsTrigger value="svg" className="text-xs font-mono">Clean SVG</TabsTrigger>
-                      </TabsList>
-
-                      <div className="flex items-center gap-1.5">
-                        {/* One-Click Copy JSX Button */}
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => copyToClipboard(parsed.reactJsx, "jsx")}
-                          className="h-8 px-2.5 text-xs gap-1.5"
-                          disabled={!parsed.isValid}
-                          aria-label="Copy React JSX component code"
-                        >
-                          {copiedType === "jsx" ? <Check className="size-3.5 text-emerald-500" /> : <Copy className="size-3.5" />}
-                          <span>{copiedType === "jsx" ? (isZh ? "已複製 JSX" : "Copied JSX!") : "Copy JSX"}</span>
-                        </Button>
-
-                        {/* One-Click Copy Clean SVG Button */}
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => copyToClipboard(parsed.cleanSvg, "svg")}
-                          className="h-8 px-2.5 text-xs gap-1.5"
-                          disabled={!parsed.isValid}
-                          aria-label="Copy sanitized SVG markup"
-                        >
-                          {copiedType === "svg" ? <Check className="size-3.5 text-emerald-500" /> : <FileCode2 className="size-3.5" />}
-                          <span>{copiedType === "svg" ? (isZh ? "已複製 SVG" : "Copied SVG!") : "Copy SVG"}</span>
-                        </Button>
-
-                        {/* One-Click Download SVG Button */}
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={handleDownloadSvg}
-                          className="h-8 px-2.5 text-xs gap-1.5"
-                          disabled={!parsed.isValid}
-                          aria-label="Download sanitized SVG file"
-                        >
-                          <Download className="size-3.5" />
-                          <span>{isZh ? "下載 .svg" : "Download SVG"}</span>
-                        </Button>
-                      </div>
-                    </div>
-
-                    <TabsContent value="jsx" className="mt-0">
-                      <div className="relative rounded-xl border border-border bg-slate-950 p-3.5 overflow-hidden">
-                        <pre className="text-xs font-mono text-slate-200 overflow-x-auto max-h-56 leading-relaxed">
-                          {parsed.reactJsx}
-                        </pre>
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="svg" className="mt-0">
-                      <div className="relative rounded-xl border border-border bg-slate-950 p-3.5 overflow-hidden">
-                        <pre className="text-xs font-mono text-slate-200 overflow-x-auto max-h-56 leading-relaxed">
-                          {parsed.cleanSvg}
-                        </pre>
-                      </div>
-                    </TabsContent>
-                  </Tabs>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>}
+            </CardContent>
+          </Card>
         </div>
+        {source.raw.trim() && parsed && !valid && <div id={`${id}-parse-error`} role="alert" className="flex items-start gap-3 rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-destructive">
+          <AlertCircle aria-hidden="true" className="mt-1 size-5 shrink-0" /><p className="typo-body-sm wrap-anywhere">{parsed.error}</p>
+        </div>}
+        {valid && parsed.warnings.length > 0 && <div role="status" className="space-y-2 rounded-lg border border-border bg-muted/40 p-4">
+          <p className="typo-label">{isZh ? "匯出前請檢查" : "Review before export"}</p>
+          <ul className="list-disc space-y-1 pl-5 typo-body-sm text-muted-foreground">{parsed.warnings.map((warning, index) => <li key={index} className="wrap-anywhere">{warning}</li>)}</ul>
+        </div>}
+        <Card className="min-w-0 gap-4 shadow-none">
+          <CardHeader className="px-4 sm:px-6">
+            <h3 className="typo-h4">{isZh ? "3. 匯出" : "3. Export"}</h3>
+            <p className="typo-body-sm text-muted-foreground">{isZh ? "SVG 與 JSX 使用相同的外觀設定。使用前請檢查清理提示與實際呈現。" : "SVG and JSX share the same appearance settings. Review sanitization notes and rendering before use."}</p>
+          </CardHeader>
+          <CardContent className="min-w-0 px-4 sm:px-6">
+            <Tabs defaultValue="jsx" className="min-w-0 gap-4">
+              <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
+                <TabsList className="h-auto min-h-12 max-w-full"><TabsTrigger value="jsx" className="min-h-11 px-3">React JSX</TabsTrigger><TabsTrigger value="svg" className="min-h-11 px-3">SVG</TabsTrigger></TabsList>
+                <div className="flex min-w-0 flex-wrap gap-2">
+                  <Button variant="outline" className="min-h-11 px-3 typo-body-sm" disabled={!valid} onClick={() => parsed && copy(parsed.reactJsx, "jsx")}>
+                    {copiedAction === "jsx" ? <Check aria-hidden="true" className="size-4" /> : <Copy aria-hidden="true" className="size-4" />}{isZh ? "複製 JSX" : "Copy JSX"}
+                  </Button>
+                  <Button variant="outline" className="min-h-11 px-3 typo-body-sm" disabled={!valid} onClick={() => parsed && copy(parsed.cleanSvg, "svg")}>
+                    {copiedAction === "svg" ? <Check aria-hidden="true" className="size-4" /> : <Copy aria-hidden="true" className="size-4" />}{isZh ? "複製 SVG" : "Copy SVG"}
+                  </Button>
+                  <Button className="min-h-11 px-3 typo-body-sm" disabled={!valid} onClick={download}><Download aria-hidden="true" className="size-4" />{isZh ? "下載 SVG" : "Download SVG"}</Button>
+                </div>
+              </div>
+              {(["jsx", "svg"] as const).map((format) => <TabsContent key={format} value={format} className="min-w-0">
+                {valid && parsed ? <pre tabIndex={0} aria-label={format === "jsx" ? (isZh ? "React JSX 匯出程式碼" : "React JSX export code") : (isZh ? "SVG 匯出程式碼" : "SVG export code")}
+                  className="max-h-96 min-w-0 max-w-full overflow-auto rounded-lg border border-border bg-background p-4 typo-body-sm focus-visible:outline-2 focus-visible:outline-ring"><code>{format === "jsx" ? parsed.reactJsx : parsed.cleanSvg}</code></pre>
+                  : <div className="space-y-3 rounded-lg border border-dashed border-border p-6 text-center text-muted-foreground"><FileCode2 aria-hidden="true" className="mx-auto size-6" /><p className="typo-body-sm">{isZh ? "加入有效的 SVG 後即可複製或下載。" : "Add a valid SVG to copy or download your icon."}</p></div>}
+              </TabsContent>)}
+            </Tabs>
+          </CardContent>
+        </Card>
       </section>
 
-      {/* Figma & Designer Guidelines */}
-      <section className="space-y-4 pt-6 border-t border-border">
-        <div>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground border-border">
-              DESIGN SPECIFICATIONS
-            </Badge>
-          </div>
-          <h2 className="text-lg font-bold text-foreground mt-1">
-            {isZh ? "Figma 設計師向量圖示繪製規範" : "Figma & Designer Vector Specifications"}
-          </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            {isZh
-              ? "確保自訂圖示與全站 Lucide React 官方圖示體系保持一致的視覺重力、線條端點與色彩語意相容性。"
-              : "Technical rules to guarantee seamless optical harmony and code cleanliness alongside Lucide React icons."}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Card className="bg-card border-border">
-            <CardContent className="p-4 space-y-2">
-              <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-mono text-xs font-bold">
-                24
-              </div>
-              <h3 className="text-sm font-bold text-foreground">
-                {isZh ? "24×24px 畫布與安全邊距" : "24×24px Frame & Live Area"}
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {isZh
-                  ? "建立 24×24px 畫布，保留周圍 2px 光學內縮安全邊距（主要繪製區域為 20×20px），確保與文字對齊時不會裁切。"
-                  : "All icons must be designed on a 24×24px frame with a 2px inner optical margin (20×20px active area) to ensure perfect optical balance."}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardContent className="p-4 space-y-2">
-              <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-mono text-xs font-bold">
-                2.0
-              </div>
-              <h3 className="text-sm font-bold text-foreground">
-                {isZh ? "2px 圓角線條 (Round Stroke)" : "2px Consistent Stroke Weight"}
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {isZh
-                  ? "標準筆畫粗細為 2px，端點設為 Round Cap，轉角設為 Round Join。精密場景可支援 1.5px，粗體場景支援 2.5px。"
-                  : "Default stroke weight is 2px with round caps and round joins. Consistent geometric terminals create visual unity across components."}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardContent className="p-4 space-y-2">
-              <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-mono text-xs font-bold">
-                CSS
-              </div>
-              <h3 className="text-sm font-bold text-foreground">
-                {isZh ? "使用 currentColor 動態賦色" : "Colorless / currentColor"}
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {isZh
-                  ? "匯出時請將 fill 設為 none，stroke 移除寫死色碼。圖示將自動承接 Tailwind text-primary 或 text-foreground 語意變數。"
-                  : "Export vectors without fixed color fills or hardcoded hex. currentColor allows icons to dynamically adapt to themes, brands, and hover states."}
-              </p>
-            </CardContent>
-          </Card>
+      <section aria-labelledby={`${id}-guidelines`} className="space-y-4 border-t border-border pt-8">
+        <h2 id={`${id}-guidelines`} className="typo-h3">{isZh ? "設計與交付規範" : "Design & handoff guidance"}</h2>
+        <div className="grid min-w-0 gap-5 @[44rem]:grid-cols-3">
+          {[
+            { title: isZh ? "24 × 24 畫布" : "24 × 24 canvas", body: isZh ? "新圖示以 24 × 24 viewBox 與約 2px 視覺留白為起點。匯入時保留原始 viewBox，避免裁切。" : "Start new icons with a 24 × 24 viewBox and roughly 2px optical padding. Imports keep their viewBox to avoid cropping." },
+            { title: isZh ? "一致的線條" : "Consistent strokes", body: isZh ? "新描邊圖示以 2px 線寬、圓角端點與轉角為起點。在 16 至 48px 尺寸檢查清晰度。" : "Start new outline icons with 2px strokes, round caps and joins. Check legibility at sizes from 16 to 48px." },
+            { title: isZh ? "語意色彩與無障礙" : "Semantic color & accessibility", body: isZh ? "需要主題適配時使用 currentColor。裝飾圖示應隱藏於輔助科技，圖示按鈕須有可讀名稱及至少 44px 操作區。" : "Use currentColor when icons should follow theme tokens. Hide decorative icons from assistive technology. Give icon buttons a readable name and at least a 44px target." },
+          ].map((item) => <div key={item.title} className="min-w-0 space-y-2 rounded-lg border border-border p-4"><h3 className="typo-label">{item.title}</h3><p className="typo-body-sm text-muted-foreground">{item.body}</p></div>)}
         </div>
       </section>
     </div>
