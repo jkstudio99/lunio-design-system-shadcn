@@ -305,17 +305,23 @@ export function sanitizeAndParseSvg(rawInput: string, options: SanitizeOptions):
       }
     });
     let recolored = false;
-    const transform = (node: SvgNode, protectedPaint: boolean, inheritedPaint: { fill: string; stroke: string }) => {
-      const protectedNode = protectedPaint || node.tag === "mask" || node.tag === "clipPath";
+    const transform = (node: SvgNode, protectedPaint: boolean, inheritedPaint: { fill: string; stroke: string; color: string }) => {
+      const protectedNode = protectedPaint || ["mask", "clipPath", "linearGradient", "radialGradient"].includes(node.tag);
       const sourcePaint = {
         fill: node.attributes.fill && node.attributes.fill !== "inherit" ? node.attributes.fill : inheritedPaint.fill,
         stroke: node.attributes.stroke && node.attributes.stroke !== "inherit" ? node.attributes.stroke : inheritedPaint.stroke,
+        color: node.attributes.color && !["inherit", "currentColor"].includes(node.attributes.color) ? node.attributes.color : inheritedPaint.color,
       };
       if (options.convertToCurrentColor && !protectedPaint && protectedNode) {
         node.attributes.fill = sourcePaint.fill;
         node.attributes.stroke = sourcePaint.stroke;
+        node.attributes.color = sourcePaint.color;
       }
       if (options.convertToCurrentColor && !protectedNode) {
+        if (node.attributes.color) {
+          delete node.attributes.color;
+          recolored = true;
+        }
         for (const paint of ["fill", "stroke"]) {
           const value = node.attributes[paint];
           if (value && value !== "none" && value !== "currentColor" && !LOCAL_URL.test(value)) {
@@ -327,7 +333,7 @@ export function sanitizeAndParseSvg(rawInput: string, options: SanitizeOptions):
       if (options.strokeWidth !== undefined && (node === root || "stroke-width" in node.attributes)) node.attributes["stroke-width"] = String(options.strokeWidth);
       for (const child of node.children) if (typeof child !== "string") transform(child, protectedNode, sourcePaint);
     };
-    transform(root, false, { fill: "black", stroke: "none" });
+    transform(root, false, { fill: "black", stroke: "none", color: "currentColor" });
     if (options.convertToCurrentColor && !root.attributes.fill) root.attributes.fill = "currentColor";
     if (recolored) warnings.add(message("Converted solid fill and stroke colors to currentColor. Gradient stops, masks and clip paths keep their source colors.", "已將純色填色與描邊轉為 currentColor，漸層色標、遮罩及裁切路徑保留原始色彩。"));
     if (options.iconMode && options.iconMode !== "original") {
