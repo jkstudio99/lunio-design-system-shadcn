@@ -167,7 +167,7 @@ export function MattressPDP() {
       {/* 5. แถบสั่งซื้อด้านล่าง */}
       <PDPStickyBar
         sizeLabel={`${size} 尺`}
-        priceLabel="NT$ 21,900"
+        priceLabel="NT21,900"
         inStock={true}
         ready={true}
       />

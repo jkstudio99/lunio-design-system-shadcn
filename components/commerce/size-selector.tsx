@@ -54,7 +54,7 @@ export function SizeSelector({
               disabled={option.disabled || option.soldOut}
               onClick={() => onSelect(option.id)}
               className={cn(
-                "h-auto min-h-[75px] flex-col items-start gap-1 whitespace-normal border p-3 text-left transition-all",
+                "h-auto min-h-18.75 flex-col items-start gap-1 whitespace-normal border p-3 text-left transition-all",
                 chosen && "border-2 border-primary ring-1 ring-primary shadow-xs"
               )}
             >
