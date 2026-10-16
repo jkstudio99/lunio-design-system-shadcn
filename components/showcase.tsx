@@ -24,11 +24,12 @@ export function Showcase(){
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[22px] sm:h-[28px] w-auto object-contain" />
         <span className="text-[13px] sm:text-[15px] font-semibold tracking-tight text-muted-foreground">/design</span>
-        <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4</span>
+        <span className="hidden sm:inline-flex rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">v1.4.0</span>
       </Link>
       <nav className="hidden items-center gap-7 text-[13px] lg:flex">
         <Link href="/docs/getting-started" className="shell-link">{isZh ? "快速入門" : "Documentation"}</Link>
         <Link href="/docs/components" className="shell-link">{isZh ? "元件庫" : "Components"}</Link>
+        <Link href="/docs/commerce" className="shell-link">{isZh ? "電商模式" : "Commerce"}</Link>
         <Link href="/docs/typography" className="shell-link">{isZh ? "設計 Token" : "Tokens"}</Link>
         <Link href="/docs/changelog" className="shell-link">{isZh ? "更新日誌" : "Changelog"}</Link>
         <Link href="/docs/source" className="shell-link">DESIGN.md</Link>
@@ -57,7 +58,7 @@ export function Showcase(){
                 <img src="/images/lunio/lunio-primary.svg" alt="Lunio" className="logo-theme-light h-[22px] w-auto object-contain" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/lunio/lunio-white.svg" alt="Lunio" className="logo-theme-dark h-[22px] w-auto object-contain" />
-                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">v1.4</Badge>
+                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">v1.4.0</Badge>
               </div>
               <SheetTitle className="sr-only">Lunio Design System</SheetTitle>
               <SheetDescription className="sr-only">Mobile navigation</SheetDescription>
@@ -74,14 +75,14 @@ export function Showcase(){
             </SheetHeader>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {/* 4-Brand Grid */}
+              {/* 5-Brand Grid */}
               <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
                 <div className="flex items-center justify-between mb-2 px-0.5">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                     {isZh ? "切換品牌體驗" : "Brand Theme"}
                   </span>
                   <span className="text-[10px] font-mono font-semibold text-primary">
-                    {isZh ? "4 大品牌" : "4 BRANDS"}
+                    {isZh ? "5 大品牌" : "5 BRANDS"}
                   </span>
                 </div>
                 <MobileBrandGrid onSelect={() => {}} />
@@ -153,13 +154,21 @@ export function Showcase(){
     </Link>
     <div className="flex flex-wrap items-start justify-between gap-5">
       <div>
-        <div className="eyebrow mb-4 text-primary">{isZh ? "LUNIO 多品牌設計系統規範" : "DESIGN SYSTEM ANALYSIS / LUNIO"}</div>
+        <div className="eyebrow mb-4 text-primary">{isZh ? "LUNIO.COM.TW 台灣官網多品牌設計系統" : "DESIGN SYSTEM FOR LUNIO.COM.TW"}</div>
         <h1 className="max-w-[840px] text-[clamp(34px,4.4vw,62px)] leading-[1.04] tracking-[-.055em] font-bold">
           {t.showcase.heroTitleLine1}<br/><span className="text-muted-foreground">{t.showcase.heroTitleLine2}</span>
         </h1>
-        <p className="mt-5 max-w-[680px] text-[15px] leading-7 text-muted-foreground">
+        <p className="mt-5 max-w-[720px] text-[15px] leading-7 text-muted-foreground">
           {t.showcase.heroSubtitle}
         </p>
+        <div className="mt-4 rounded-xl border border-border/80 bg-card/90 p-3.5 max-w-[720px] text-xs leading-6 text-muted-foreground shadow-2xs">
+          <strong className="font-bold text-foreground">
+            {isZh ? "適用範圍聲明 (Storefront Scope)：" : "Storefront Scope:"}
+          </strong>{" "}
+          {isZh
+            ? "本系統為 lunio.com.tw 台灣官方電商網站專屬設計標準（非跨國集團全區域系統），涵蓋站上銷售之 5 大品牌：Lunio TW (#1C46B4)、Nooz Helix (#7347AE)、Nooz Sunset (#F28131)、Lunio Bedding (#1C46B4) 與自 luniolife.com.tw 整併之 Lunio Life (#2D274A)。Lunio Life 商品頁與分類頁套用 data-brand=\"lunio-life\"，全站其餘頁面維持 Lunio CI。"
+            : "This is the design system specifically for lunio.com.tw (not a group-wide system), covering the 5 brands sold on it: Lunio TW (#1C46B4), Nooz Helix (#7347AE), Nooz Sunset (#F28131), Lunio Bedding (#1C46B4), and Lunio Life (#2D274A, merged from luniolife.com.tw). Pages belonging to Lunio Life (its PDPs and category pages) use data-brand=\"lunio-life\" CI, while the rest of the site keeps Lunio CI."}
+        </div>
       </div>
       <div className="flex flex-wrap gap-2">
         <Link href="/docs/source" className="shell-action inline-flex items-center gap-2">
@@ -171,7 +180,7 @@ export function Showcase(){
       </div>
     </div>
    </div>
-   <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_290px]">
+   <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_310px]">
     <div className="shell-card p-5 md:p-6">
       <div className="mb-4 flex items-center justify-between gap-2">
         <div className="eyebrow text-muted-foreground">{t.showcase.usageTitle}</div>
@@ -212,8 +221,10 @@ export function Showcase(){
       </div>
       <div className="space-y-2 border-t border-border pt-4 text-[12px] text-muted-foreground">
         <div className="flex items-center justify-between"><span>{isZh ? "5 組官方字重" : "5 font weights"}</span><CheckCircle2 size={15} className="text-primary"/></div>
-        <div className="flex items-center justify-between"><span>{isZh ? "4 大品牌模式" : "4 brand modes"}</span><CheckCircle2 size={15} className="text-primary"/></div>
-        <div className="flex items-center justify-between"><span>{isZh ? "寢具 CI 識別" : "Bedding CI"}</span><span className="text-primary font-medium">{isZh ? "已核准" : "Approved"}</span></div>
+        <div className="flex items-center justify-between"><span>{isZh ? "5 大品牌模式 (含 Lunio Life)" : "5 brand modes (incl. Lunio Life)"}</span><CheckCircle2 size={15} className="text-primary"/></div>
+        <div className="flex items-center justify-between"><span>{isZh ? "22 個 shadcn/Radix 基底" : "22 shadcn/Radix primitives"}</span><CheckCircle2 size={15} className="text-primary"/></div>
+        <div className="flex items-center justify-between"><span>{isZh ? "19 個台灣電商轉換模式" : "19 commerce patterns"}</span><CheckCircle2 size={15} className="text-primary"/></div>
+        <div className="flex items-center justify-between"><span>{isZh ? "價格顯示標準" : "Price format"}</span><span className="text-primary font-mono font-semibold">NT21,990</span></div>
       </div>
     </div>
    </section>
@@ -225,19 +236,19 @@ export function Showcase(){
      </div>
      <div>
        <div className="eyebrow mb-3 text-muted-foreground">{isZh ? "多品牌主題" : "THEMING"}</div>
-       <h3 className="text-[18px] font-bold">{isZh ? "品牌作用域主題隔離" : "Scoped by brand."}</h3>
-       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{isZh ? "Lunio、Helix、Sunset 與 Lunio Bedding 共享元件架構，精準展現專屬調色盤。" : "Lunio, Helix, Sunset and Lunio Bedding share anatomy while maintaining color expression."}</p>
+       <h3 className="text-[18px] font-bold">{isZh ? "lunio.com.tw 五大品牌作用域" : "Scoped for lunio.com.tw."}</h3>
+       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{isZh ? "Lunio TW、Nooz Helix、Nooz Sunset、Lunio Bedding 與 Lunio Life 共享元件架構，精準切換專屬 CI。" : "Lunio TW, Nooz Helix, Nooz Sunset, Lunio Bedding and Lunio Life share anatomy while maintaining distinct CI expression."}</p>
      </div>
      <div>
        <div className="eyebrow mb-3 text-muted-foreground">{isZh ? "設計代碼落地" : "DESIGN TO CODE"}</div>
-       <h3 className="text-[18px] font-bold">{isZh ? "為台灣電商量身打造" : "Built to ship."}</h3>
-       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{isZh ? "語意化 Token、Radix 無障礙互動與台尺床墊規格，賦能高維護性 Next.js 購物網站。" : "Semantic tokens, accessible states and e-commerce contracts for a maintainable Next.js storefront."}</p>
+       <h3 className="text-[18px] font-bold">{isZh ? "為台灣電商轉換量身打造" : "Built to ship."}</h3>
+       <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{isZh ? "標準化 NT21,990 價格格式、#E53935 現省促銷紅、22 個 Radix 基底與 19 個台灣電商模式。" : "Standardized NT21,990 price formatting, #E53935 sale token, 22 Radix primitives and 19 Taiwan e-commerce patterns."}</p>
      </div>
    </div>
   </main>
   <footer className="border-t border-border py-8">
     <div className="shell-container flex flex-wrap items-center justify-between gap-3 text-[12px] text-muted-foreground">
-      <div>{isZh ? "LUNIO 設計系統 © 2026 · 內部設計與工程參考手冊" : "LUNIO DESIGN SYSTEM © 2026 · Internal design reference"}</div>
+      <div>{isZh ? "LUNIO.COM.TW 設計系統 © 2026 · 內部設計與工程參考手冊" : "LUNIO.COM.TW DESIGN SYSTEM © 2026 · Internal design reference"}</div>
       <div className="flex gap-4">
         <Link href="/docs/release" className="hover:text-foreground transition-colors">{isZh ? "版本發布說明" : "Release notes"}</Link>
         <a href="https://www.figma.com/design/46bJYM9raivd3wEwTxaaJI/Lunio-TW-Mattress?node-id=1036-636" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Figma ↗</a>

@@ -158,11 +158,30 @@ def main():
     
     hypercool_primary_im.save(os.path.join(hypercool_dir, "hypercool-primary.png"), "PNG", optimize=True)
     hypercool_white_im.save(os.path.join(hypercool_dir, "hypercool-white.png"), "PNG", optimize=True)
-    trace_to_svg(im_lunio_master, "#155A7A", os.path.join(hypercool_dir, "hypercool-primary.svg"))
-    trace_to_svg(im_lunio_master, "#FFFFFF", os.path.join(hypercool_dir, "hypercool-white.svg"))
-    print(f"Generated Hypercool assets in: {hypercool_dir}")
-    
+    # -------------------------------------------------------------
+    # 5. LUNIO LIFE (#2D274A Plum Night)
+    # -------------------------------------------------------------
+    life_dir = os.path.join(BASE_DIR, "lunio-life")
+    os.makedirs(life_dir, exist_ok=True)
+    life_master_path = os.path.join(life_dir, "lunio-life-logo-white.png")
+    if os.path.exists(life_master_path):
+        im_life_master = Image.open(life_master_path)
+        life_primary_im = recolor(im_life_master, "#2D274A")
+        life_white_im = recolor(im_life_master, "#FFFFFF")
+
+        life_primary_im.save(os.path.join(life_dir, "lunio-life-logo-primary.png"), "PNG", optimize=True)
+        life_primary_im.save(os.path.join(life_dir, "lunio-life-primary.png"), "PNG", optimize=True)
+        life_white_im.save(os.path.join(life_dir, "lunio-life-logo-white.png"), "PNG", optimize=True)
+        life_white_im.save(os.path.join(life_dir, "lunio-life-white.png"), "PNG", optimize=True)
+
+        trace_to_svg(im_life_master, "#2D274A", os.path.join(life_dir, "lunio-life-primary.svg"))
+        trace_to_svg(im_life_master, "#2D274A", os.path.join(life_dir, "lunio-life-logo-primary.svg"))
+        trace_to_svg(im_life_master, "#FFFFFF", os.path.join(life_dir, "lunio-life-white.svg"))
+        trace_to_svg(im_life_master, "#FFFFFF", os.path.join(life_dir, "lunio-life-logo-white.svg"))
+        print(f"Generated Lunio Life assets in: {life_dir} (size={im_life_master.size}, color=#2D274A)")
+
     print("=== All brand logos generated successfully ===")
 
 if __name__ == "__main__":
     main()
+

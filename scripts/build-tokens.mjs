@@ -36,12 +36,23 @@ for(const [key,b] of Object.entries(tokens.brands)){
   `  --popover: #FFFFFF;`,
   `  --popover-foreground: ${b.ink};`,
   `  --destructive: ${tokens.foundation.error};`,
+  `  --sale: ${tokens.foundation.sale};`,
+  `  --sale-foreground: #FFFFFF;`,
   `  --interactive-text: ${key==='sunset'?b.ink:b.primary};`,
   `  --ring: ${key==='sunset'?'#1C1526':b.primary};`,
   `  --radius: ${tokens.radii.control}px;`,
   `  --status-success-ink: ${tokens.foundation.success};`,
   `  --status-success-surface: #EEF8F3;`,
-  '}', '');
+  `  --status-sale-ink: ${tokens.foundation.sale};`,
+  `  --status-sale-surface: #FDECEC;`);
+  if (b.secondaryPalette) {
+    out.push(
+      `  --brand-surface-soft: ${b.secondaryPalette.ivory};`,
+      `  --brand-lifestyle-accent: ${b.secondaryPalette.pink};`,
+      `  --brand-support-tone: ${b.secondaryPalette.lightPink};`
+    );
+  }
+  out.push('}', '');
 }
 out.push(
   ':root {',
@@ -53,6 +64,8 @@ out.push(
   '  --input: var(--ds-border);',
   '  --muted: #F1F3F7;',
   '  --muted-foreground: #647086;',
+  '  --sale: var(--ds-sale, #E53935);',
+  '  --sale-foreground: #FFFFFF;',
   '}',
   '',
   '.dark, html.dark {',
@@ -77,6 +90,8 @@ out.push(
   '  --ring: #5D8EF7;',
   '  --status-success-ink: #4ADE80;',
   '  --status-success-surface: #0E2A1D;',
+  '  --status-sale-ink: #FF8A80;',
+  '  --status-sale-surface: #2B1214;',
   '}',
   '',
   ':root:not([data-brand]) {',
@@ -93,18 +108,22 @@ out.push(
   '  --popover: #FFFFFF;',
   '  --popover-foreground: #1A1829;',
   '  --destructive: #B42318;',
+  '  --sale: #E53935;',
+  '  --sale-foreground: #FFFFFF;',
   '  --radius: 8px;',
   '  --status-success-ink: #167347;',
   '  --status-success-surface: #EEF8F3;',
+  '  --status-sale-ink: #E53935;',
+  '  --status-sale-surface: #FDECEC;',
   '}',
   ''
 );
 
 for(const [key, b] of Object.entries(tokens.brands)){
   const sel = key === 'bedding' ? '.dark [data-brand="bedding"], .dark [data-brand="hypercool"], html.dark[data-brand="bedding"], html.dark[data-brand="hypercool"]' : `.dark [data-brand="${key}"], html.dark[data-brand="${key}"]`;
-  const darkSurface = key === 'helix' ? '#1D172A' : key === 'sunset' ? '#261710' : '#121A2C';
-  const darkSecondary = key === 'helix' ? '#261F38' : key === 'sunset' ? '#382218' : '#1A233A';
-  const darkText = key === 'sunset' ? '#FFA566' : key === 'helix' ? '#A78BFA' : '#5D8EF7';
+  const darkSurface = key === 'helix' ? '#1D172A' : key === 'sunset' ? '#261710' : key === 'lunio-life' ? '#1B172E' : '#121A2C';
+  const darkSecondary = key === 'helix' ? '#261F38' : key === 'sunset' ? '#382218' : key === 'lunio-life' ? '#25203E' : '#1A233A';
+  const darkText = key === 'sunset' ? '#FFA566' : key === 'helix' ? '#A78BFA' : key === 'lunio-life' ? '#B4A7FA' : '#5D8EF7';
   out.push(
     `${sel} {`,
     `  --brand-surface: ${darkSurface};`,

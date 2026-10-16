@@ -434,7 +434,7 @@ export const curatedIcons: CuratedIcon[] = [
     labelEn: "Promo Tag / Discount",
     keywords: ["tag", "promo", "discount", "標籤", "促銷", "現折", "特價"],
     contextZh: "商品卡片促銷標籤（滿萬折千、新品上市限時優惠）。",
-    contextEn: "Product card promotional badges (e.g. NT$1,000 OFF, New Release).",
+    contextEn: "Product card promotional badges (e.g. NT1,000 OFF, New Release).",
   },
   {
     name: "Percent",

@@ -2,12 +2,17 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/components/language-provider";
+import { formatPrice, normalizePriceLabel } from "@/lib/design-system";
 import { cn } from "@/lib/utils";
 
 type PDPStickyBarProps = {
   sizeLabel?: string;
-  priceLabel: string;
+  price?: number;
+  regularPrice?: number;
+  currencyCode?: string;
+  priceLabel?: string;
   inStock: boolean;
   ready: boolean;
   onAdd?: () => void;
@@ -18,6 +23,9 @@ type PDPStickyBarProps = {
 /** Demo mode intentionally doesn't execute a purchase; production must validate WooCommerce cart state. */
 export function PDPStickyBar({
   sizeLabel,
+  price,
+  regularPrice,
+  currencyCode = "TWD",
   priceLabel,
   inStock,
   ready,
@@ -26,6 +34,21 @@ export function PDPStickyBar({
   demo = false,
 }: PDPStickyBarProps) {
   const { isZh } = useLanguage();
+
+  const resolvedPrice =
+    typeof price === "number"
+      ? formatPrice(price, currencyCode)
+      : normalizePriceLabel(priceLabel || "", currencyCode);
+
+  const resolvedRegular =
+    typeof regularPrice === "number" && typeof price === "number" && regularPrice > price
+      ? formatPrice(regularPrice, currencyCode)
+      : undefined;
+
+  const savings =
+    typeof regularPrice === "number" && typeof price === "number" && regularPrice > price
+      ? regularPrice - price
+      : undefined;
 
   const selectedText = isZh ? "已選擇：" : "Selected: ";
   const fallbackLabel = isZh ? "請選擇商品規格" : "Select options";
@@ -43,6 +66,7 @@ export function PDPStickyBar({
 
   return (
     <div
+      data-slot="pdp-sticky-bar"
       className={cn(
         "flex flex-wrap items-center justify-between gap-4 border border-border bg-background p-4 shadow-lg rounded-xl",
         className
@@ -53,7 +77,19 @@ export function PDPStickyBar({
           {selectedText}
           <span className="font-semibold text-foreground">{sizeLabel || fallbackLabel}</span>
         </p>
-        <p className="typo-price-md mt-1 text-primary">{priceLabel}</p>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          <p className="typo-price-md text-primary">{resolvedPrice}</p>
+          {resolvedRegular && (
+            <span className="typo-caption text-muted-foreground line-through">
+              {resolvedRegular}
+            </span>
+          )}
+          {savings && (
+            <Badge variant="sale" className="px-2 py-0.5 text-[11px]">
+              {isZh ? `現省 ${formatPrice(savings, currencyCode)}` : `Save ${formatPrice(savings, currencyCode)}`}
+            </Badge>
+          )}
+        </div>
       </div>
       <Button
         type="button"

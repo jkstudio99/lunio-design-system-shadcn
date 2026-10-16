@@ -157,14 +157,14 @@ export function DocsShell({ children }: { children: ReactNode }) {
                 <kbd className="rounded border px-1.5 py-0.5 text-[10px] font-mono bg-background">⌘K</kbd>
               </Button>
 
-              {/* Visual 4-Brand Grid for Mobile */}
+              {/* Visual 5-Brand Grid for Mobile */}
               <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
                 <div className="flex items-center justify-between mb-2 px-0.5">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                     {isZh ? "切換品牌體驗" : "Brand Theme"}
                   </span>
                   <span className="text-[10px] font-mono font-semibold text-primary">
-                    {isZh ? "4 大品牌" : "4 BRANDS"}
+                    {isZh ? "5 大品牌" : "5 BRANDS"}
                   </span>
                 </div>
                 <MobileBrandGrid onSelect={() => {}} />

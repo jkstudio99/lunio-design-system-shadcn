@@ -12,3 +12,25 @@ export const docsNav: ReadonlyArray<{group:string;links:ReadonlyArray<{slug:stri
 ];
 export const allDocs=docsNav.flatMap(x=>x.links);
 export function contrastRatio(a:string,b:string){const L=(h:string)=>{const x=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*x[0]+.7152*x[1]+.0722*x[2];};const x=L(a),y=L(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+
+/**
+ * Canonical lunio.com.tw price formatter.
+ * Standardizes all Taiwan prices from `currencyCode` ("TWD" / "NT") to "NT21,990"
+ * (never mixing "NT$28,990" or "NT$ 28,990").
+ */
+export function formatPrice(amount: number, currencyCode: string = "TWD"): string {
+  const code = currencyCode.toUpperCase();
+  const formatted = Math.round(amount).toLocaleString("en-US");
+  if (code === "TWD" || code === "NT" || code === "NTD") {
+    return `NT${formatted}`;
+  }
+  return `${code} ${formatted}`;
+}
+
+export function normalizePriceLabel(label: string, currencyCode: string = "TWD"): string {
+  const code = currencyCode.toUpperCase();
+  if (code === "TWD" || code === "NT" || code === "NTD") {
+    return label.replace(/NT\$\s*/gi, "NT").replace(/TWD\s*/gi, "NT");
+  }
+  return label;
+}

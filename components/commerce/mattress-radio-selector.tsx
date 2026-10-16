@@ -36,9 +36,9 @@ export const TAIWAN_SIZES: TaiwanMattressSize[] = [
     nameEn: "Standard Single",
     chiZh: "3 尺",
     chiEn: "3.0 ft",
-    cm: "90 × 188 cm",
-    descZh: "適用兒童房、青年宿舍、單人雅房 (3 坪以內)",
-    descEn: "Ideal for kids rooms, studio apartments, or guest beds",
+    cm: "89 × 188 × 24 cm",
+    descZh: "適用兒童房、青年宿舍、單人雅房 (3 坪以內 · 依 SKU 實測)",
+    descEn: "Ideal for kids rooms, studio apartments, or guest beds (SKU-verified)",
   },
   {
     id: "3.5",
@@ -46,9 +46,9 @@ export const TAIWAN_SIZES: TaiwanMattressSize[] = [
     nameEn: "Single Extra",
     chiZh: "3.5 尺",
     chiEn: "3.5 ft",
-    cm: "105 × 188 cm",
-    descZh: "成年單人最舒適尺寸，翻身無拘束 (3-4 坪)",
-    descEn: "Most comfortable single adult size with full rolling space",
+    cm: "104 × 188 × 24 cm",
+    descZh: "成年單人最舒適尺寸，翻身無拘束 (3-4 坪 · 依 SKU 實測)",
+    descEn: "Most comfortable single adult size with full rolling space (SKU-verified)",
   },
   {
     id: "5.0",
@@ -56,7 +56,7 @@ export const TAIWAN_SIZES: TaiwanMattressSize[] = [
     nameEn: "Standard Double",
     chiZh: "5 尺",
     chiEn: "5.0 ft",
-    cm: "150 × 188 cm",
+    cm: "150 × 188 × 24 cm",
     descZh: "台灣雙人最熱銷規格，夫妻、伴侶標準首選 (4-6 坪)",
     descEn: "Most popular choice in Taiwan for couples and master bedrooms",
     popular: true,
@@ -67,7 +67,7 @@ export const TAIWAN_SIZES: TaiwanMattressSize[] = [
     nameEn: "Queen Size",
     chiZh: "6 尺",
     chiEn: "6.0 ft",
-    cm: "180 × 188 cm",
+    cm: "180 × 188 × 24 cm",
     descZh: "雙人寬敞無干擾，可容納小孩同睡 (6 坪以上)",
     descEn: "Spacious master bedroom choice, family sleep with toddlers",
   },
@@ -77,7 +77,7 @@ export const TAIWAN_SIZES: TaiwanMattressSize[] = [
     nameEn: "King Size",
     chiZh: "7 尺",
     chiEn: "7.0 ft",
-    cm: "180 × 210 cm",
+    cm: "180 × 210 × 24 cm",
     descZh: "旗艦特大尺寸，享受極致奢華寬敞睡眠空間 (7 坪以上)",
     descEn: "Ultimate luxury space for uninterrupted restorative rest",
   },
@@ -88,6 +88,7 @@ export type MattressRadioSelectorProps = {
   onSelectSize: (id: string) => void;
   selectedFeel?: string;
   onSelectFeel?: (feel: string) => void;
+  sizes?: TaiwanMattressSize[];
   className?: string;
 };
 
@@ -96,6 +97,7 @@ export function MattressRadioSelector({
   onSelectSize,
   selectedFeel = "medium-firm",
   onSelectFeel,
+  sizes = TAIWAN_SIZES,
   className,
 }: MattressRadioSelectorProps) {
   const { isZh } = useLanguage();
@@ -168,7 +170,7 @@ export function MattressRadioSelector({
                   </SheetDescription>
                 </SheetHeader>
                 <div className="mt-6 space-y-4">
-                  {TAIWAN_SIZES.map((s) => (
+                  {sizes.map((s) => (
                     <div key={s.id} className="rounded-xl border border-border/80 bg-muted/40 p-4 space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="typo-label font-bold text-foreground">
@@ -206,7 +208,7 @@ export function MattressRadioSelector({
           className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3"
           aria-label={isZh ? "台灣床墊規格尺寸" : "Taiwan mattress size standards"}
         >
-          {TAIWAN_SIZES.map((size) => {
+          {sizes.map((size) => {
             const isSelected = selectedSize === size.id;
             return (
               <Label

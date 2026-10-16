@@ -64,6 +64,7 @@
   --ds-error: #B42318;
   --ds-warning: #925200;
   --ds-info: #1C46B4;
+  --ds-sale: #E53935;
 }
 
 @media (min-width: 1024px) {
@@ -109,11 +110,15 @@
   --popover: #FFFFFF;
   --popover-foreground: #1A1829;
   --destructive: #B42318;
+  --sale: #E53935;
+  --sale-foreground: #FFFFFF;
   --interactive-text: #1C46B4;
   --ring: #1C46B4;
   --radius: 8px;
   --status-success-ink: #167347;
   --status-success-surface: #EEF8F3;
+  --status-sale-ink: #E53935;
+  --status-sale-surface: #FDECEC;
 }
 
 [data-brand="helix"] {
@@ -130,11 +135,15 @@
   --popover: #FFFFFF;
   --popover-foreground: #1E172B;
   --destructive: #B42318;
+  --sale: #E53935;
+  --sale-foreground: #FFFFFF;
   --interactive-text: #7347AE;
   --ring: #7347AE;
   --radius: 8px;
   --status-success-ink: #167347;
   --status-success-surface: #EEF8F3;
+  --status-sale-ink: #E53935;
+  --status-sale-surface: #FDECEC;
 }
 
 [data-brand="sunset"] {
@@ -151,11 +160,15 @@
   --popover: #FFFFFF;
   --popover-foreground: #241810;
   --destructive: #B42318;
+  --sale: #E53935;
+  --sale-foreground: #FFFFFF;
   --interactive-text: #241810;
   --ring: #1C1526;
   --radius: 8px;
   --status-success-ink: #167347;
   --status-success-surface: #EEF8F3;
+  --status-sale-ink: #E53935;
+  --status-sale-surface: #FDECEC;
 }
 
 [data-brand="bedding"], [data-brand="hypercool"] {
@@ -172,11 +185,43 @@
   --popover: #FFFFFF;
   --popover-foreground: #1A1829;
   --destructive: #B42318;
+  --sale: #E53935;
+  --sale-foreground: #FFFFFF;
   --interactive-text: #1C46B4;
   --ring: #1C46B4;
   --radius: 8px;
   --status-success-ink: #167347;
   --status-success-surface: #EEF8F3;
+  --status-sale-ink: #E53935;
+  --status-sale-surface: #FDECEC;
+}
+
+[data-brand="lunio-life"] {
+  --primary: #2D274A;
+  --primary-foreground: #FFFFFF;
+  --accent: #9786F3;
+  --accent-foreground: #141414;
+  --brand-surface: #CCD5F8;
+  --brand-ink: #141414;
+  --foreground: #141414;
+  --card-foreground: #141414;
+  --secondary: #CCD5F8;
+  --secondary-foreground: #141414;
+  --popover: #FFFFFF;
+  --popover-foreground: #141414;
+  --destructive: #B42318;
+  --sale: #E53935;
+  --sale-foreground: #FFFFFF;
+  --interactive-text: #2D274A;
+  --ring: #2D274A;
+  --radius: 8px;
+  --status-success-ink: #167347;
+  --status-success-surface: #EEF8F3;
+  --status-sale-ink: #E53935;
+  --status-sale-surface: #FDECEC;
+  --brand-surface-soft: #ECE8D8;
+  --brand-lifestyle-accent: #EC9BB0;
+  --brand-support-tone: #F6D0D7;
 }
 
 :root {
@@ -188,6 +233,8 @@
   --input: var(--ds-border);
   --muted: #F1F3F7;
   --muted-foreground: #647086;
+  --sale: var(--ds-sale, #E53935);
+  --sale-foreground: #FFFFFF;
 }
 
 .dark, html.dark {
@@ -212,6 +259,8 @@
   --ring: #5D8EF7;
   --status-success-ink: #4ADE80;
   --status-success-surface: #0E2A1D;
+  --status-sale-ink: #FF8A80;
+  --status-sale-surface: #2B1214;
 }
 
 :root:not([data-brand]) {
@@ -228,9 +277,13 @@
   --popover: #FFFFFF;
   --popover-foreground: #1A1829;
   --destructive: #B42318;
+  --sale: #E53935;
+  --sale-foreground: #FFFFFF;
   --radius: 8px;
   --status-success-ink: #167347;
   --status-success-surface: #EEF8F3;
+  --status-sale-ink: #E53935;
+  --status-sale-surface: #FDECEC;
 }
 
 .dark [data-brand="lunio"], html.dark[data-brand="lunio"] {
@@ -279,5 +332,17 @@
   --popover: #121620;
   --popover-foreground: #F1F5F9;
   --interactive-text: #5D8EF7;
+}
+
+.dark [data-brand="lunio-life"], html.dark[data-brand="lunio-life"] {
+  --brand-surface: #1B172E;
+  --brand-ink: #F1F5F9;
+  --foreground: #F1F5F9;
+  --card-foreground: #F1F5F9;
+  --secondary: #25203E;
+  --secondary-foreground: #F1F5F9;
+  --popover: #121620;
+  --popover-foreground: #F1F5F9;
+  --interactive-text: #B4A7FA;
 }
 

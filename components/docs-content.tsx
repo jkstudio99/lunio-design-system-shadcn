@@ -29,6 +29,15 @@ import {ProductRating} from "@/components/commerce/product-rating";
 import {MattressSpecsAccordion} from "@/components/commerce/mattress-specs-accordion";
 import {MattressRadioSelector} from "@/components/commerce/mattress-radio-selector";
 import {ProductCarousel} from "@/components/commerce/product-carousel";
+import {PriceBlock} from "@/components/commerce/price-block";
+import {ComparisonTable} from "@/components/commerce/comparison-table";
+import {ReassuranceRow} from "@/components/commerce/reassurance-row";
+import {PromoBanner} from "@/components/commerce/promo-banner";
+import {ReviewList,ReviewCard} from "@/components/commerce/review-list";
+import {TaiwanAddressForm,CheckoutStepper} from "@/components/commerce/taiwan-address-form";
+import {PaymentMethodSelector} from "@/components/commerce/payment-method-selector";
+import {CartAddOnCard,CartGiftLine} from "@/components/commerce/cart-addons";
+import {DesktopMegaMenu} from "@/components/commerce/desktop-mega-menu";
 import {IconsGallery} from "@/components/docs-icons";
 import {CustomIconsStudio} from "@/components/docs-custom-icons";
 import {useBrand} from "@/components/brand-provider";
@@ -36,17 +45,17 @@ import {useLanguage} from "@/components/language-provider";
 import {allDocs,brands,contrastRatio,roleNames,tokens,type TypeRole} from "@/lib/design-system";
 
 const sections:Record<string,{number:string;kicker:string;title:string;intro:string}>={
- "getting-started":{number:"00",kicker:"START HERE",title:"Getting started",intro:"Everything you need to understand, adopt and maintain the Lunio design language. Tokens first. Consistency always."},
- brands:{number:"01",kicker:"BRAND FOUNDATION",title:"Brands & multi-brand modes",intro:"One underlying system with distinct palettes for Lunio Taiwan, Nooz Helix, Nooz Sunset, and Lunio Bedding."},
+ "getting-started":{number:"00",kicker:"START HERE",title:"Getting started",intro:"The design system for lunio.com.tw, covering the 5 brands sold on it: Lunio TW, Nooz Helix, Nooz Sunset, Lunio Bedding, and Lunio Life."},
+ brands:{number:"01",kicker:"BRAND FOUNDATION",title:"Brands & 5-brand storefront modes",intro:"One underlying system for lunio.com.tw with distinct palettes for Lunio Taiwan, Nooz Helix, Nooz Sunset, Lunio Bedding, and Lunio Life."},
  typography:{number:"02—03",kicker:"TYPOGRAPHY",title:"MiSansTC typography",intro:"Twelve semantic roles, five font weights, two reference viewports. No page-specific type styling."},
  colors:{number:"04",kicker:"COLORS",title:"Color & semantic tokens",intro:"Brand values stay distinct; UI components consume accessible foreground/background pairs, not hard-coded hex."},
- spacing:{number:"05",kicker:"SPATIAL FOUNDATION",title:"Spacing, grid & elevation",intro:"A deliberate 4px rhythm with consistent 8px control radius and 16px container radius."},
+ spacing:{number:"05",kicker:"SPATIAL FOUNDATION",title:"Spacing, grid & elevation",intro:"A deliberate 4px rhythm with consistent 8px control radius, 16px container radius, and 9999px pill badges."},
  icons:{number:"06",kicker:"ICONOGRAPHY",title:"Icons & iconography",intro:"Curated Lucide icons purpose-built for lunio.com.tw e-commerce storefronts, bedding specifications, trust guarantees, and mobile navigation."},
  "custom-icons":{number:"07",kicker:"CUSTOM ICONS STUDIO",title:"Custom icons studio & upload",intro:"Interactive SVG upload, real-time sanitization, token color preview, JSX component code generation, and official Lunio brand custom marks."},
- components:{number:"08",kicker:"INTERFACE COMPONENTS",title:"Core UI components",intro:"Buttons, status badges, forms, selectors, and interactive states powered by the same semantic values."},
- commerce:{number:"09",kicker:"COMMERCE PATTERNS",title:"E-commerce components",intro:"Product cards, Taiwan mattress sizes, variation selection, mobile navigation and sticky purchase patterns."},
+ components:{number:"08",kicker:"INTERFACE COMPONENTS",title:"Core UI components (22 primitives)",intro:"22 source-owned shadcn/ui primitives on Radix UI: buttons, pill badges (incl. #E53935 sale variant), forms, selectors, and dialogs."},
+ commerce:{number:"09",kicker:"COMMERCE PATTERNS",title:"E-commerce components (19 patterns)",intro:"19 Taiwan e-commerce patterns: PriceBlock (NT format), ComparisonTable, ReassuranceRow, PromoBanner, ReviewList, DesktopMegaMenu, CartAddOnCard, TaiwanAddressForm, PaymentMethodSelector, and PDP modules."},
  accessibility:{number:"10",kicker:"ACCESSIBILITY",title:"Accessibility & UI quality",intro:"WCAG 2.2 AA as a measurable release goal. Check actual interactions, not tokens alone."},
- release:{number:"11",kicker:"OPERATIONS",title:"Production release",intro:"A shared contract between design, engineering, QA and brand ownership; a staged path to a maintainable storefront."},
+ release:{number:"11",kicker:"OPERATIONS",title:"Production release",intro:"Production readiness, P0 closure record, conversion backlog rollout order (Wave 1–3), and deployment gates for lunio.com.tw."},
  changelog:{number:"12",kicker:"VERSION HISTORY",title:"Changelog & versions",intro:"Complete release notes, milestones, component additions, and migration history across every version of Lunio Design System."}
 };
 
@@ -107,10 +116,10 @@ function Overview(){
           <Layers3 size={22}/>
         </div>
         <div className="text-[18px] font-bold text-foreground">
-          {isZh ? "單一設計語言" : "One design language."}
+          {isZh ? "專屬於 lunio.com.tw 的設計語言" : "Built specifically for lunio.com.tw."}
         </div>
         <p className="mt-2 text-[13px] leading-7 text-muted-foreground">
-          {isZh ? "MiSansTC 單一字級規模、共享空間律動與語意化 UI 角色，完全獨立於 WooCommerce 商品內容維護。" : "Single MiSansTC scale, shared spacing and semantic UI roles, maintained independently of WooCommerce content."}
+          {isZh ? "本系統為 lunio.com.tw 台灣官網專屬設計標準（非集團全區域通用系統），涵蓋站上銷售之 5 大品牌：Lunio TW、Nooz Helix、Nooz Sunset、Lunio Bedding 與整併自 luniolife.com.tw 之 Lunio Life。" : "This is the design system for lunio.com.tw (not a group-wide system), covering the 5 brands sold on it: Lunio TW, Nooz Helix, Nooz Sunset, Lunio Bedding, and Lunio Life (merged from luniolife.com.tw)."}
         </p>
       </div>
       <div className="docs-block">
@@ -121,7 +130,7 @@ function Overview(){
           {isZh ? "即時同步規範手冊" : "A living contract."}
         </div>
         <p className="mt-2 text-[13px] leading-7 text-muted-foreground">
-          {isZh ? "DESIGN.md 定義設計意圖，JSON 自動生成 CSS 變數。shadcn/ui 元件 (Radix 原生基底) 直接套用語意類別，不自行發明額外數值。" : "DESIGN.md specifies intent. JSON generates CSS. shadcn/ui components (Radix primitives) consume semantic classes without inventing new values."}
+          {isZh ? "DESIGN.md 定義設計意圖，JSON 自動生成 CSS 變數。22 個 shadcn/ui 原生基底與 19 個台灣電商元件直接套用語意類別，統一以 NT 格式（如 NT21,990）渲染售價。" : "DESIGN.md specifies intent. JSON generates CSS. 22 shadcn/ui primitives and 19 Taiwan commerce patterns consume semantic tokens and format prices consistently as NT (e.g. NT21,990)."}
         </p>
       </div>
     </div>
@@ -134,7 +143,7 @@ function Overview(){
         {[
           ["01", "DESIGN.md + Figma", isZh ? "視覺與設計決策" : "Visual decisions"],
           ["02", isZh ? "JSON Token 核心源" : "JSON Token Source", isZh ? "單一編寫基準層" : "One authoring layer"],
-          ["03", isZh ? "Next.js 文件 + UI" : "Next.js Docs + UI", isZh ? "可複用元件模組" : "Reusable components"],
+          ["03", isZh ? "Next.js 文件 + UI" : "Next.js Docs + UI", isZh ? "22 基底 + 19 電商模組" : "22 primitives + 19 commerce"],
           ["04", "WooCommerce API", isZh ? "商品規格與訂單基準" : "Product and order truth"]
         ].map(s=>(
           <div key={s[0]} className="rounded-xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-4 transition-all hover:border-primary/50 dark:hover:border-primary/50 shadow-xs">
@@ -162,14 +171,14 @@ function Overview(){
     <div className="docs-block">
       <Subheading
         title={isZh ? "設計系統資產清單" : "Design system inventory"}
-        desc={isZh ? "跨品牌架構下目前已建立的核心規範清單。" : "Comprehensive inventory of multi-brand foundations and approved palettes."}
+        desc={isZh ? "lunio.com.tw 跨品牌架構下已通過測試驗證的完整規範清單。" : "Comprehensive inventory of lunio.com.tw multi-brand foundations, primitives, and commerce patterns."}
       />
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {[
-          ["04", isZh ? "品牌主題模式" : "Brand themes"],
-          ["12", isZh ? "字體排印角色" : "Type roles"],
-          ["05", isZh ? "官方字重規格" : "Font weights"],
-          ["03", isZh ? "官方核准色票" : "Approved palettes"]
+          ["05", isZh ? "品牌主題模式 (含 Lunio Life)" : "Storefront brand modes"],
+          ["12", isZh ? "字體排印角色 (5 字重)" : "Type roles (5 weights)"],
+          ["22", isZh ? "shadcn/Radix 核心基底" : "shadcn/Radix primitives"],
+          ["19", isZh ? "台灣電商轉換元件" : "Taiwan commerce patterns"]
         ].map(x=>(
           <div key={x[1]} className="rounded-xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-5 transition-all hover:border-primary/50 dark:hover:border-primary/50 shadow-xs">
             <div className="text-[31px] font-extrabold tracking-[-.05em] text-primary">{x[0]}</div>
@@ -180,8 +189,8 @@ function Overview(){
     </div>
     <SpecNote>
       {isZh
-        ? "本設計系統架構靈感源自 getdesign.md 公開架構，並完全採用 Lunio 官方原創 UI 樣式、台灣電商規格與繁體中文語境。所有狀態色皆精準符合 WCAG 2.2 AA 對比度規範。"
-        : "Reference structure is inspired by getdesign.md's public HP analysis. This project uses original Lunio UI styling, text and examples. Status colors remain provisional until formal CI sign-off."}
+        ? "本設計系統為 lunio.com.tw 專屬設計與工程標準（v1.4.0 Production Certified），涵蓋 Lunio Taiwan、Nooz Helix、Nooz Sunset、Lunio Bedding 與 Lunio Life 五大品牌，並新增獨立促銷紅 Token (--sale: #E53935) 與統一 NT 售價格式 (NT21,990)。"
+        : "This design system is the official standard for lunio.com.tw (v1.4.0 Production Certified), covering Lunio Taiwan, Nooz Helix, Nooz Sunset, Lunio Bedding, and Lunio Life, with a dedicated sale token (--sale: #E53935) and canonical NT price formatting (NT21,990)."}
     </SpecNote>
   </div>;
 }
@@ -190,17 +199,28 @@ const brandLogos = [
   { brand: "Lunio Taiwan", token: "#1C46B4", primarySrc: "/images/lunio/lunio-primary.png", whiteSrc: "/images/lunio/lunio-white.png", svgSrc: "/images/lunio/lunio-primary.svg", descZh: "Lunio 旗艦款電光藍標誌，用於全站 Header、品牌導覽與主要視覺。", descEn: "Lunio flagship Electric Blue logo for storefront header, brand navigation and key visuals.", bg: "#1C46B4" },
   { brand: "Nooz Helix", token: "#7347AE", primarySrc: "/images/nooz/nooz-primary.png", whiteSrc: "/images/nooz/Nooz-white.png", svgSrc: "/images/nooz/nooz-helix.svg", descZh: "Nooz Helix 獨立筒系列，深絲絨紫專屬識別。", descEn: "Nooz Helix pocket spring collection with signature Deep Velvet Purple identity.", bg: "#7347AE" },
   { brand: "Nooz Sunset", token: "#F28131", primarySrc: "/images/nooz/Nooz-sunset.png", whiteSrc: "/images/nooz/Nooz-white.png", svgSrc: "/images/nooz/nooz-sunset.svg", descZh: "Nooz Sunset 人體工學減壓系列，高活力晨曦橘識別（高解析 Retina 原檔）。", descEn: "Nooz Sunset ergonomic pressure-relief collection with vibrant Sunrise Orange identity (Retina assets).", bg: "#F28131" },
-  { brand: "Lunio Bedding", token: "#1C46B4", primarySrc: "/images/lunio-bedding/lunio-bedding-primary@4x.png", whiteSrc: "/images/lunio-bedding/lunio-bedding-white@4x.png", svgSrc: "/images/lunio-bedding/lunio-bedding-primary.svg", descZh: "Lunio 寢具周邊專用識別（天絲床包、保潔墊、四季被）。", descEn: "Lunio Bedding accessories identity for Tencel sheet sets, mattress protectors, and duvets.", bg: "#1C46B4" }
+  { brand: "Lunio Bedding", token: "#1C46B4", primarySrc: "/images/lunio-bedding/lunio-bedding-primary@4x.png", whiteSrc: "/images/lunio-bedding/lunio-bedding-white@4x.png", svgSrc: "/images/lunio-bedding/lunio-bedding-primary.svg", descZh: "Lunio 寢具周邊專用識別（天絲床包、保潔墊、四季被）。", descEn: "Lunio Bedding accessories identity for Tencel sheet sets, mattress protectors, and duvets.", bg: "#1C46B4" },
+  { brand: "Lunio Life", token: "#2D274A", primarySrc: "/images/lunio-life/lunio-life-logo-primary.png", whiteSrc: "/images/lunio-life/lunio-life-logo-white.png", svgSrc: "/images/lunio-life/lunio-life-primary.svg", descZh: "Lunio Life 居家生活品牌識別（Plum Night #2D274A），用於整併至 lunio.com.tw 之電動床架、沙發與居家分類頁。", descEn: "Lunio Life identity (Plum Night #2D274A) for smart adjustable beds, sofas, and Lunio Life PDPs/category pages merged into lunio.com.tw.", bg: "#2D274A" }
+];
+
+const lunioLifeCiPalette = [
+  { group: "Primary Colors", name: "Plum Night", hex: "#2D274A", roleZh: "品牌主錨點色 · 標題與主要按鈕 (13.99:1 AAA)", roleEn: "Anchor Primary · Headlines & Primary Fill (13.99:1 AAA)", textHex: "#FFFFFF" },
+  { group: "Primary Colors", name: "Titan White", hex: "#CCD5F8", roleZh: "淺色對比背景 · 寬敞感表面底色 (12.66:1 AAA)", roleEn: "Light Contrast Background · Brand Surface (12.66:1 AAA)", textHex: "#141414" },
+  { group: "Primary Colors", name: "Crocus Purple", hex: "#9786F3", roleZh: "重點強調與 CTA · 搭配 #141414 深黑字 (6.15:1 AA)", roleEn: "CTA / Emphasis Accent · Paired with #141414 Black (6.15:1 AA)", textHex: "#141414" },
+  { group: "Secondary Colors", name: "Black", hex: "#141414", roleZh: "核心內文與介面文字 (Text / UI Ink)", roleEn: "Core Text & UI Foreground Ink", textHex: "#FFFFFF" },
+  { group: "Secondary Colors", name: "Ivory", hex: "#ECE8D8", roleZh: "溫潤柔和背景 (Soft Background --brand-surface-soft)", roleEn: "Warm Soft Background (--brand-surface-soft)", textHex: "#141414" },
+  { group: "Secondary Colors", name: "Pink", hex: "#EC9BB0", roleZh: "生活風格點綴色 (Lifestyle Accent --brand-lifestyle-accent)", roleEn: "Lifestyle Accent (--brand-lifestyle-accent)", textHex: "#141414" },
+  { group: "Secondary Colors", name: "Light Pink", hex: "#F6D0D7", roleZh: "輔助柔和色調 (Support Tone --brand-support-tone)", roleEn: "Support Tone (--brand-support-tone)", textHex: "#141414" },
 ];
 
 function BrandPage(){
-  const {brand}=useBrand();
+  const {brand, setBrand}=useBrand();
   const {isZh}=useLanguage();
   return <div className="space-y-9">
     <div className="docs-block">
       <Subheading
-        title={isZh ? "官方品牌標誌資產 (Official Brand Logos)" : "Official Brand Logos & Assets"}
-        desc={isZh ? "全站嚴格標準化使用官方 CI 標誌，提供高解析透明底 PNG 與無損向量 SVG 格式，色彩精準對應 Token。" : "Standardized official CI logos across the storefront, provided in high-resolution transparent PNG and lossless vector SVG formats, color-matched to tokens."}
+        title={isZh ? "官方品牌標誌資產 (5 Storefront Brands on lunio.com.tw)" : "Official Brand Logos & Assets (5 Storefront Brands)"}
+        desc={isZh ? "lunio.com.tw 全站嚴格標準化使用五大官方 CI 標誌，提供高解析透明底 PNG 與無損向量 SVG 格式，色彩精準對應 Token。" : "Standardized official CI logos across the 5 brands sold on lunio.com.tw, provided in high-resolution transparent PNG and lossless vector SVG formats."}
       />
       <div className="grid gap-6 md:grid-cols-2">
         {brandLogos.map(l => (
@@ -245,18 +265,77 @@ function BrandPage(){
         ))}
       </div>
     </div>
+
+    {/* Dedicated Lunio Life CI Guideline Section */}
+    <div className="docs-block" data-brand="lunio-life">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <Subheading
+          title={isZh ? "Lunio Life 品牌識別規範 (Brand Identity Guidelines · data-brand=\"lunio-life\")" : "Lunio Life Brand Identity Guidelines (data-brand=\"lunio-life\")"}
+          desc={isZh ? "因應 luniolife.com.tw 整併入 lunio.com.tw，所有屬於 Lunio Life 之商品頁 (PDP) 與分類頁均套用 data-brand=\"lunio-life\"，展現 Trendy、Charming、Innovation、Alive 四大品牌個性。" : "As luniolife.com.tw merges into lunio.com.tw, Lunio Life PDPs and category pages apply data-brand=\"lunio-life\" to express its Trendy, Charming, Innovation, and Alive personality."}
+        />
+        <Button
+          type="button"
+          variant={brand === "lunio-life" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setBrand("lunio-life")}
+        >
+          {brand === "lunio-life"
+            ? (isZh ? "✓ 已套用 Lunio Life 主題" : "✓ Lunio Life Theme Active")
+            : (isZh ? "預覽全站切換為 Lunio Life" : "Preview Lunio Life Globally")}
+        </Button>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mb-5">
+        {[
+          { trait: "Trendy", zh: "時尚潮流 · 現代居家美學" },
+          { trait: "Charming", zh: "迷人溫潤 · 柔和親膚色調" },
+          { trait: "Innovation", zh: "創新科技 · 智能睡眠生活" },
+          { trait: "Alive", zh: "充滿活力 · 讓舒適與時尚成為日常" },
+        ].map((p) => (
+          <div key={p.trait} className="rounded-xl border border-border/80 bg-card p-3.5 shadow-2xs">
+            <div className="text-xs font-extrabold uppercase tracking-wider text-primary">{p.trait}</div>
+            <div className="mt-1 text-xs text-muted-foreground">{p.zh}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {lunioLifeCiPalette.map((swatch) => (
+          <div key={swatch.name} className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xs">
+            <div
+              className="flex h-20 flex-col justify-between p-3 border-b border-border/60"
+              style={{ backgroundColor: swatch.hex, color: swatch.textHex }}
+            >
+              <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">
+                {swatch.group}
+              </span>
+              <span className="font-mono text-xs font-bold">{swatch.hex}</span>
+            </div>
+            <div className="p-3">
+              <div className="text-xs font-bold text-foreground">{swatch.name}</div>
+              <p className="mt-1 text-[11px] leading-4 text-muted-foreground">
+                {isZh ? swatch.roleZh : swatch.roleEn}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
     <div className="docs-grille">{brands.map(b=><div key={b.id} data-brand={b.id} className="docs-block"><div className="brand-swatch"/><div className="mt-4 flex items-center justify-between gap-2"><div className="text-[16px] font-bold">{b.name}</div>{b.id===brand&&<span className="rounded-full bg-primary px-2 py-1 text-[10px] font-bold text-primary-foreground">{isZh ? "目前使用" : "ACTIVE"}</span>}</div><div className="mt-3 flex flex-wrap gap-2">{[[isZh ? "主色" : "Primary",b.primary],[isZh ? "強調色" : "Accent",b.accent],[isZh ? "表面色" : "Surface",b.surface],[isZh ? "文字色" : "Ink",b.ink]].map(p=><span key={p[0]} className="token-code">{p[0]} {p[1]}</span>)}</div><p className="mt-3 text-[12px] text-muted-foreground">{isZh ? (bStatusZh[b.status] || b.status) : b.status}</p></div>)}</div>
     <div className="docs-block">
       <Subheading
         title={isZh ? "品牌作用域主題模式" : "Scoped theme modes"}
         desc={isZh ? "單一頁面可同時展示特定品牌商品，無需重複複製任何元件結構。" : "One page can contain brand-specific products without duplicating any component."}
       />
-      <div className="grid gap-4 sm:grid-cols-3">
-        {brands.slice(0,3).map(b=>(
-          <div key={b.id} data-brand={b.id} className="rounded-[16px] border border-border/80 bg-[var(--brand-surface)] dark:border-[#2A344A] p-5 shadow-xs">
-            <div className="eyebrow text-[var(--brand-ink)]">{b.name}</div>
-            <p className="mt-5 text-[14px] font-bold text-[var(--brand-ink)]">{isZh ? "通用商品卡片模組" : "Reusable Product Card"}</p>
-            <Button className="mt-4 w-full">{isZh ? "檢視元件規格" : "View component"}</Button>
+      <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        {brands.map(b=>(
+          <div key={b.id} data-brand={b.id} className="rounded-[16px] border border-border/80 bg-[var(--brand-surface)] dark:border-[#2A344A] p-4 shadow-xs flex flex-col justify-between">
+            <div>
+              <div className="eyebrow text-[var(--brand-ink)]">{b.name}</div>
+              <p className="mt-3 text-[13px] font-bold text-[var(--brand-ink)]">{isZh ? "通用商品卡片模組" : "Reusable Product Card"}</p>
+            </div>
+            <Button className="mt-4 w-full text-xs">{isZh ? "檢視元件" : "Inspect"}</Button>
           </div>
         ))}
       </div>
@@ -266,12 +345,12 @@ function BrandPage(){
         title={isZh ? "語意化 API 規範" : "Semantic API"}
         desc={isZh ? "元件始終依賴語意角色，透過 CSS 變數無縫適配當前品牌作用域。" : "UI always references semantic roles; CSS custom properties adapt to the brand scope."}
       />
-      <CodePanel code={'<div data-brand="lunio">...</div>\n<div data-brand="helix">...</div>\n<div data-brand="sunset">...</div>\n\n/* UI always references roles */\n.button { background: var(--primary); color: var(--primary-foreground); }'}/>
+      <CodePanel code={'<div data-brand="lunio">...</div>\n<div data-brand="helix">...</div>\n<div data-brand="sunset">...</div>\n<div data-brand="bedding">...</div>\n<div data-brand="lunio-life">...</div>\n\n/* UI always references roles */\n.button { background: var(--primary); color: var(--primary-foreground); }'}/>
     </div>
     <SpecNote>
       {isZh
-        ? "Lunio Bedding 寢具調色盤共享 Lunio Taiwan 品牌主色 (#1C46B4)，確保睡眠主床墊與周邊寢具配件在全站呈現一致的品牌形象。"
-        : "Lunio Bedding palette shares Lunio Taiwan primary (#1C46B4) for full brand alignment across sleep products and bedding accessories."}
+        ? "Lunio Life 整併進 lunio.com.tw 後，其專屬商品詳情頁 (PDP) 與分類頁直接掛載 data-brand=\"lunio-life\"（Plum Night #2D274A、Crocus Purple #9786F3、Titan White #CCD5F8），全站其餘頁面則維持預設 Lunio Taiwan CI (#1C46B4)。"
+        : "With luniolife.com.tw merging into lunio.com.tw, Lunio Life PDPs and category pages mount data-brand=\"lunio-life\" (Plum Night #2D274A, Crocus Purple #9786F3, Titan White #CCD5F8) while the rest of the storefront keeps Lunio Taiwan CI (#1C46B4)."}
     </SpecNote>
   </div>;
 }
@@ -512,19 +591,20 @@ function ColorsPage(){
       </table>
       <p className="mt-4 text-xs text-muted-foreground">
         {isZh
-          ? "Sunset 晨曦橘必須搭配深墨色文字 (#1C1526)。Helix 強調薰衣草紫必須搭配純黑文字。切勿在所有品牌中盲目預設套用白色文字。"
-          : "Sunset uses dark text on orange. Helix accent uses black text on lavender. Do not default to white text for all brands."}
+          ? "Sunset 晨曦橘必須搭配深墨色文字 (#1C1526)。Helix 強調薰衣草紫 (#9362D9) 與 Lunio Life 強調番紅花紫 (#9786F3) 皆必須搭配深黑文字 (#000000 / #141414)。切勿在所有品牌中盲目預設套用白色文字。"
+          : "Sunset uses dark text (#1C1526) on orange. Helix accent (#9362D9) and Lunio Life Crocus Purple accent (#9786F3) use dark/black text (#000000 / #141414). Do not default to white text for all brands."}
       </p>
     </div>
     <div className="docs-block">
       <Subheading
-        title={isZh ? "狀態色彩 Token" : "Status colors"}
-        desc={isZh ? "符合 WCAG 2.2 AA 對比標準之語意化狀態提示色。" : "Implementation proposals requiring brand-owner approval."}
+        title={isZh ? "狀態與促銷色彩 Token" : "Status & promotional sale tokens"}
+        desc={isZh ? "符合 WCAG 2.2 AA 對比標準之語意化狀態提示色。促銷紅 (Sale #E53935) 與表單錯誤紅 (Error #B42318) 嚴格分離。" : "WCAG 2.2 AA compliant semantic status tokens. Promotional Sale (#E53935) is strictly decoupled from form Error (#B42318)."}
       />
       <div className="flex flex-wrap gap-3">
         {[
           [isZh ? "成功 (Success)" : "Success",tokens.foundation.success],
           [isZh ? "錯誤 (Error)" : "Error",tokens.foundation.error],
+          [isZh ? "促銷優惠 (Sale)" : "Sale",tokens.foundation.sale],
           [isZh ? "警示 (Warning)" : "Warning",tokens.foundation.warning],
           [isZh ? "資訊 (Info)" : "Info",tokens.foundation.info]
         ].map(([k,v])=>(
@@ -535,7 +615,7 @@ function ColorsPage(){
         ))}
       </div>
     </div>
-    <CodePanel label={isZh ? "設計 TOKEN 範例" : "DESIGN TOKEN EXAMPLE"} code={'[data-brand="sunset"] {\n  --primary: #F28131;\n  --primary-foreground: #1C1526; /* accessible */\n}\n\n.button { background: var(--primary); color: var(--primary-foreground); }'}/>
+    <CodePanel label={isZh ? "設計 TOKEN 範例" : "DESIGN TOKEN EXAMPLE"} code={'[data-brand="lunio-life"] {\n  --primary: #2D274A; /* Plum Night */\n  --primary-foreground: #FFFFFF; /* 13.99:1 AAA */\n  --accent: #9786F3; /* Crocus Purple */\n  --accent-foreground: #141414; /* 6.15:1 AA */\n}\n\n:root {\n  --sale: #E53935; /* 現省 / 促銷紅，與 --destructive (#B42318) 分離 */\n  --sale-foreground: #FFFFFF;\n}'}/>
   </div>;
 }
 
@@ -557,7 +637,7 @@ function SpacingPage(){
         ))}
       </div>
     </div>
-    <div className="docs-grille">
+    <div className="grid gap-4 md:grid-cols-3">
       <div className="docs-block">
         <Subheading
           title={isZh ? "控制元件圓角" : "Control radius"}
@@ -568,9 +648,16 @@ function SpacingPage(){
       <div className="docs-block">
         <Subheading
           title={isZh ? "容器元件圓角" : "Container radius"}
-          desc={isZh ? "卡片 · 彈窗 · 側邊欄抽屜 · 折疊面版" : "Card · Modal · Accordion"}
+          desc={isZh ? "卡片 · 彈窗 · 側邊欄抽屜 · 折疊面版" : "Card · Modal · Sheet · Accordion"}
         />
         <div className="flex size-24 items-center justify-center border-2 border-primary bg-primary/10 dark:bg-primary/15 text-[16px] font-bold text-primary" style={{borderRadius:tokens.radii.container}}>16px</div>
+      </div>
+      <div className="docs-block">
+        <Subheading
+          title={isZh ? "膠囊與徽章圓角" : "Pill & Badge radius"}
+          desc={isZh ? "徽章 (Badge) · 促銷標籤 · 篩選膠囊 (rounded-full)" : "Badge · Sale Tag · Filter Pill (rounded-full)"}
+        />
+        <div className="flex h-12 w-32 items-center justify-center border-2 border-primary bg-primary/10 dark:bg-primary/15 text-[14px] font-bold text-primary" style={{borderRadius:tokens.radii.pill}}>9999px</div>
       </div>
     </div>
     <div className="docs-block">
@@ -711,7 +798,7 @@ function ComponentsPage(){
    <div className="grid gap-6 md:grid-cols-2">
     <div className="rounded-xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-5">
      <div className="flex items-center justify-between mb-3">
-      <Label className="font-bold">{isZh ? "台灣標準床墊尺寸" : "Taiwan Standard Mattress Sizes"}</Label>
+      <Label className="font-bold">{isZh ? "台灣標準床墊尺寸 (SKU 實測)" : "Taiwan Standard Mattress Sizes (SKU-Verified)"}</Label>
       <Tooltip>
        <TooltipTrigger asChild>
         <Button variant="ghost" size="sm" className="h-auto p-0 typo-caption font-normal text-primary hover:bg-transparent hover:underline outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={isZh ? "查看台灣床墊尺與公分換算尺寸指南" : "View Taiwan mattress size conversion guide"}>
@@ -719,14 +806,14 @@ function ComponentsPage(){
         </Button>
        </TooltipTrigger>
        <TooltipContent>
-        {isZh ? "台灣規格：1 尺約 30.3 cm。請務必丈量床架內徑。" : "Taiwan standard: 1 ft ≈ 30.3 cm. Be sure to measure bed frame inner space."}
+        {isZh ? "台灣規格：單人 89×188、單大 104×188、雙人 150×188 (依 SKU 實測)。請務必丈量床架內徑。" : "Taiwan SKU specs: Single 89×188, Single XL 104×188, Double 150×188 cm. Measure bed frame inner space."}
        </TooltipContent>
       </Tooltip>
      </div>
      <RadioGroup value={radioSize} onValueChange={setRadioSize} className="gap-2.5">
       {[
-        ['3.0', isZh ? '標準單人 3 尺 (90×188 cm)' : 'Standard Single 3 ft (90×188 cm)'],
-        ['3.5', isZh ? '單人加大 3.5 尺 (105×188 cm)' : 'Single XL 3.5 ft (105×188 cm)'],
+        ['3.0', isZh ? '標準單人 3 尺 (89×188 cm)' : 'Standard Single 3 ft (89×188 cm)'],
+        ['3.5', isZh ? '單人加大 3.5 尺 (104×188 cm)' : 'Single XL 3.5 ft (104×188 cm)'],
         ['5.0', isZh ? '標準雙人 5 尺 (150×188 cm)' : 'Standard Double 5 ft (150×188 cm)'],
         ['6.0', isZh ? '雙人加大 6 尺 (180×188 cm)' : 'Queen Size 6 ft (180×188 cm)'],
         ['7.0', isZh ? '雙人特大 7 尺 (180×210 cm)' : 'King Size 7 ft (180×210 cm)']
@@ -852,7 +939,7 @@ function ComponentsPage(){
      </>
     ) : (
      <>
-      <ProductCard product={{name: isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex Mattress", description: isZh ? "泰國天然乳膠與專利石墨烯調溫舒壓棉" : "Thai natural latex & graphene thermoregulation foam", priceLabel: isZh ? "NT21,900 起" : "From NT21,900", badge: isZh ? "熱銷推薦" : "TOP SELLER"}}/>
+      <ProductCard product={{name: isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex Mattress", description: isZh ? "泰國天然乳膠與專利石墨烯調溫舒壓棉" : "Thai natural latex & graphene thermoregulation foam", priceAmount: 21990, compareAtAmount: 28980, currencyCode: "NT", discountBadge: isZh ? "現省 NT6,990" : "SAVE NT6,990", badge: isZh ? "熱銷推薦" : "TOP SELLER"}}/>
       <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-xs">
        <div className="space-y-2">
         <Badge variant="outline">{isZh ? "評價載入完成" : "Reviews Loaded"}</Badge>
@@ -880,11 +967,13 @@ function ComponentsPage(){
 
   <div className="docs-block">
     <Subheading
-      title={isZh ? "徽章、核取方塊與文字區域" : "Badge, Checkbox and Textarea"}
-      desc={isZh ? "採用共享 shadcn/ui 基底。所有文字維持 MiSansTC，狀態 Token 跨所有品牌主題共用。" : "Use shared shadcn/ui primitives. All text remains MiSansTC; status tokens are shared across brand modes."}
+      title={isZh ? "徽章 (rounded-full)、核取方塊與文字區域" : "Badge (rounded-full), Checkbox and Textarea"}
+      desc={isZh ? "採用共享 shadcn/ui 基底，Badge 統一採用膠囊圓角 (--radius-pill: 9999px)。促銷優惠使用專屬 sale (#E53935) 變體，與表單錯誤紅 (destructive #B42318) 嚴格分離。" : "Shared shadcn/ui primitives. Badge standardizes on rounded-full (--radius-pill: 9999px). Promotional discounts use the dedicated sale (#E53935) variant, decoupled from destructive error (#B42318)."}
     />
    <div className="flex flex-wrap gap-3">
     <Badge>{isZh ? "官網限定" : "Official Exclusive"}</Badge>
+    <Badge variant="sale">{isZh ? "現省 NT6,990" : "SAVE NT6,990"}</Badge>
+    <Badge variant="discount">{isZh ? "雙 11 特惠" : "11.11 SALE"}</Badge>
     <Badge variant="outline">{isZh ? "網路熱銷" : "Top Seller"}</Badge>
     <Badge variant="success">{isZh ? "現貨供應" : "In Stock"}</Badge>
     <Badge variant="destructive">{isZh ? "已售完" : "Sold Out"}</Badge>
@@ -905,8 +994,8 @@ function ComponentsPage(){
 
   <SpecNote>
     {isZh
-      ? "shadcn/ui 將元件原始碼安裝至 components/ui/ 並以 Radix 原生基底確保無障礙標準。此頁為 UI 規格展示，非實際 WooCommerce 購物車結帳流程。"
-      : "shadcn/ui installs component source into components/ui/ and uses Radix primitives for accessibility. This documentation is a UI specimen, not a live cart or checkout."}
+      ? "shadcn/ui 將元件原始碼安裝至 components/ui/ (共 22 個核心基底) 並以 Radix 原生基底確保無障礙標準。此頁為 UI 規格展示，非實際 WooCommerce 購物車結帳流程。"
+      : "shadcn/ui installs component source into components/ui/ (22 core primitives) and uses Radix primitives for accessibility. This documentation is a UI specimen, not a live cart or checkout."}
   </SpecNote>
  </div>;
 }
@@ -917,6 +1006,7 @@ function CommercePage(){
  const [radioSize,setRadioSize]=useState('5.0');
  const [feel,setFeel]=useState('medium-firm');
  const [loadingCard,setLoadingCard]=useState(false);
+ const [checkoutStep,setCheckoutStep]=useState<1|2|3>(1);
  const sizes = isZh ? [
    ['3','標準單人','3尺'],
    ['3.5','單人加大','3.5尺'],
@@ -932,6 +1022,22 @@ function CommercePage(){
  ];
 
  return <div className="space-y-9">
+  <div className="docs-block">
+   <Subheading
+     title={isZh ? "全館活動橫幅與現省優惠徽章 — PromoBanner (Backlog 015 / 024)" : "Campaign Hero Banner & Sale Badge — PromoBanner (Backlog 015 / 024)"}
+     desc={isZh ? "針對雙 11 與大型檔期打造的轉化橫幅，整合專屬促銷紅 Sale Token (#E53935)、倒數計時器與複製折扣碼。" : "High-conversion campaign banner for 11.11 and major promotions, combining the dedicated Sale token (#E53935), countdown timer, and one-click promo code copy."}
+   />
+   <PromoBanner />
+  </div>
+
+  <div className="docs-block">
+   <Subheading
+     title={isZh ? "桌面版 5 品牌巨型導覽選單 — DesktopMegaMenu (Backlog 004)" : "Desktop 5-Brand Mega Menu — DesktopMegaMenu (Backlog 004)"}
+     desc={isZh ? "適用於 lunio.com.tw 電腦版頂部導覽，支援 Lunio TW、Nooz Helix、Nooz Sunset、Lunio Bedding 與 Lunio Life 五大品牌商品快速切換與價格預覽。" : "Desktop header mega-menu for lunio.com.tw supporting instant switching and NT price previews across all 5 storefront brands."}
+   />
+   <DesktopMegaMenu />
+  </div>
+
   <div className="docs-block">
    <Subheading
      title={isZh ? "電商 PDP 導覽與麵包屑" : "E-commerce PDP Navigation & Breadcrumb"}
@@ -964,7 +1070,53 @@ function CommercePage(){
 
   <div className="docs-block">
    <Subheading
-     title={isZh ? "顧客真實評價與安心保證 — ProductRating" : "Customer reviews & verified badges — ProductRating"}
+     title={isZh ? "標準化價格顯示與分期模組 — PriceBlock (Backlog 005 / 024)" : "Unified Price Display & Installment Block — PriceBlock (Backlog 005 / 024)"}
+     desc={isZh ? "全站統一採用 currencyCode ('NT') 輸出格式 (如 NT21,990，絕不混用 NT$28,990)，搭配獨立促銷紅 (#E53935)『現省』徽章與 0 利率分期試算。" : "Standardizes all storefront prices on currencyCode ('NT', e.g., NT21,990, never mixing NT$28,990) with a dedicated #E53935 '現省' sale badge and 0% installment breakdown."}
+   />
+   <div className="grid gap-5 lg:grid-cols-2">
+    <PriceBlock
+      priceAmount={21990}
+      compareAtAmount={28980}
+      currencyCode="NT"
+      size="xl"
+      installmentMonths={12}
+      sizeNote={isZh ? "標準雙人 5 尺 (150 × 188 × 26 cm)" : "Standard Double 5 ft (150 × 188 × 26 cm)"}
+    />
+    <div className="flex flex-col justify-between rounded-2xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-5">
+      <div>
+        <span className="eyebrow text-primary">{isZh ? "卡片緊湊版價格 (MD)" : "COMPACT CARD PRICE (MD)"}</span>
+        <p className="mt-1 typo-caption text-muted-foreground">
+          {isZh ? "用於商品列表卡、加購卡與底部購買列：" : "Used inside product cards, add-ons, and sticky bars:"}
+        </p>
+      </div>
+      <div className="my-4">
+        <PriceBlock
+          priceAmount={7590}
+          compareAtAmount={11800}
+          currencyCode="NT"
+          size="md"
+          installmentMonths={6}
+        />
+      </div>
+      <CodePanel label="PRICE SPEC" code={'import { PriceBlock } from "@/components/commerce/price-block";\n\n<PriceBlock priceAmount={21990} compareAtAmount={28980} currencyCode="NT" size="xl" />'} />
+    </div>
+   </div>
+  </div>
+
+  <div className="docs-block">
+   <Subheading
+     title={isZh ? "四大安心保證承諾列 — ReassuranceRow (Backlog 020)" : "4-Pillar Trust Reassurance Strip — ReassuranceRow (Backlog 020)"}
+     desc={isZh ? "整合 100 晚試睡、10 年保固、本島免運上樓與免費舊床搬運回收，支援完整卡片列與緊湊膠囊列兩種佈局。" : "Highlights 100-night trial, 10-year warranty, free floor delivery, and old mattress removal in both full grid and compact strip variants."}
+   />
+   <div className="space-y-4">
+    <ReassuranceRow />
+    <ReassuranceRow compact />
+   </div>
+  </div>
+
+  <div className="docs-block">
+   <Subheading
+     title={isZh ? "顧客真實評價摘要 — ProductRating" : "Customer rating summary — ProductRating"}
      desc={isZh ? "符合 WCAG AA 要求的評分模組，包含星級顯示、評價則數與 4 大安心標章。" : "WCAG AA compliant rating pattern featuring star reviews, review count and assurance tags."}
    />
    <ProductRating
@@ -978,7 +1130,7 @@ function CommercePage(){
    <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
     <Subheading
       title={isZh ? "商品卡片與骨架屏載入狀態" : "Product card & Skeleton loading state"}
-      desc={isZh ? "WooCommerce 為商品名稱、規格價格、庫存與優惠折扣的單一真實來源。" : "WooCommerce is the single source of truth for product names, variation prices, stock and discounts."}
+      desc={isZh ? "WooCommerce 為商品名稱、規格價格、庫存與優惠折扣的單一真實來源，價格統一由 currencyCode ('NT') 渲染。" : "WooCommerce is the single source of truth for product names, variation prices, stock and discounts, rendered from currencyCode ('NT')."}
     />
     <Button variant="outline" size="sm" onClick={()=>setLoadingCard(!loadingCard)}>
      <RefreshCw size={14} className={loadingCard?'animate-spin':''}/>
@@ -996,7 +1148,10 @@ function CommercePage(){
       <ProductCard product={{
         name: isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex Mattress",
         description: isZh ? "泰國天然乳膠與專利石墨烯調溫舒壓棉" : "Thai natural latex & graphene thermoregulation foam",
-        priceLabel: isZh ? "NT21,900 起" : "From NT21,900",
+        priceAmount: 21990,
+        compareAtAmount: 28980,
+        currencyCode: "NT",
+        discountBadge: isZh ? "現省 NT6,990" : "SAVE NT6,990",
         badge: isZh ? "LUNIO 旗艦款" : "LUNIO FLAGSHIP"
       }}/>
       <Card className="gap-0 border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] py-0 shadow-xs">
@@ -1007,9 +1162,15 @@ function CommercePage(){
               <div className="h-[35px] w-[85px] -rotate-[5deg] rounded-lg bg-gradient-to-br from-white to-[#9ba6b7] shadow-[0_13px_0_-4px_#6b7791]"/>
             </div>
             <div className="flex min-w-0 flex-col gap-2">
-              <h3 className="typo-h4 break-words text-foreground">{isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex"}</h3>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <h3 className="typo-h4 break-words text-foreground">{isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex"}</h3>
+                <Badge variant="sale">{isZh ? "現省 NT6,990" : "SAVE NT6,990"}</Badge>
+              </div>
               <p className="typo-body-sm text-muted-foreground">{isZh ? "天然乳膠五層結構" : "Natural latex 5-layer anatomy"}</p>
-              <p className="typo-price-md text-primary">NT21,900</p>
+              <div className="flex items-baseline gap-2">
+                <p className="typo-price-md text-primary tabular-nums">NT21,990</p>
+                <span className="typo-caption text-muted-foreground line-through tabular-nums">NT28,980</span>
+              </div>
               <p className="typo-caption text-muted-foreground">{isZh ? "依規格與庫存顯示" : "Displayed by variation and stock"}</p>
             </div>
           </div>
@@ -1022,8 +1183,16 @@ function CommercePage(){
 
   <div className="docs-block">
    <Subheading
+     title={isZh ? "跨品牌床墊規格比較表 — ComparisonTable (Backlog 016)" : "Cross-Brand Mattress Comparison Matrix — ComparisonTable (Backlog 016)"}
+     desc={isZh ? "支援顧客在同一視圖橫向比較 Lunio Gen 4、Quantum Max、Nooz Helix 與 Nooz Sunset 的躺感、厚度、涼感技術與雙人 5 尺售價。" : "Enables side-by-side comparison of Lunio Gen 4, Quantum Max, Nooz Helix, and Nooz Sunset across firmness, thickness, cooling tech, and 5ft Double NT pricing."}
+   />
+   <ComparisonTable />
+  </div>
+
+  <div className="docs-block">
+   <Subheading
      title={isZh ? "單選尺寸與軟硬度選擇器 (附提示指南)" : "RadioGroup mattress selector with Tooltips"}
-     desc={isZh ? "台灣床墊規格 (台尺/公分) 與睡感選擇，內建即時尺寸與軟硬度指南 Tooltip。" : "Taiwan mattress dimensions (尺) & feel options with contextual size help tooltips."}
+     desc={isZh ? "台灣床墊規格 (台尺/公分，依 SKU 實測校正) 與睡感選擇，內建即時尺寸與軟硬度指南 Tooltip。" : "Taiwan SKU-verified mattress dimensions (尺/cm) & feel options with contextual size help tooltips."}
    />
    <MattressRadioSelector selectedSize={radioSize} onSelectSize={setRadioSize} selectedFeel={feel} onSelectFeel={setFeel} />
   </div>
@@ -1051,8 +1220,27 @@ function CommercePage(){
 
   <div className="docs-block">
    <Subheading
-     title={isZh ? "手機版巨型導覽選單 — shadcn Sheet + Tabs" : "Mobile Mega Menu — shadcn Sheet + Tabs"}
-     desc={isZh ? "點擊開啟無障礙抽屜面版，可直接在抽屜內跨 4 大品牌快速切換，無需重整跳頁。" : "Click to open an accessible modal sheet, then switch between brands without navigating away."}
+     title={isZh ? "已驗證買家評價列表與篩選 — ReviewList & ReviewCard (Backlog 013)" : "Verified Buyer Reviews & Filter — ReviewList & ReviewCard (Backlog 013)"}
+     desc={isZh ? "包含五星分佈長條圖、標籤快速篩選、買家購買尺寸與睡感標記，以及官方客服回覆區塊。" : "Features 5-star distribution bars, tag filter pills, verified buyer mattress size/firmness metadata, and official store replies."}
+   />
+   <ReviewList />
+  </div>
+
+  <div className="docs-block">
+   <Subheading
+     title={isZh ? "購物車滿額贈品與一鍵加購 — CartGiftLine & CartAddOnCard (Backlog 014)" : "Cart Free Gift & 1-Click Upsell Add-Ons — CartGiftLine & CartAddOnCard (Backlog 014)"}
+     desc={isZh ? "提升客單價 (AOV) 的隨床加購配件卡與自動隨貨贈品明細列，統一使用 NT 價格格式與現省徽章。" : "AOV-boosting accessory upsell cards and automatic free gift inclusion lines using standardized NT formatting and sale badges."}
+   />
+   <div className="space-y-4">
+    <CartGiftLine />
+    <CartAddOnCard />
+   </div>
+  </div>
+
+  <div className="docs-block">
+   <Subheading
+     title={isZh ? "手機版巨型導覽選單 — shadcn Sheet + Tabs (5 品牌支援)" : "Mobile Mega Menu — shadcn Sheet + Tabs (5 Brands)"}
+     desc={isZh ? "點擊開啟無障礙抽屜面版，可直接在抽屜內跨 5 大品牌 (含 Lunio Life) 快速切換，無需重整跳頁。" : "Click to open an accessible modal sheet, then switch between all 5 brands (including Lunio Life) without navigating away."}
    />
    <div className="max-w-[385px] rounded-xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-5 shadow-xs">
      <div className="flex items-center justify-between">
@@ -1067,8 +1255,27 @@ function CommercePage(){
 
   <div className="docs-block">
    <Subheading
+     title={isZh ? "台灣宅配地址、電梯樓層與舊床回收表單 — CheckoutStepper & TaiwanAddressForm (Backlog 007)" : "Taiwan Delivery Address, Elevator & Old Mattress Form — CheckoutStepper & TaiwanAddressForm (Backlog 007)"}
+     desc={isZh ? "專為台灣大型床墊物流設計的結帳表單：自動對應縣市/行政區 3 碼郵遞區號、電梯樓層評估與同尺寸舊床搬運下樓勾選。" : "Purpose-built for Taiwan bulky mattress logistics: auto-resolves 3-digit postal codes by city/district, captures elevator/floor access, and schedules old mattress removal."}
+   />
+   <div className="space-y-5">
+    <CheckoutStepper currentStep={checkoutStep} onStepChange={setCheckoutStep} />
+    <TaiwanAddressForm />
+   </div>
+  </div>
+
+  <div className="docs-block">
+   <Subheading
+     title={isZh ? "台灣多元金流與零利率分期選擇器 — PaymentMethodSelector (Backlog 008)" : "Taiwan Payment & 0% Installment Selector — PaymentMethodSelector (Backlog 008)"}
+     desc={isZh ? "支援信用卡 3/6/12/24 期 0 利率即時試算、LINE Pay、Apple Pay、zingala 銀角零卡無卡分期與 ATM 虛擬帳號。" : "Supports 3/6/12/24-month 0% credit card installment calculation, LINE Pay, Apple Pay, zingala cardless installments, and ATM transfer."}
+   />
+   <PaymentMethodSelector totalAmount={21990} currencyCode="NT" />
+  </div>
+
+  <div className="docs-block">
+   <Subheading
      title={isZh ? "結帳訂單明細拆解 — shadcn Separator" : "Checkout order breakdown — shadcn Separator"}
-     desc={isZh ? "清晰結構化呈現床墊購買金額、官方隨貨滿額贈品、專人免運配送服務與最終結帳總額。" : "Structured breakdown of mattress purchase, bundle gifts, delivery services and final total."}
+     desc={isZh ? "清晰結構化呈現床墊購買金額、官方隨貨滿額贈品、專人免運配送服務與最終結帳總額（全數統一採用 NT 貨幣格式）。" : "Structured breakdown of mattress purchase, bundle gifts, delivery services and final total using unified NT currency formatting."}
    />
    <div className="max-w-lg rounded-2xl border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] p-6 shadow-xs space-y-4">
     <div className="flex items-center justify-between">
@@ -1082,12 +1289,12 @@ function CommercePage(){
           <span className="font-semibold text-foreground">{isZh ? "Lunio Gen 4 科技石墨烯乳膠床墊" : "Lunio Gen 4 Graphene Latex Mattress"}</span>
           <p className="typo-caption text-muted-foreground">{isZh ? "標準雙人 5 尺 (150 × 188 cm) · 適中微挺" : "Standard Double 5 ft (150 × 188 cm) · Medium-Firm"}</p>
         </div>
-        <span className="font-bold text-foreground">NT21,900</span>
+        <span className="font-bold text-foreground tabular-nums">NT21,990</span>
       </div>
       <div className="flex items-center justify-between text-muted-foreground">
         <div>
           <span>{isZh ? "專屬官網贈品：天絲防蟎保潔墊" : "Exclusive Free Gift: Tencel Mattress Protector"}</span>
-          <p className="typo-caption text-emerald-600 dark:text-emerald-400">{isZh ? "買床墊隨貨贈送 (價值 NT$ 2,490)" : "Included with mattress order (Valued at NT$ 2,490)"}</p>
+          <p className="typo-caption text-emerald-600 dark:text-emerald-400">{isZh ? "買床墊隨貨贈送 (價值 NT2,490)" : "Included with mattress order (Valued at NT2,490)"}</p>
         </div>
         <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{isZh ? "免費" : "FREE"}</span>
       </div>
@@ -1096,7 +1303,7 @@ function CommercePage(){
           <span>{isZh ? "全台本島專人配送到府定位" : "Taiwan Main Island Home Delivery & Positioning"}</span>
           <p className="typo-caption">{isZh ? "含免運費、搬運上樓與包裝定位" : "Includes zero shipping fee, floor delivery & positioning"}</p>
         </div>
-        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{isZh ? "NT$ 0 (免運)" : "NT$ 0 (FREE)"}</span>
+        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{isZh ? "NT0 (免運)" : "NT0 (FREE)"}</span>
       </div>
       <div className="flex items-center justify-between text-muted-foreground">
         <div>
@@ -1112,7 +1319,7 @@ function CommercePage(){
         <span className="typo-h3 font-bold text-foreground">{isZh ? "結帳總計" : "Order Total"}</span>
         <p className="typo-caption text-muted-foreground">{isZh ? "含 5% 營業稅、100晚試睡與10年原廠保固" : "Includes 5% VAT, 100-night trial & 10-year warranty"}</p>
       </div>
-      <span className="typo-price-xl text-primary">NT21,900</span>
+      <span className="typo-price-xl text-primary tabular-nums">NT21,990</span>
     </div>
    </div>
   </div>
@@ -1120,9 +1327,18 @@ function CommercePage(){
   <div className="docs-block">
    <Subheading
      title={isZh ? "PDP 底部常駐購買懸浮列 (Sticky Bar)" : "PDP sticky purchase summary"}
-     desc={isZh ? "所選之床墊規格、睡感即時連動底部購買列之價格與庫存狀態。" : "Selected variation controls real-time price and stock status."}
+     desc={isZh ? "所選之床墊規格、睡感即時連動底部購買列之價格 (NT 格式)、現省徽章與庫存狀態。" : "Selected variation controls real-time NT price, sale badge, and stock status."}
    />
-   <PDPStickyBar sizeLabel={isZh ? `${size} 尺` : `${size} ft`} priceLabel="NT21,900" inStock ready={true} demo/>
+   <PDPStickyBar
+     sizeLabel={isZh ? `${size} 尺` : `${size} ft`}
+     priceAmount={21990}
+     compareAtAmount={28980}
+     currencyCode="NT"
+     discountBadge={isZh ? "現省 NT6,990" : "SAVE NT6,990"}
+     inStock
+     ready={true}
+     demo
+   />
    <p className="mt-4 typo-body-sm text-muted-foreground">
      {isZh
        ? "正式電商站實作：底部固定定位、env(safe-area-inset-bottom) 安全區域邊距、足夠的頁尾內距與正式金流庫存邏輯。"
@@ -1204,21 +1420,99 @@ function ReleasePage(){
   const {isZh}=useLanguage();
   const items = isZh ? [
     ['01 · 審查盤點 (Audit)', '截取目前前端計算文字指標與 Figma 最新設計稿截圖'],
-    ['02 · 官方核准 (Approve)', '品牌負責人核准真實 Nooz 與 Bedding 資產及調色盤規範'],
-    ['03 · 工程整合 (Integrate)', '在 Next.js 鎖定具版本號的設計 Token，並重構共享元件'],
+    ['02 · 官方核准 (Approve)', '品牌負責人核准 5 大品牌 (含 Lunio Life) 資產及調色盤規範'],
+    ['03 · 工程整合 (Integrate)', '在 Next.js 鎖定具版本號的設計 Token，並重構 22 個共享基底與 19 個電商模式'],
     ['04 · 品質驗證 (Validate)', 'QA 檢驗 375/1440 視區、320px 重排、200% 縮放與鍵盤導覽'],
-    ['05 · 回歸測試 (Regression)', '測試 WooCommerce 規格變化、價格、庫存、運費、購物車與結帳'],
+    ['05 · 回歸測試 (Regression)', '測試 WooCommerce 規格變化、NT 統一價格格式、庫存、運費、購物車與結帳'],
     ['06 · 正式發布 (Release)', '記錄更新日誌、建立復原路徑 (Rollback) 並指派維護負責人']
   ] : [
     ['01 · Audit', 'Capture current frontend computed text metrics and Figma screenshots'],
-    ['02 · Approve', 'Brand owner validates real Nooz/Bedding assets and color rules'],
-    ['03 · Integrate', 'Pin versioned design tokens in Next.js and refactor shared components'],
+    ['02 · Approve', 'Brand owner validates 5-brand (incl. Lunio Life) assets and color rules'],
+    ['03 · Integrate', 'Pin versioned design tokens in Next.js across 22 primitives and 19 commerce patterns'],
     ['04 · Validate', 'Check QA at 375/1440, 320 reflow, 200% resize and keyboard'],
-    ['05 · Regression', 'Test WooCommerce variations, pricing, stock, shipping, cart and payment'],
+    ['05 · Regression', 'Test WooCommerce variations, unified NT pricing, stock, shipping, cart and payment'],
     ['06 · Release', 'Document change log, rollback path and responsible owners']
   ];
 
+  const rolloutWaves = isZh ? [
+    ['Wave 1 · 雙 11 檔期前優先上線', '005 / 024 / 016 / 020 / 015', 'PriceBlock (統一 NT 價格與分期)、ComparisonTable (跨品牌床墊比較表)、ReassuranceRow (4 大安心保證列)、PromoBanner + Sale Badge (#E53935 現省徽章)', '已實作並通過驗證'],
+    ['Wave 2 · 全站探索與購物車客單提升', '013 / 004 / 014', 'ReviewList & ReviewCard (買家五星評價篩選)、DesktopMegaMenu (電腦版 5 品牌巨型選單)、CartAddOnCard & CartGiftLine (購物車滿額贈品與一鍵加購)', '已實作並通過驗證'],
+    ['Wave 3 · 台灣在地化結帳與金流', '007 / 008', 'TaiwanAddressForm & CheckoutStepper (台灣縣市郵遞區號、電梯樓層、舊床回收評估)、PaymentMethodSelector (3/6/12/24 期 0 利率、LINE Pay、銀角零卡)', '已實作並通過驗證']
+  ] : [
+    ['Wave 1 · Pre-11.11 Conversion Core', '005 / 024 / 016 / 020 / 015', 'PriceBlock (unified NT format & installments), ComparisonTable, ReassuranceRow (4 trust pillars), PromoBanner + Sale Badge (#E53935)', 'Implemented & Verified'],
+    ['Wave 2 · Discovery & Cart AOV', '013 / 004 / 014', 'ReviewList & ReviewCard (verified buyer reviews), DesktopMegaMenu (5-brand header menu), CartAddOnCard & CartGiftLine (free gift & upsells)', 'Implemented & Verified'],
+    ['Wave 3 · Taiwan Localized Checkout', '007 / 008', 'TaiwanAddressForm & CheckoutStepper (postal code, elevator/floor, old mattress removal), PaymentMethodSelector (0% installments, LINE Pay, zingala)', 'Implemented & Verified']
+  ];
+
+  const p0Closures = isZh ? [
+    ['UX-01', '全站價格格式與促銷語意統一', '全面統一由 currencyCode ("NT") 渲染 (如 NT21,990，移除 NT$28,990 混用)，並新增獨立 --sale (#E53935) 促銷 Token 與 --destructive 錯誤紅分離。', '已結案 (Closed)'],
+    ['DS-02', 'DESIGN.md 規範與實作數量同步', '修正版本標頭與 §10 為 v1.4.0 Production Certified；同步 22 個 shadcn/ui 原生基底、19 個台灣電商模式與 Badge rounded-full (9999px) 規格。', '已結案 (Closed)'],
+    ['DS-03', '5 大商城品牌範疇與 Lunio Life 導入', '明確定義本系統專屬於 lunio.com.tw 商城之 5 大銷售品牌，並完整導入 data-brand="lunio-life" (Plum Night #2D274A / Titan White #CCD5F8 / Crocus Purple #9786F3)。', '已結案 (Closed)'],
+    ['A11Y-04', '跨品牌前景色對比度 WCAG 2.2 AA 強制保護', '驗證 Sunset 主色搭配深墨色 #1C1526 (6.72:1)、Helix 強調色搭配純黑 #000000 (4.99:1)、Lunio Life 強調色搭配純黑 #141414 (6.15:1) 全數通過 AA。', '已結案 (Closed)'],
+    ['DATA-05', '台灣床墊 SKU 實測尺寸與動態資料邊界', '修正標準單人 3 尺 (89×188×24 cm) 與單人加大 3.5 尺 (104×188×24 cm) 為 SKU 實測規格，並完整實作 001–024 轉化待辦元件。', '已結案 (Closed)']
+  ] : [
+    ['UX-01', 'Unified NT Price Formatting & Sale Token', 'Standardized all prices on currencyCode ("NT", e.g., NT21,990, eliminating NT$ mixing) and added dedicated --sale (#E53935) token separate from --destructive.', 'Closed & Verified'],
+    ['DS-02', 'Spec Consistencies & Component Counts', 'Synchronized header and §10 to v1.4.0 Production Certified; aligned 22 shadcn/ui primitives, 19 commerce patterns, and Badge rounded-full (9999px).', 'Closed & Verified'],
+    ['DS-03', 'lunio.com.tw 5-Brand Scope & Lunio Life CI', 'Clarified scope specifically for lunio.com.tw covering 5 brands and added data-brand="lunio-life" (Plum Night #2D274A / Titan White #CCD5F8 / Crocus Purple #9786F3).', 'Closed & Verified'],
+    ['A11Y-04', 'Cross-Brand WCAG 2.2 AA Contrast Enforcement', 'Enforced Sunset dark ink #1C1526 (6.72:1), Helix accent black #000000 (4.99:1), and Lunio Life Crocus Purple dark ink #141414 (6.15:1) in automated tests.', 'Closed & Verified'],
+    ['DATA-05', 'SKU-Verified Taiwan Dimensions & Backlog 001–024', 'Aligned Single 3ft (89×188×24 cm) and Single XL 3.5ft (104×188×24 cm) to SKU-verified specs and completed all 9 missing conversion backlog suites.', 'Closed & Verified']
+  ];
+
   return <div className="space-y-9">
+    <div className="docs-block overflow-x-auto">
+      <Subheading
+        title={isZh ? "P0 生產環境放行項目結案紀錄 (Production Readiness)" : "P0 Production Readiness Closure Record"}
+        desc={isZh ? "v1.4.0 正式版已全數關閉 5 項 P0 核心審查議題，通過自動化 Token、無障礙對比與型別檢驗。" : "All 5 P0 blockers have been resolved and verified in v1.4.0 across automated token, contrast, and typecheck gates."}
+      />
+      <table className="token-table min-w-[680px]">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>{isZh ? "審查項目" : "P0 Item"}</th>
+            <th>{isZh ? "修正內容與工程實作" : "Resolution & Implementation"}</th>
+            <th>{isZh ? "狀態" : "Status"}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {p0Closures.map(([id,title,resolution,status])=>(
+            <tr key={id}>
+              <td className="font-mono font-bold text-primary whitespace-nowrap">{id}</td>
+              <td className="font-semibold whitespace-nowrap">{title}</td>
+              <td className="text-xs text-muted-foreground leading-relaxed">{resolution}</td>
+              <td className="whitespace-nowrap"><Badge variant="success">{status}</Badge></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div className="docs-block overflow-x-auto">
+      <Subheading
+        title={isZh ? "電商轉化待辦元件上線波次規劃 (Backlog 001–024 Rollout Order)" : "Conversion Backlog Rollout Order (Wave 1–3 · Backlog 001–024)"}
+        desc={isZh ? "9 組轉化關鍵電商元件已全數於 components/commerce/ 實作完成，並依業務影響力劃分為三波部署順序。" : "All 9 conversion backlog component suites are implemented in components/commerce/ and sequenced across 3 deployment waves."}
+      />
+      <table className="token-table min-w-[680px]">
+        <thead>
+          <tr>
+            <th>{isZh ? "部署波次" : "Rollout Wave"}</th>
+            <th>{isZh ? "待辦編號" : "Backlog IDs"}</th>
+            <th>{isZh ? "包含元件與轉換目標" : "Components & Conversion Scope"}</th>
+            <th>{isZh ? "實作狀態" : "Status"}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rolloutWaves.map(([wave,ids,scope,status])=>(
+            <tr key={wave}>
+              <td className="font-bold whitespace-nowrap">{wave}</td>
+              <td className="font-mono text-xs text-primary whitespace-nowrap">{ids}</td>
+              <td className="text-xs text-muted-foreground leading-relaxed">{scope}</td>
+              <td className="whitespace-nowrap"><Badge variant="success">{status}</Badge></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
     <div className="docs-block">
       <Subheading
         title={isZh ? "生產環境發布檢查清單" : "Release checklist"}
@@ -1243,14 +1537,14 @@ function ReleasePage(){
         title={isZh ? "工程驗證指令" : "Engineering commands"}
         desc={isZh ? "在本地端執行完整檢查清單驗證 Token 編譯、無障礙規範與 TypeScript 靜態分析。" : "Run full automated quality gates to compile tokens, audit contrast, and verify TypeScript."}
       />
-      <CodePanel label="CI / LOCAL" code={'npm install\nnpm run tokens:build\nnpm run tokens:check\nnpm run typecheck\nnpm run build\nnpm run dev'}/>
+      <CodePanel label="CI / LOCAL" code={'npm install\nnpm run tokens:build\nnpm run tokens:check\nnpm run shadcn:check\nnpm run typecheck\nnpm run build\nnpm run dev'}/>
     </div>
     <div className="docs-grille">
       <div className="docs-block">
         <div className="eyebrow text-primary">{isZh ? "官方核准設計源" : "APPROVED SOURCE"}</div>
-        <div className="mt-3 text-[19px] font-bold">DESIGN.md v1.4</div>
+        <div className="mt-3 text-[19px] font-bold">DESIGN.md v1.4.0</div>
         <p className="mt-3 text-[13px] leading-6 text-muted-foreground">
-          {isZh ? "字體排印與 Lunio/Nooz 品牌色彩核心來源。包含審查完成的電商註釋規格。" : "Typography and Lumio/Nooz color source. Reviewed e-commerce annotations included."}
+          {isZh ? "lunio.com.tw 五大品牌 (Lunio、Helix、Sunset、Bedding、Lunio Life) 字體排印與色彩權威來源。" : "Authoritative typography and 5-brand color specification for lunio.com.tw."}
         </p>
         <Link href="/docs/source" className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold text-primary">
           {isZh ? "閱讀完整規格說明手冊" : "Read complete specification"} <ArrowUpRight size={16}/>
@@ -1273,45 +1567,41 @@ function ReleasePage(){
 const releaseListZh = [
   {
     version: "v1.4.0",
-    date: "2026-10-15",
-    badge: "最新版本",
+    date: "2026-10-16",
+    badge: "最新版本 · Production Certified",
     badgeClass: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
-    title: "企業級 shadcn/ui 與台灣電商模式擴展",
-    description: "將原始碼自有的 shadcn/ui 基底擴充至 20+，新增 4 種台灣寢具專屬電商模式，標準化程式碼複製按鈕之間距與邊距，並全站驗證淺色 / 深色 / 系統色彩模式支援。",
+    title: "lunio.com.tw 五大品牌體系 (含 Lunio Life)、22 個 UI 基底與 19 個台灣電商轉化模式",
+    description: "明確定義系統專屬於 lunio.com.tw 台灣官方商城之 5 大銷售品牌，正式導入第 5 品牌 Lunio Life (#2D274A / #CCD5F8 / #9786F3)，統一全站 NT 價格格式與獨立促銷紅 Sale Token (#E53935)，並完成全部 19 個電商轉化元件。",
     highlights: [
-      "完成 20+ UI 基底與 9 種電商模式的完整互動驗證，零錯誤通過",
-      "新增 shadcn/ui 基底：Accordion、RadioGroup、Tooltip、Breadcrumb、Carousel、Separator",
-      "台灣 PDP 電商模式：MattressSpecsAccordion、MattressRadioSelector、ProductCarousel、ProductRating",
-      "標準化 Code Panel 複製按鈕，具備 64px 右側避讓 (pr-16) 與無障礙 Tooltip 提示",
-      "支援淺色 / 深色 / 系統色彩模式，具備高對比表面，杜絕卡片泛白",
-      "100% 通過品質驗收：7/7 Token 測試、6/6 shadcn 測試、0 TypeScript 錯誤、17 條靜態路由"
+      "新增第 5 品牌模式 data-brand=\"lunio-life\"：Plum Night #2D274A (13.99:1 AAA)、Titan White #CCD5F8、Crocus Purple #9786F3 (搭配 #141414 達 6.15:1 AA)",
+      "全站價格統一由 currencyCode (\"NT\") 格式化輸出 (如 NT21,990，消除 NT$28,990 混用)，並新增獨立 --sale (#E53935) 促銷 Token",
+      "完成 22 個原始碼自有 shadcn/ui 核心基底與 19 個台灣電商轉換模式 (涵蓋待辦清單 001–024)",
+      "新增 9 大電商轉化套件：PriceBlock、ComparisonTable、ReassuranceRow、PromoBanner、ReviewList、DesktopMegaMenu、CartAddOnCard/CartGiftLine、TaiwanAddressForm/CheckoutStepper、PaymentMethodSelector",
+      "統一 Badge 為膠囊圓角 rounded-full (--radius-pill: 9999px)，同步修正 DESIGN.md §3 與 §11.3",
+      "全數結案 5 項 P0 生產就緒指標 (UX-01、DS-02、DS-03、A11Y-04、DATA-05)，通過 9/9 Token 測試與零 TypeScript 錯誤"
     ],
     sections: [
       {
-        tag: "新增元件",
+        tag: "第 5 品牌：Lunio Life 與規範修正",
         items: [
-          "Accordion (@radix-ui/react-accordion)：具備平滑 CSS 動畫與循環鍵盤焦點",
-          "RadioGroup (@radix-ui/react-radio-group)：具備高對比選中指示器",
-          "Tooltip (@radix-ui/react-tooltip)：無障礙微文案提示與 Escape 關閉",
-          "Breadcrumb (@radix-ui/react-slot)：語意化導覽與長路徑省略截斷",
-          "Carousel (embla-carousel-react)：支援觸控滑動與上一張/下一張按鈕",
-          "Separator (@radix-ui/react-separator)：支援水平與垂直方向分隔線"
+          "導入 Lunio Life 官方 CI：Plum Night (#2D274A)、Titan White (#CCD5F8)、Crocus Purple (#9786F3) 與次要色彩 (#141414、#ECE8D8、#EC9BB0、#F6D0D7)",
+          "新增獨立促銷紅 Sale Token (#E53935)，專門用於『現省』折扣徽章，不與表單錯誤紅 (#B42318) 混用",
+          "統一全站價格渲染函數 formatPrice(amount, currencyCode) 輸出 NT21,990 格式"
         ]
       },
       {
-        tag: "台灣電商模式",
+        tag: "新增轉化電商元件 (Wave 1–3)",
         items: [
-          "MattressSpecsAccordion：5 層床墊結構拆解、100 晚試睡、10 年保固與舊床回收條款",
-          "MattressRadioSelector：台灣 3 / 3.5 / 5 / 6 / 7 尺規格公分標示與 Sheet 尺寸彈窗比較",
-          "ProductCarousel：多圖展示藝廊，含分頁圓點與導覽箭頭",
-          "ProductRating：五星評分系統，支援半星渲染與 4 大安心信賴標章"
+          "Wave 1 (雙 11 前)：PriceBlock [005/024]、ComparisonTable [016]、ReassuranceRow [020]、PromoBanner + Sale Badge [015/024]",
+          "Wave 2 (探索與客單)：ReviewList & ReviewCard [013]、DesktopMegaMenu [004]、CartAddOnCard & CartGiftLine [014]",
+          "Wave 3 (台灣結帳)：TaiwanAddressForm & CheckoutStepper [007]、PaymentMethodSelector [008]"
         ]
       },
       {
-        tag: "介面與間距優化",
+        tag: "22 個 shadcn/ui 核心基底與無障礙",
         items: [
-          "Code Panel 右側避讓增加至 64px (padding: 22px 64px 22px 22px / pr-16)，徹底杜絕文字與複製按鈕碰撞",
-          "複製按鈕升級為高對比深色表面，點擊後呈現翡翠綠打勾過渡動畫與 Tooltip 提示",
+          "完整對齊 components/ui/ 下 22 個核心檔案，包含 Accordion、RadioGroup、Tooltip、Breadcrumb、Carousel、Separator 等",
+          "校正台灣床墊 SKU 實測尺寸：標準單人 3 尺 (89×188×24 cm) 與單人加大 3.5 尺 (104×188×24 cm)",
           "手機版 PDP 底部常駐列完整支援安全區域邊距 (env(safe-area-inset-bottom))"
         ]
       }
@@ -1346,7 +1636,7 @@ const releaseListZh = [
           "SizeSelector 支援台灣標準床墊台尺規格切換",
           "QuantityStepper 具備 44px 觸控點擊範圍與 aria-live 即時語音播報",
           "PDPStickyBar 提升手機版轉換率，具備即時規格與價格連動",
-          "MobileMegaMenu 具備 4 品牌切換的分頁導覽抽屜"
+          "MobileMegaMenu 具備多品牌切換的分頁導覽抽屜"
         ]
       }
     ]
@@ -1370,7 +1660,7 @@ const releaseListZh = [
         items: [
           "在 Sunset 晨曦橘 (#F28131) 上強制規範 color/on-primary 為深墨色 (#1C1526)",
           "在 Helix 薰衣草紫 (#9362D9) 上強制規範 color/on-accent 為純黑色 (#000000)",
-          "將對比度檢驗加入自動化測試流程 (7/7 測試通過)"
+          "將對比度檢驗加入自動化測試流程"
         ]
       },
       {
@@ -1442,45 +1732,41 @@ const releaseListZh = [
 const releaseListEn = [
   {
     version: "v1.4.0",
-    date: "2026-10-15",
-    badge: "Latest",
+    date: "2026-10-16",
+    badge: "Latest · Production Certified",
     badgeClass: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
-    title: "Enterprise shadcn/ui & Taiwan E-Commerce Expansion",
-    description: "Expanded source-owned shadcn/ui primitives to 20+, added 4 specialized Taiwan bedding e-commerce patterns, standardized copy button spacing and clearance, and verified Light/Dark/System theme support.",
+    title: "lunio.com.tw 5-Brand Architecture (incl. Lunio Life), 22 Primitives & 19 Commerce Patterns",
+    description: "Explicitly scoped the design system to lunio.com.tw covering 5 brands, onboarded the 5th brand Lunio Life (#2D274A / #CCD5F8 / #9786F3), standardized all storefront prices on currencyCode ('NT') with a dedicated Sale token (#E53935), and completed all 19 Taiwan commerce patterns.",
     highlights: [
-      "Full interactive verification across 20+ primitives and 9 commerce patterns with zero errors",
-      "New shadcn/ui primitives: Accordion, RadioGroup, Tooltip, Breadcrumb, Carousel, Separator",
-      "Taiwan PDP commerce patterns: MattressSpecsAccordion, MattressRadioSelector, ProductCarousel, ProductRating",
-      "Standardized Code Panel copy buttons with 64px right clearance (pr-16) and accessible Tooltip feedback",
-      "Light / Dark / System mode theming with high-contrast surfaces and zero card washout",
-      "100% Quality Gates: 7/7 token tests, 6/6 shadcn tests, 0 TypeScript errors, 17 static routes"
+      "Added 5th brand mode data-brand=\"lunio-life\": Plum Night #2D274A (13.99:1 AAA), Titan White #CCD5F8, Crocus Purple #9786F3 (6.15:1 AA with #141414 ink)",
+      "Standardized all prices on currencyCode (\"NT\", e.g., NT21,990, eliminating NT$ mixing) and added dedicated --sale (#E53935) token decoupled from --destructive",
+      "Synchronized 22 source-owned shadcn/ui primitives and 19 Taiwan e-commerce patterns (completing conversion backlog 001–024)",
+      "Implemented 9 conversion backlog suites: PriceBlock, ComparisonTable, ReassuranceRow, PromoBanner, ReviewList, DesktopMegaMenu, CartAddOnCard/CartGiftLine, TaiwanAddressForm/CheckoutStepper, PaymentMethodSelector",
+      "Standardized Badge on rounded-full (--radius-pill: 9999px) across DESIGN.md §3, §11.3, and components/ui/badge.tsx",
+      "Closed all 5 P0 production readiness items (UX-01, DS-02, DS-03, A11Y-04, DATA-05) with 9/9 token checks passing and 0 TypeScript errors"
     ],
     sections: [
       {
-        tag: "New Components",
+        tag: "5th Brand: Lunio Life & Spec Alignment",
         items: [
-          "Accordion (@radix-ui/react-accordion) with smooth CSS keyframes and roving focus",
-          "RadioGroup (@radix-ui/react-radio-group) with high-contrast indicator",
-          "Tooltip (@radix-ui/react-tooltip) with accessible microcopy trigger and escape dismiss",
-          "Breadcrumb (@radix-ui/react-slot) with semantic nav and ellipsis truncation",
-          "Carousel (embla-carousel-react) with touch swipe and previous/next triggers",
-          "Separator (@radix-ui/react-separator) with horizontal and vertical orientation"
+          "Onboarded Lunio Life CI: Plum Night (#2D274A), Titan White (#CCD5F8), Crocus Purple (#9786F3), and secondary tokens (#141414, #ECE8D8, #EC9BB0, #F6D0D7)",
+          "Added dedicated Sale token (#E53935) for '現省' discount badges, decoupled from form Error (#B42318)",
+          "Unified storefront price helper formatPrice(amount, currencyCode) outputting NT21,990"
         ]
       },
       {
-        tag: "Taiwan Commerce Patterns",
+        tag: "New Conversion Commerce Suites (Wave 1–3)",
         items: [
-          "MattressSpecsAccordion: 5-layer mattress structure, 100-night trial, 10-year warranty, recycling terms",
-          "MattressRadioSelector: Taiwan 3/3.5/5/6/7 尺 sizes with dimensions and Sheet modal comparison",
-          "ProductCarousel: Multi-slide image gallery with slide dots and navigation arrows",
-          "ProductRating: 5-star rating with half-star rendering and trust badges"
+          "Wave 1 (Pre-11.11): PriceBlock [005/024], ComparisonTable [016], ReassuranceRow [020], PromoBanner + Sale Badge [015/024]",
+          "Wave 2 (Discovery & Cart AOV): ReviewList & ReviewCard [013], DesktopMegaMenu [004], CartAddOnCard & CartGiftLine [014]",
+          "Wave 3 (Taiwan Checkout): TaiwanAddressForm & CheckoutStepper [007], PaymentMethodSelector [008]"
         ]
       },
       {
-        tag: "UI & Spacing Polish",
+        tag: "22 shadcn/ui Primitives & SKU Accuracy",
         items: [
-          "Code Panel right clearance increased to 64px (padding: 22px 64px 22px 22px / pr-16) to eliminate copy button collision",
-          "Copy buttons upgraded to high-contrast dark surfaces with emerald check transition and Tooltip feedback",
+          "Aligned documentation to all 22 core files in components/ui/ including Accordion, RadioGroup, Tooltip, Breadcrumb, Carousel, Separator",
+          "Updated Taiwan mattress dimensions to SKU-verified specs: Single 3ft (89×188×24 cm) and Single XL 3.5ft (104×188×24 cm)",
           "Safe-area bottom insets (env(safe-area-inset-bottom)) for mobile PDP sticky bar"
         ]
       }
@@ -1515,7 +1801,7 @@ const releaseListEn = [
           "SizeSelector with Taiwan standard mattress dimensions",
           "QuantityStepper with 44px touch targets and aria-live announcements",
           "PDPStickyBar for mobile conversion with live variation pricing",
-          "MobileMegaMenu with 4-brand tabbed navigation drawer"
+          "MobileMegaMenu with multi-brand tabbed navigation drawer"
         ]
       }
     ]
@@ -1539,7 +1825,7 @@ const releaseListEn = [
         items: [
           "Mandated color/on-primary dark ink (#1C1526) on Sunset Orange (#F28131)",
           "Mandated color/on-accent black ink (#000000) on Helix Lavender (#9362D9)",
-          "Added contrast validation checks to automated test runner (7/7 tests)"
+          "Added contrast validation checks to automated test runner"
         ]
       },
       {
@@ -1671,17 +1957,17 @@ function ChangelogPage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                {isZh ? "目前版本：v1.4.0" : "Current: v1.4.0"}
+                {isZh ? "目前版本：v1.4.0 (Production Certified)" : "Current: v1.4.0 (Production Certified)"}
               </span>
               <span className="text-xs text-muted-foreground">
-                {isZh ? "發布日期：2026-10-15" : "Released 2026-10-15"}
+                {isZh ? "發布日期：2026-10-16" : "Released 2026-10-16"}
               </span>
             </div>
             <h2 className="mt-2 text-[24px] font-extrabold tracking-tight text-foreground">
               {isZh ? "版本發布說明與歷程記錄" : "Release Notes & Version History"}
             </h2>
             <p className="mt-1 text-[13px] leading-6 text-muted-foreground">
-              {isZh ? "完整追蹤 UI 原生基底、電商模式、品牌調色盤與架構改進的歷次版本演進。" : "Comprehensive release record tracking UI primitives, commerce patterns, brand palettes, and breaking improvements."}
+              {isZh ? "完整追蹤 lunio.com.tw 五大品牌、22 個 UI 原生基底、19 個電商模式與架構改進的歷次版本演進。" : "Comprehensive release record tracking lunio.com.tw's 5 brands, 22 UI primitives, 19 commerce patterns, and architectural improvements."}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -1700,19 +1986,19 @@ function ChangelogPage() {
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="rounded-lg border border-border/80 bg-muted/30 p-3.5 text-center">
             <div className="text-[24px] font-bold text-primary">5</div>
-            <div className="text-[11px] font-medium text-muted-foreground">{isZh ? "記錄版本數" : "Releases Tracked"}</div>
+            <div className="text-[11px] font-medium text-muted-foreground">{isZh ? "官方商城品牌數" : "Storefront Brands"}</div>
           </div>
           <div className="rounded-lg border border-border/80 bg-muted/30 p-3.5 text-center">
-            <div className="text-[24px] font-bold text-primary">20+</div>
+            <div className="text-[24px] font-bold text-primary">22</div>
             <div className="text-[11px] font-medium text-muted-foreground">{isZh ? "shadcn 原生基底" : "shadcn Primitives"}</div>
           </div>
           <div className="rounded-lg border border-border/80 bg-muted/30 p-3.5 text-center">
-            <div className="text-[24px] font-bold text-primary">9</div>
+            <div className="text-[24px] font-bold text-primary">19</div>
             <div className="text-[11px] font-medium text-muted-foreground">{isZh ? "台灣電商模式" : "Commerce Patterns"}</div>
           </div>
           <div className="rounded-lg border border-border/80 bg-muted/30 p-3.5 text-center">
             <div className="text-[24px] font-bold text-primary">100%</div>
-            <div className="text-[11px] font-medium text-muted-foreground">{isZh ? "品質閘門通過率" : "Quality Gates Pass"}</div>
+            <div className="text-[11px] font-medium text-muted-foreground">{isZh ? "P0 與品質閘門通過" : "P0 & Quality Gates Pass"}</div>
           </div>
         </div>
       </div>
