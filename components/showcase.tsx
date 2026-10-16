@@ -1,25 +1,20 @@
 "use client";
 import Link from "next/link";
 import {useState} from "react";
-import {ArrowLeft,ArrowUpRight,BookOpen,Check,CheckCircle2,ChevronDown,ChevronRight,Copy,Download,ExternalLink,Layers3,Menu,Monitor,PanelTop,Search,Smartphone,Sparkles, X} from "lucide-react";
+import {ArrowLeft,BookOpen,Check,CheckCircle2,ChevronRight,Copy,Download,Menu,Search} from "lucide-react";
 import {BrandSwitcher, MobileBrandGrid} from "@/components/brand-switcher";
 import {ThemeToggle, MobileThemeSelector} from "@/components/theme-toggle";
 import {LanguageToggle, MobileLanguageSelector} from "@/components/language-toggle";
-import {useBrand} from "@/components/brand-provider";
 import {useLanguage} from "@/components/language-provider";
-import {brands,tokens} from "@/lib/design-system";
+import {brands} from "@/lib/design-system";
 import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
 import {Sheet,SheetContent,SheetTrigger,SheetHeader,SheetTitle,SheetDescription} from "@/components/ui/sheet";
-const sections=[{label:"Colors",href:"/docs/colors"},{label:"Typography",href:"/docs/typography"},{label:"Components",href:"/docs/components"},{label:"Commerce",href:"/docs/commerce"}];
 export function Showcase(){
- const {brand}=useBrand();const current=tokens.brands[brand];
  const {isZh,t}=useLanguage();
- const [tab,setTab]=useState<"preview"|"design">("preview");const [device,setDevice]=useState<"desktop"|"mobile">("desktop");const [copied,setCopied]=useState(false);const [copiedDesign,setCopiedDesign]=useState(false);const [mobileOpen,setMobileOpen]=useState(false);
+ const [copied,setCopied]=useState(false);const [mobileOpen,setMobileOpen]=useState(false);
  const code="npm install\nnpm run tokens:build\nnpm run tokens:check\nnpm run dev";
  const copy=async()=>{try{await navigator.clipboard.writeText(code);setCopied(true);setTimeout(()=>setCopied(false),1800)}catch{setCopied(false)}};
- const designMdSummary=`# Lunio Multi-Brand Design System · v1.4\n\n> MiSansTC · WCAG 2.2 AA target\n\nBrand colors\n  Lunio    →  #1C46B4\n  Helix    →  #7347AE\n  Sunset   →  #F28131\n  Bedding  →  #1C46B4\n\nTypography  →  12 semantic roles\nFont weights → 400 / 500 / 600 / 700 / 800\nRadius → Control 8px · Container 16px\nSpacing → 4px rhythm\n\nComponents (20+ primitives & patterns)\n  Button / Input / Card / Tabs / Badge / Label\n  Separator / Skeleton / Textarea / Select / Dialog\n  Sheet / Command / Checkbox / DropdownMenu\n  Popover / ScrollArea / Accordion / RadioGroup\n  Tooltip / Breadcrumb / Carousel / ProductRating\n  SizeSelector / QuantityStepper / PDPStickyBar`;
- const copyDesign=async()=>{try{await navigator.clipboard.writeText(designMdSummary);setCopiedDesign(true);setTimeout(()=>setCopiedDesign(false),1800)}catch{setCopiedDesign(false)}};
  return <div className="showcase-shell">
   <header className="shell-border border-x-0 border-t-0">
     <div className="shell-container flex min-h-[58px] sm:min-h-[76px] items-center justify-between gap-2 sm:gap-4">
@@ -93,11 +88,13 @@ export function Showcase(){
                   { label: isZh ? "字體排印系統" : "MiSansTC Typography", href: "/docs/typography", num: "02" },
                   { label: isZh ? "色彩與語意 Token" : "Colors & WCAG Target", href: "/docs/colors", num: "04" },
                   { label: isZh ? "空間與佈局律動" : "Spacing 4px Rhythm", href: "/docs/spacing", num: "05" },
-                  { label: isZh ? "核心 UI 元件庫" : "Core UI components", href: "/docs/components", num: "06" },
-                  { label: isZh ? "台灣電商元件" : "Commerce patterns", href: "/docs/commerce", num: "07" },
-                  { label: isZh ? "無障礙檢驗標準" : "Accessibility (WCAG AA)", href: "/docs/accessibility", num: "08" },
-                  { label: isZh ? "生產環境發布" : "Production checklist", href: "/docs/release", num: "09" },
-                  { label: isZh ? "更新日誌與版本" : "Changelog & versions", href: "/docs/changelog", num: "10" },
+                  { label: isZh ? "官方圖示庫 (Lucide)" : "Lucide Icon System", href: "/docs/icons", num: "06" },
+                  { label: isZh ? "自訂圖示工作室" : "Custom Icons Studio", href: "/docs/custom-icons", num: "07" },
+                  { label: isZh ? "核心 UI 元件庫" : "Core UI components", href: "/docs/components", num: "08" },
+                  { label: isZh ? "台灣電商元件" : "Commerce patterns", href: "/docs/commerce", num: "09" },
+                  { label: isZh ? "無障礙檢驗標準" : "Accessibility (WCAG AA)", href: "/docs/accessibility", num: "10" },
+                  { label: isZh ? "生產環境發布" : "Production checklist", href: "/docs/release", num: "11" },
+                  { label: isZh ? "更新日誌與版本" : "Changelog & versions", href: "/docs/changelog", num: "12" },
                   { label: isZh ? "完整規範手冊" : "Full DESIGN.md", href: "/docs/source", num: "MD" },
                 ].map((item) => (
                   <Button
@@ -210,139 +207,7 @@ export function Showcase(){
       </div>
     </div>
    </section>
-   <section className="mt-12">
-    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <div className="eyebrow text-muted-foreground">{isZh ? "體驗預覽" : "EXPERIENCE"}</div>
-        <h2 className="mt-1 text-[24px] font-bold">{isZh ? "即時預覽" : "Live preview"}</h2>
-      </div>
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="inline-flex rounded-lg border border-border bg-muted p-1">
-          <Button variant="ghost" onClick={()=>setDevice('desktop')} aria-pressed={device==='desktop'} className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs ${device==='desktop' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}><Monitor size={14}/>{isZh ? "電腦版" : "Desktop"}</Button>
-          <Button variant="ghost" onClick={()=>setDevice('mobile')} aria-pressed={device==='mobile'} className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs ${device==='mobile' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}><Smartphone size={14}/>{isZh ? "手機版 375px" : "375px"}</Button>
-        </div>
-        <Button variant="outline" onClick={()=>setTab('preview')} className={`shell-action ${tab==='preview'?'!border-primary !text-primary':''}`}>{isZh ? "即時預覽" : "Live Preview"}</Button>
-        <Button variant="outline" onClick={()=>setTab('design')} className={`shell-action ${tab==='design'?'!border-primary !text-primary':''}`}>DESIGN.md</Button>
-      </div>
-    </div>
-    <div className={`mx-auto transition-all duration-300 ${device==='mobile'?'max-w-[375px]':'max-w-full'}`}>
-     {tab==='preview' ? (
-       <div className="preview-browser">
-         <div className="preview-browser-toolbar">
-           <span className="hidden sm:flex items-center gap-1">
-             <i className="size-2 rounded-full bg-[#ff7979]"/>
-             <i className="size-2 rounded-full bg-[#ffc96e]"/>
-             <i className="size-2 rounded-full bg-[#7bcc9a]"/>
-           </span>
-           <span className="mr-auto text-[15px] font-extrabold tracking-tight">lunio<span className="text-primary">.</span></span>
-           {device==='desktop' && (
-             <div className="flex items-center gap-5 text-[12px] font-semibold text-muted-foreground">
-               <Link href="/docs/colors" className="hover:text-foreground transition-colors">{isZh ? "色彩系統" : "Colors"}</Link>
-               <Link href="/docs/typography" className="hover:text-foreground transition-colors">{isZh ? "字體排印" : "Typography"}</Link>
-               <Link href="/docs/components" className="hover:text-foreground transition-colors">{isZh ? "UI 元件" : "Components"}</Link>
-               <Link href="/docs/commerce" className="hover:text-foreground transition-colors">{isZh ? "電商模式" : "Responsive"}</Link>
-             </div>
-           )}
-           <Badge>{isZh ? "設計系統" : "Design system"}</Badge>
-         </div>
-         <div className="preview-content">
-           <div className="preview-hero-grid">
-             <div>
-               <div className="eyebrow mb-5 text-primary">{isZh ? "LUNIO 設計語言規範" : "THE LUNIO DESIGN LANGUAGE"}</div>
-               <div className="demo-display">{isZh ? <>美好日常<br/>從細節開始。</> : <>Design for a<br/>better everyday.</>}</div>
-               <p className="mt-6 max-w-[390px] text-[14px] leading-[1.8] text-muted-foreground">
-                 {isZh ? "從每一天開始，打造一致、舒適且易於使用的體驗。共享規範，呈現獨特的品牌個性。" : "Crafting consistent, comfortable, and intuitive experiences every day. Shared foundations, distinct brand identities."}
-               </p>
-               <div className="mt-7 flex flex-wrap items-center gap-2">
-                 <Button onClick={()=>document.getElementById('preview-foundations')?.scrollIntoView({behavior:'smooth'})}>
-                   {isZh ? "探索設計基礎" : "Explore foundations"} <ArrowUpRight size={16}/>
-                 </Button>
-                 <Button asChild variant="outline">
-                   <Link href="/docs/components">{isZh ? "UI 元件庫" : "UI components"}</Link>
-                 </Button>
-               </div>
-             </div>
-             <div className="mattress-stage">
-               <div className="absolute left-5 top-5 rounded-md border border-white/80 bg-white/70 dark:bg-card/90 dark:border-border dark:text-[var(--interactive-text)] px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-primary shadow-sm backdrop-blur-xs">
-                 {current.short} / {isZh ? "床墊系列" : "Collection"}
-               </div>
-               <div className="mattress-base"><div className="mattress-pillow"/></div>
-               <div className="absolute bottom-5 right-5 text-[10px] font-semibold text-muted-foreground">
-                 {isZh ? "舒適包覆 · 靈敏支撐 · 細節專注" : "SOFT · RESPONSIVE · INTENTIONAL"}
-               </div>
-             </div>
-           </div>
-           <div id="preview-foundations" className="mt-14 border-t border-border pt-8">
-             <div className="mb-5 flex items-end justify-between">
-               <div>
-                 <div className="eyebrow text-primary">{isZh ? "設計基礎" : "FOUNDATIONS"}</div>
-                 <h3 className="mt-2 text-[27px] font-bold">{isZh ? "源自同一套完整系統" : "Built from one system."}</h3>
-               </div>
-               <Link href="/docs/colors" className="text-[12px] font-semibold text-primary hover:underline">
-                 {isZh ? "查看 Token ↗" : "View tokens ↗"}
-               </Link>
-             </div>
-             <div className="preview-category">
-               <div className="preview-mini-card">
-                 <div className="mb-4 flex h-[105px] items-center justify-center rounded-lg bg-[var(--brand-surface)]">
-                   <div className="size-14 rounded-full bg-primary shadow-[0_8px_25px_#00000018]"/>
-                   <div className="-ml-3 size-12 rounded-full bg-[var(--accent)] opacity-80"/>
-                 </div>
-                 <div className="text-xs font-bold">{isZh ? "色彩系統" : "Color system"}</div>
-                 <p className="mt-1 text-[11px] text-muted-foreground">{isZh ? "品牌專屬語意化色彩 Token。" : "Theme-specific semantic tokens."}</p>
-               </div>
-               <div className="preview-mini-card">
-                 <div className="mb-4 flex h-[105px] items-center justify-center rounded-lg bg-muted">
-                   <span className="text-[65px] font-extrabold leading-none tracking-[-.08em] text-foreground">Aa</span>
-                 </div>
-                 <div className="text-xs font-bold">{isZh ? "字體排印" : "Typography"}</div>
-                 <p className="mt-1 text-[11px] text-muted-foreground">MiSansTC 400 / 500 / 600 / 700 / 800.</p>
-               </div>
-               <div className="preview-mini-card">
-                 <div className="preview-mini-art mb-4"/>
-                 <div className="text-xs font-bold">{isZh ? "互動元件" : "Components"}</div>
-                 <p className="mt-1 text-[11px] text-muted-foreground">{isZh ? "一致且高互動性的台灣電商模式。" : "Consistent commerce interactions."}</p>
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-     ) : (
-       <div className="preview-browser min-h-[560px] p-6 sm:p-10">
-         <div className="eyebrow mb-4 text-primary">DESIGN.md · v1.4</div>
-         <h3 className="text-[30px] font-bold">{isZh ? "支撐使用者介面的設計語言" : "The design language behind the UI"}</h3>
-         <p className="mt-2 text-[14px] leading-7 text-muted-foreground">
-           {isZh ? "以同一份規格手冊驅動 Figma 設計稿與自動產生的 CSS 變數。" : "The same documented design tokens drive the Figma specs and generated CSS."}
-         </p>
-          <div className="relative mt-8">
-            <div className="code-panel pr-16">{designMdSummary}</div>
-            <div className="absolute right-3.5 top-3.5 z-10">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={copyDesign}
-                aria-label={copiedDesign ? (isZh ? "已複製規格摘要至剪貼簿" : "Copied specification summary to clipboard") : (isZh ? "複製 DESIGN.md 規格摘要" : "Copy DESIGN.md specification summary")}
-                className="h-8 px-2.5 text-xs font-medium border-slate-700/80 bg-slate-900/90 text-slate-200 hover:bg-slate-800 hover:text-white shadow-xs gap-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                {copiedDesign ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                <span>{copiedDesign ? (isZh ? "已複製！" : "Copied!") : (isZh ? "複製" : "Copy")}</span>
-              </Button>
-            </div>
-          </div>
-         <Link className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold text-primary hover:underline" href="/docs/source">
-           {isZh ? "閱讀完整 DESIGN.md 規範手冊" : "Read complete DESIGN.md"} <ArrowUpRight size={16}/>
-         </Link>
-       </div>
-     )}
-    </div>
-    <div className="mt-4 flex items-center justify-between text-[11px] text-muted-foreground">
-      <span>{t.showcase.referenceStructure}</span>
-      <Link href="/docs/getting-started" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
-        {t.showcase.exploreDocs} <ArrowUpRight size={14}/>
-      </Link>
-    </div>
-   </section>
-   <div className="mt-24 grid gap-8 border-t border-border pt-10 md:grid-cols-3">
+   <div className="mt-14 grid gap-8 border-t border-border pt-10 md:grid-cols-3">
      <div>
        <div className="eyebrow mb-3 text-muted-foreground">{isZh ? "設計原則" : "DESIGN PRINCIPLE"}</div>
        <h3 className="text-[18px] font-bold">{isZh ? "MiSans TC 單一字體體系" : "One font, everywhere."}</h3>
