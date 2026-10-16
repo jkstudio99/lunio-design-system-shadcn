@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import {useState,type ReactNode} from "react";
-import {ArrowRight,ArrowUpRight,Calendar,Check,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,Copy,Download,Eye,FileCode2,GitCommit,HelpCircle,History,Info,Layers,Layers3,Minus,Monitor,Moon,Plus,RefreshCw,RotateCcw,ShieldCheck,ShoppingBag,Smartphone,Sparkles,Star,Tag,TriangleAlert,Truck,X} from "lucide-react";
+import {ArrowLeft,ArrowRight,ArrowUpRight,Calendar,Check,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,Copy,Download,Eye,FileCode2,GitCommit,HelpCircle,History,Info,Layers,Layers3,Minus,Monitor,Moon,Plus,RefreshCw,RotateCcw,ShieldCheck,ShoppingBag,Smartphone,Sparkles,Star,Tag,TriangleAlert,Truck,X} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {Card,CardContent} from "@/components/ui/card";
@@ -808,7 +808,7 @@ function ComponentsPage(){
      </>
     ) : (
      <>
-      <ProductCard product={{name: isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex Mattress", description: isZh ? "泰國天然乳膠與專利石墨烯調溫舒壓棉" : "Thai natural latex & graphene thermoregulation foam", priceLabel: isZh ? "NT$ 21,900 起" : "From NT$ 21,900", badge: isZh ? "熱銷推薦" : "TOP SELLER"}}/>
+      <ProductCard product={{name: isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex Mattress", description: isZh ? "泰國天然乳膠與專利石墨烯調溫舒壓棉" : "Thai natural latex & graphene thermoregulation foam", priceLabel: isZh ? "NT21,900 起" : "From NT21,900", badge: isZh ? "熱銷推薦" : "TOP SELLER"}}/>
       <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-xs">
        <div className="space-y-2">
         <Badge variant="outline">{isZh ? "評價載入完成" : "Reviews Loaded"}</Badge>
@@ -952,7 +952,7 @@ function CommercePage(){
       <ProductCard product={{
         name: isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex Mattress",
         description: isZh ? "泰國天然乳膠與專利石墨烯調溫舒壓棉" : "Thai natural latex & graphene thermoregulation foam",
-        priceLabel: isZh ? "NT$ 21,900 起" : "From NT$ 21,900",
+        priceLabel: isZh ? "NT21,900 起" : "From NT21,900",
         badge: isZh ? "LUNIO 旗艦款" : "LUNIO FLAGSHIP"
       }}/>
       <Card className="gap-0 border border-border/80 bg-slate-50/70 dark:bg-[#182030] dark:border-[#2A344A] py-0 shadow-xs">
@@ -965,7 +965,7 @@ function CommercePage(){
             <div className="flex min-w-0 flex-col gap-2">
               <h3 className="typo-h4 break-words text-foreground">{isZh ? "Gen 4 石墨烯乳膠床墊" : "Gen 4 Graphene Latex"}</h3>
               <p className="typo-body-sm text-muted-foreground">{isZh ? "天然乳膠五層結構" : "Natural latex 5-layer anatomy"}</p>
-              <p className="typo-price-md text-primary">NT$ 21,900</p>
+              <p className="typo-price-md text-primary">NT21,900</p>
               <p className="typo-caption text-muted-foreground">{isZh ? "依規格與庫存顯示" : "Displayed by variation and stock"}</p>
             </div>
           </div>
@@ -1038,7 +1038,7 @@ function CommercePage(){
           <span className="font-semibold text-foreground">{isZh ? "Lunio Gen 4 科技石墨烯乳膠床墊" : "Lunio Gen 4 Graphene Latex Mattress"}</span>
           <p className="typo-caption text-muted-foreground">{isZh ? "標準雙人 5 尺 (150 × 188 cm) · 適中微挺" : "Standard Double 5 ft (150 × 188 cm) · Medium-Firm"}</p>
         </div>
-        <span className="font-bold text-foreground">NT$ 21,900</span>
+        <span className="font-bold text-foreground">NT21,900</span>
       </div>
       <div className="flex items-center justify-between text-muted-foreground">
         <div>
@@ -1068,7 +1068,7 @@ function CommercePage(){
         <span className="typo-h3 font-bold text-foreground">{isZh ? "結帳總計" : "Order Total"}</span>
         <p className="typo-caption text-muted-foreground">{isZh ? "含 5% 營業稅、100晚試睡與10年原廠保固" : "Includes 5% VAT, 100-night trial & 10-year warranty"}</p>
       </div>
-      <span className="typo-price-xl text-primary">NT$ 21,900</span>
+      <span className="typo-price-xl text-primary">NT21,900</span>
     </div>
    </div>
   </div>
@@ -1078,7 +1078,7 @@ function CommercePage(){
      title={isZh ? "PDP 底部常駐購買懸浮列 (Sticky Bar)" : "PDP sticky purchase summary"}
      desc={isZh ? "所選之床墊規格、睡感即時連動底部購買列之價格與庫存狀態。" : "Selected variation controls real-time price and stock status."}
    />
-   <PDPStickyBar sizeLabel={isZh ? `${size} 尺` : `${size} ft`} priceLabel="NT$ 21,900" inStock ready={true} demo/>
+   <PDPStickyBar sizeLabel={isZh ? `${size} 尺` : `${size} ft`} priceLabel="NT21,900" inStock ready={true} demo/>
    <p className="mt-4 typo-body-sm text-muted-foreground">
      {isZh
        ? "正式電商站實作：底部固定定位、env(safe-area-inset-bottom) 安全區域邊距、足夠的頁尾內距與正式金流庫存邏輯。"
@@ -1877,11 +1877,13 @@ export function DocsContent({slug}:{slug:string}){
   const content = pages[slug];
   const index = allDocs.findIndex(d=>d.slug===slug);
   if(!meta||!content)return null;
+  const prev = index>0 ? allDocs[index-1] : undefined;
   const next = allDocs[index+1];
   const Content = content;
   const kicker = localizedSection?.kicker || meta.kicker;
   const title = localizedSection?.title || meta.title;
   const intro = localizedSection?.intro || meta.intro;
+  const prevTitle = prev ? (isZh ? (titlesZh[prev.slug] || prev.title) : prev.title) : "";
   const nextTitle = next ? (isZh ? (titlesZh[next.slug] || next.title) : next.title) : "";
   return <article className="docs-article">
     <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
@@ -1892,14 +1894,27 @@ export function DocsContent({slug}:{slug:string}){
     <p className="typo-body-md mt-4 max-w-3xl text-muted-foreground">{intro}</p>
     <div className="my-9 h-px bg-border"/>
     <Content/>
-    {next&&<div className="mt-12 border-t border-border pt-8">
-      <Link href={`/docs/${next.slug}`} className="flex items-center justify-between rounded-xl border border-border bg-card p-5 transition hover:border-primary">
-        <div>
-          <span className="text-[11px] uppercase tracking-widest text-muted-foreground">{isZh ? "下一節" : "UP NEXT"}</span>
-          <div className="mt-2 text-[15px] font-bold">{nextTitle}</div>
-        </div>
-        <ArrowRight size={20} className="text-primary"/>
-      </Link>
-    </div>}
+    {(prev||next)&&<nav aria-label={isZh ? "章節分頁導覽" : "Documentation pagination"} className="mt-12 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
+      {prev ? (
+        <Link href={`/docs/${prev.slug}`} className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-5 transition hover:border-primary hover:shadow-xs">
+          <ArrowLeft size={20} className="shrink-0 text-primary transition-transform group-hover:-translate-x-1"/>
+          <div className="min-w-0 flex-1 text-right sm:text-left">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">{isZh ? "上一節" : "PREVIOUS"} · {prev.number}</span>
+            <div className="mt-1.5 truncate text-[15px] font-bold text-foreground transition-colors group-hover:text-primary">{prevTitle}</div>
+          </div>
+        </Link>
+      ) : (
+        <div className="hidden sm:block" />
+      )}
+      {next && (
+        <Link href={`/docs/${next.slug}`} className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-5 transition hover:border-primary hover:shadow-xs sm:text-right">
+          <div className="min-w-0 flex-1">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">{isZh ? "下一節" : "UP NEXT"} · {next.number}</span>
+            <div className="mt-1.5 truncate text-[15px] font-bold text-foreground transition-colors group-hover:text-primary">{nextTitle}</div>
+          </div>
+          <ArrowRight size={20} className="shrink-0 text-primary transition-transform group-hover:translate-x-1"/>
+        </Link>
+      )}
+    </nav>}
   </article>;
 }

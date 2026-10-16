@@ -42,6 +42,20 @@ export function SourceContent({ doc }: { doc: string }) {
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{doc}</ReactMarkdown>
         </div>
       </div>
+
+      <nav aria-label={isZh ? "章節分頁導覽" : "Documentation pagination"} className="mt-12 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
+        <Link href="/docs/changelog" className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-5 transition hover:border-primary hover:shadow-xs">
+          <ArrowLeft size={20} className="shrink-0 text-primary transition-transform group-hover:-translate-x-1" />
+          <div className="min-w-0 flex-1 text-right sm:text-left">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">
+              {isZh ? "上一節" : "PREVIOUS"} · 12
+            </span>
+            <div className="mt-1.5 truncate text-[15px] font-bold text-foreground transition-colors group-hover:text-primary">
+              {isZh ? "更新日誌與版本" : "Changelog & versions"}
+            </div>
+          </div>
+        </Link>
+      </nav>
     </article>
   );
 }

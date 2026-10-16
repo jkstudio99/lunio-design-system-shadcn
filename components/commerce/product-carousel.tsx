@@ -144,20 +144,22 @@ export function ProductCarousel({
       </Carousel>
 
       {/* Slide indicator dots */}
-      <div className="mt-4 flex items-center justify-center gap-1.5">
+      <div className="mt-4 flex items-center justify-center gap-2" role="tablist" aria-label={isZh ? "輪播投影片分頁指示器" : "Carousel slide pagination"}>
         {activeSlides.map((_, i) => (
           <Button
             key={i}
+            type="button"
             variant="ghost"
             size="icon"
             onClick={() => api?.scrollTo(i)}
+            aria-current={current === i ? "true" : undefined}
             className={cn(
-              "size-2 p-0 rounded-full transition-all",
+              "h-2.5 min-h-0 p-0 rounded-full transition-all duration-300",
               current === i
-                ? "bg-primary w-6"
-                : "bg-muted-foreground/30 hover:bg-muted-foreground/60"
+                ? "w-7 bg-primary hover:bg-primary shadow-2xs"
+                : "w-2.5 bg-muted-foreground/30 hover:bg-muted-foreground/60"
             )}
-            aria-label={isZh ? `跳至第 {i + 1} 張投影片` : `Go to slide {i + 1}`}
+            aria-label={isZh ? `跳至第 ${i + 1} 張投影片` : `Go to slide ${i + 1}`}
           />
         ))}
       </div>
